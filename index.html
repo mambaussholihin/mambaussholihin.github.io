@@ -28,7 +28,7 @@
     --line:#2b3039; --line-2:#3a404c; --canvas:#14161b; --dot:#262b34;
     --root-bg:#e9edf7; --root-text:#131a2c; --sel:#6aa5ff; --hl:rgba(250,190,40,.28);
     --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
-    --alt:#ff6b6b; --ok:#2f9e44;
+    --alt:#ff6b6b; --ok:#2b8a3e;
     color-scheme:dark;
   }
 }
@@ -56,6 +56,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .search input:focus{border-color:var(--sel);background:var(--surface);box-shadow:0 0 0 3px color-mix(in srgb,var(--sel) 20%,transparent)}
 .search .count{position:absolute;right:10px;font-size:11px;color:var(--muted);pointer-events:none}
 body:is(.is-outline,.is-proses) .search{visibility:hidden}
+@media (max-width:897px){body:is(.is-outline,.is-proses) .search{display:none}}
 body.is-proses .flow{display:none}
 
 /* ---------- Alur (stepper) ---------- */
@@ -260,7 +261,7 @@ summary.o-row::before{margin-top:5.5px}
 .o-foot{margin-top:30px;text-align:center;font-size:12.5px;color:var(--muted)}
 
 /* ---------- Alur proses ---------- */
-.proses{position:absolute;inset:0;z-index:7;overflow:auto;background:var(--bg);padding:22px 16px 72px}
+.proses{position:absolute;inset:0;z-index:7;overflow:auto;scrollbar-gutter:stable;background:var(--bg);padding:22px 16px 72px}
 .proses[hidden]{display:none}
 .pdoc{max-width:1240px;margin:0 auto}
 .f-sel{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin-bottom:14px}
@@ -277,7 +278,11 @@ summary.o-row::before{margin-top:5.5px}
 .f-meta{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:12px}
 .f-meta .tag{padding:3px 10px}
 .f-meta .tag svg{flex:none;color:var(--muted)}
-.f-meta .btn{padding:5px 11px;font-size:12.5px}
+.f-meta .btn{padding:6px 12px;font-size:12.5px;font-weight:700}
+.f-actions{display:flex;flex-wrap:wrap;gap:6px;margin-left:auto}
+.f-to{display:block;margin-top:4px;font-weight:700;color:var(--alt)}
+.f-key .touch{display:none}
+@media (hover:none){.f-key .desk{display:none}.f-key .touch{display:inline-flex}}
 .f-board{position:relative;padding:26px 20px 22px;background-color:var(--canvas);background-image:radial-gradient(var(--dot) 1.1px,transparent 1.3px);background-size:22px 22px;border:1px solid var(--line);border-radius:18px;overflow:hidden}
 .f-canvas{position:relative;margin:0 auto}
 .f-links{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
@@ -286,11 +291,13 @@ summary.o-row::before{margin-top:5.5px}
 .f-ln.alt{stroke:var(--alt);stroke-width:2;stroke-dasharray:6 5}
 .f-links .ah{fill:var(--c)}
 .f-links .ah.alt{fill:var(--alt)}
-.f-card{position:absolute;left:0;top:0;display:flex;gap:10px;margin:0;padding:12px 14px;border:0;border-radius:14px;background:var(--c);color:#fff;font:inherit;text-align:left;cursor:pointer;box-shadow:0 2px 0 rgba(0,0,0,.07),0 10px 18px -10px color-mix(in srgb,var(--c) 80%,transparent);transition:transform .18s ease,box-shadow .18s ease,opacity .35s ease}
+.f-card{position:absolute;left:0;top:0;display:flex;gap:10px;margin:0;padding:12px 14px;border:0;border-radius:14px;background:color-mix(in srgb,var(--c) 88%,#000);color:#fff;font:inherit;text-align:left;cursor:pointer;box-shadow:0 2px 0 rgba(0,0,0,.07),0 10px 18px -10px color-mix(in srgb,var(--c) 80%,transparent);transition:transform .18s ease,box-shadow .18s ease,opacity .35s ease}
 .f-card:hover{transform:translateY(-2px);box-shadow:0 2px 0 rgba(0,0,0,.07),0 14px 22px -10px color-mix(in srgb,var(--c) 85%,transparent)}
 .f-card.h{flex-direction:column;align-items:flex-start}
 .f-card.v{flex-direction:row;align-items:center}
-.f-card.outcome{background:var(--ok);--c:var(--ok)}
+.f-card.outcome{--c:var(--ok)}
+.f-card.h.tight{padding:12px 11px}
+.f-card.h.tight .f-t{font-size:14px}
 .f-card .icw{flex:none}
 .f-card .icw::before{content:"";position:absolute;inset:-4px;border-radius:12px;background:color-mix(in srgb,var(--c) 8%,#fff);box-shadow:0 1px 2px rgba(0,0,0,.12)}
 .f-card .icw .ic{position:relative}
@@ -299,8 +306,8 @@ summary.o-row::before{margin-top:5.5px}
 .f-num{position:absolute;top:-10px;left:-10px;width:24px;height:24px;display:grid;place-items:center;border-radius:50%;background:#fff;color:var(--c);font-size:12px;font-weight:800;box-shadow:0 0 0 2px var(--c),0 2px 6px rgba(0,0,0,.15)}
 .f-tx{display:flex;flex-direction:column;gap:3px;min-width:0}
 .f-t{font-size:15px;font-weight:800;line-height:1.25}
-.f-a{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;line-height:1.3;opacity:.92}
-.f-a svg{flex:none}
+.f-a{display:inline-flex;align-items:flex-start;gap:5px;font-size:12px;font-weight:600;line-height:1.3}
+.f-a svg{flex:none;margin-top:1.5px}
 .f-card.fan,.f-card.alt{align-items:center;flex-direction:row;padding:9px 12px;border-radius:12px;background:var(--surface);color:var(--text)}
 .f-card.fan{border:1.5px solid var(--c);box-shadow:0 1px 2px rgba(16,24,40,.08)}
 .f-card.alt{border:1.5px dashed var(--alt);box-shadow:none}
@@ -317,7 +324,7 @@ summary.o-row::before{margin-top:5.5px}
 .f-key span{display:inline-flex;align-items:center;gap:7px}
 .f-h2{margin:30px 0 14px;font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
 .f-list{position:relative;margin:0;padding:0;list-style:none}
-.f-list::before{content:"";position:absolute;left:15px;top:22px;bottom:22px;width:2px;background:color-mix(in srgb,var(--c) 30%,transparent)}
+.f-item:not(:last-child)::before{content:"";position:absolute;left:-31px;top:48px;bottom:-28px;width:2px;background:color-mix(in srgb,var(--c) 30%,transparent)}
 .f-item{position:relative;margin:0 0 12px 46px;padding:16px 18px;background:var(--surface);border:1px solid var(--line);border-radius:14px;scroll-margin:24px}
 .f-item>.f-num{left:-46px;top:16px;width:32px;height:32px;font-size:13.5px;background:var(--c);color:#fff;box-shadow:0 0 0 4px var(--bg)}
 .f-item.outcome>.f-num{background:var(--ok)}
@@ -342,14 +349,23 @@ summary.o-row::before{margin-top:5.5px}
 }
 @media (max-width:699px){
   .proses{padding:14px 12px 56px}
-  .f-head{flex-direction:column;padding:16px;gap:8px}
-  .f-head .ic{--s:44px}
-  .f-meta{gap:5px;margin-top:10px}
+  .f-head{display:grid;grid-template-columns:auto 1fr;padding:14px 16px;gap:4px 12px}
+  .f-head>div{display:contents}
+  .f-head .ic{--s:40px;grid-row:1/3;align-self:center}
+  .f-head .eyebrow{grid-column:2;align-self:end}
+  .f-head h1{grid-column:2;margin:0;font-size:21px}
+  .f-head p,.f-head .f-meta{grid-column:1/-1}
+  .f-head p{margin-top:6px;font-size:14px;line-height:1.55}
+  .f-meta{gap:5px;margin-top:8px}
   .f-meta .tag{padding:2px 8px;font-size:11.5px}
-  .f-board{padding:22px 12px 16px}
+  .f-meta .tag:not(:first-child){display:none}
+  .f-board{padding:22px 12px 16px 18px}
+  .f-item-h .f-more{position:absolute;top:6px;right:8px;width:44px;height:34px;padding:0;display:grid;place-items:center;font-size:18px}
+  .f-more .fm-l{display:none}
+  .f-item h3{padding-right:48px}
   .f-item{margin-left:40px;padding:14px}
   .f-item>.f-num{left:-40px;width:28px;height:28px}
-  .f-list::before{left:13px}
+  .f-item:not(:last-child)::before{left:-27px;top:44px}
 }
 
 /* ---------- Detail langkah (dengan tombol Kembali) ---------- */
@@ -366,7 +382,7 @@ summary.o-row::before{margin-top:5.5px}
 .fd-back:hover{background:var(--surface-2)}
 .fd-where{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12.5px;font-weight:600;color:var(--muted)}
 .fd-scroll{flex:1;overflow:auto;padding:18px 20px 20px;overscroll-behavior:contain}
-.fd-hero{display:flex;align-items:center;gap:18px;padding:18px;border-radius:16px;background:var(--c);color:#fff}
+.fd-hero{display:flex;align-items:center;gap:18px;padding:18px;border-radius:16px;background:color-mix(in srgb,var(--c) 88%,#000);color:#fff}
 .fd-hero .icw::before{content:"";position:absolute;inset:-5px;border-radius:14px;background:color-mix(in srgb,var(--c) 8%,#fff);box-shadow:0 1px 2px rgba(0,0,0,.12)}
 .fd-hero .icw .ic{position:relative}
 .ic-fdet{--s:58px}
@@ -387,7 +403,7 @@ summary.o-row::before{margin-top:5.5px}
 .fd-nav button{flex:1;min-width:0;display:flex;align-items:center;gap:10px;min-height:54px;padding:8px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface);font-size:14px;font-weight:700;color:var(--text);text-align:left}
 .fd-nav button span:not(.arr){min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .fd-nav button[data-fd="next"]{justify-content:flex-end;text-align:right}
-.fd-nav button.primary{background:var(--c);border-color:var(--c);color:#fff}
+.fd-nav button.primary{background:color-mix(in srgb,var(--c) 88%,#000);border-color:transparent;color:#fff}
 .fd-nav button.primary small{color:rgba(255,255,255,.85)}
 .fd-nav button:not(:disabled):hover{filter:brightness(1.04);border-color:var(--c)}
 .fd-nav button:disabled{opacity:.45;cursor:default}
@@ -400,8 +416,19 @@ summary.o-row::before{margin-top:5.5px}
   .fdet.open .fd-sheet{transform:none}
   .fd-hero{gap:14px;padding:14px}
   .ic-fdet{--s:48px}
-  .f-item-h .f-more{padding:5px 10px}
 }
+@media (max-height:500px){
+  .fdet{padding:0;place-items:stretch}
+  .fd-backdrop{display:none}
+  .fd-sheet{width:100%;height:100%;max-height:none;border:0;border-radius:0;box-shadow:none}
+  .fd-top{padding:6px 12px 6px 8px}
+  .fd-back{height:36px}
+  .fd-nav{padding:8px 12px}
+  .fd-nav button{min-height:44px;padding:4px 12px}
+  .fd-hero{padding:12px}
+  .ic-fdet{--s:40px}
+}
+@media (pointer:coarse){.f-vars button{height:38px;min-width:48px}.f-meta .btn{min-height:36px;padding:8px 13px}}
 @media (prefers-color-scheme:dark){
   body[data-icons="fluent"] :is(.fd-scroll .f-alt,.fd-scroll .f-out,.fd-rel) img.ic{filter:drop-shadow(0 0 .8px rgba(255,255,255,.75))}
   body[data-icons="openmoji"] :is(.fd-scroll .f-alt,.fd-scroll .f-out,.fd-rel) img.ic{filter:drop-shadow(0 0 .7px #fff) drop-shadow(0 0 .7px #fff)}
@@ -440,7 +467,9 @@ summary.o-row::before{margin-top:5.5px}
   body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
   body.is-proses .outline{display:none!important}
   body.is-proses .proses{display:block!important;position:static;overflow:visible;padding:0;background:#fff}
-  .f-sel,.f-meta .btn,.f-more,.fdet{display:none!important}
+  .f-sel,.f-meta .btn,.f-more,.fdet,.f-key .desk,.f-key .touch{display:none!important}
+  .f-board{overflow:visible}
+  .f-card,.f-ln{transition:none!important}
   .f-item,.f-board,.f-head{break-inside:avoid-page;box-shadow:none}
 }
 </style>
@@ -584,7 +613,7 @@ summary.o-row::before{margin-top:5.5px}
 const DATA = `
 Aplikasi Pondok Pesantren {🕌} :: Analisa awal aplikasi terpadu untuk pondok pesantren yang menaungi beberapa jenjang: MI, MTs, MA, dan Perguruan Tinggi. Alur utamanya: santri mendaftar → diseleksi → daftar ulang → diteruskan ke jenjang tujuan → mengikuti kegiatan harian (absensi, sekolah, diniyah, tahfidz, asrama) → dinilai → menerima raport → naik kelas atau lulus. Cabang kanan adalah alur utama yang berurutan, cabang kiri adalah modul pendukung yang dipakai oleh semua alur. Ini draf v1 — silakan dikoreksi dan dilengkapi.
   Pendaftaran Santri {📝} @psb :: Pintu masuk semua data (Penerimaan Santri Baru / PSB). Data yang diisi di sini dipakai terus sampai santri lulus, jadi formulir harus lengkap dan tervalidasi sejak awal. Pendaftaran bisa dilakukan sendiri oleh wali secara online, atau dibantu panitia di kantor pondok.
-    Formulir online {📄} [1] @formulir :: Satu formulir untuk semua jenjang. Isian tambahan muncul otomatis sesuai jenjang yang dipilih, misalnya nilai rapor terakhir untuk MTs/MA atau ijazah SMA/MA untuk Perguruan Tinggi.
+    Formulir online {📄} [1] @formulir :: Satu formulir untuk semua jenjang. Isian tambahan muncul otomatis sesuai jenjang yang dipilih, misalnya nilai raport terakhir untuk MTs/MA atau ijazah SMA/MA untuk Perguruan Tinggi.
       Data diri calon santri (NIK, NISN, tempat & tanggal lahir) {👤}
       Data orang tua / wali & nomor WhatsApp {🏡}
       Asal sekolah & nilai terakhir {🏫}
@@ -611,7 +640,7 @@ Aplikasi Pondok Pesantren {🕌} :: Analisa awal aplikasi terpadu untuk pondok p
       Notifikasi WhatsApp ke wali {📩}
     Daftar ulang {🏁} [1] @daftarulang :: Setelah daftar ulang selesai, status calon santri berubah menjadi santri aktif dan datanya otomatis diteruskan ke jenjang tujuan.
       Pelunasan biaya masuk {💵}
-      Penerbitan NIS & kartu santri ber-QR {🪪}
+      Penerbitan NIS & kartu santri (RFID + QR) {🪪}
       Pembuatan akun wali santri {🔐}
       Pengambilan seragam & perlengkapan {👕}
   Penempatan Jenjang {🪜} @jenjang :: Setelah daftar ulang, sistem meneruskan santri ke jenjang tujuan berdasarkan pilihan saat mendaftar. Setiap santri punya dua jalur sekaligus: jalur madrasah formal (MI/MTs/MA/PT) dan jalur pesantren (Madrasah Diniyah + kamar asrama).
@@ -647,10 +676,10 @@ Aplikasi Pondok Pesantren {🕌} :: Analisa awal aplikasi terpadu untuk pondok p
       Datang & pulang {⌚}
       Kehadiran mengajar sesuai jadwal {📅}
       Guru pengganti (inval) {🔁}
-    Cara pencatatan {📱} @pencatatan :: Mulai dari yang paling sederhana (guru mengisi di HP), lalu ditingkatkan ke kartu QR atau perangkat biometrik bila sudah siap.
+    Cara pencatatan {📱} @pencatatan :: Mulai dari yang paling sederhana (guru mengisi di HP), lalu ditingkatkan ke kartu QR, antena RFID UHF, atau perangkat biometrik bila sudah siap.
       Manual oleh guru lewat HP / tablet {✏️} [1]
       Scan QR kartu santri {📷} [2]
-      RFID / sidik jari / wajah {👆} [3]
+      Antena RFID UHF / sidik jari / wajah {👆} [3]
     Status kehadiran {🚦} @status
       Hadir {✅}
       Terlambat {⏰}
@@ -663,7 +692,7 @@ Aplikasi Pondok Pesantren {🕌} :: Analisa awal aplikasi terpadu untuk pondok p
       Persetujuan wali & pengurus {🖊️}
       Catat jam keluar & kembali {🕒}
     Rekap & peringatan {📈} [2] @rekap
-      Rekap harian, bulanan & semester
+      Rekap harian, mingguan, bulanan & semester
       Peringatan otomatis jika alpa berulang
   Kegiatan Santri & Guru {🗓️} @kegiatan :: Mencatat aktivitas harian di pondok. Bagian inilah yang membedakan aplikasi pondok dari aplikasi sekolah biasa: santri berada di pondok 24 jam, sehingga kegiatan di luar kelas juga perlu dipantau.
     Kegiatan santri {🧑‍🎓} :: Mencakup kegiatan akademik, keagamaan, dan pembinaan karakter. Masing-masing dicatat oleh ustadz, musyrif, atau pengurus yang bertanggung jawab.
@@ -778,7 +807,7 @@ Aplikasi Pondok Pesantren {🕌} :: Analisa awal aplikasi terpadu untuk pondok p
       Perguruan tinggi (KRS / KHS)
       Keuangan
       Kesehatan & prestasi
-      Absensi biometrik
+      Absensi antena RFID & biometrik
       Evaluasi kinerja guru
 `;
 
@@ -804,35 +833,36 @@ const FLOW = [
        dibuka pertama kali.
    - "Judul {ikon} @penanda | Pelaku :: penjelasan" = satu langkah (berurutan);
      @penanda opsional = topik terkait di peta pikiran (muncul di halaman detail).
-   - "  x Judul {ikon} :: …" = cabang jika gagal / pengecualian (garis putus-putus).
+   - "  x Judul {ikon} -> N :: …" = cabang jika gagal / pengecualian (garis putus-putus);
+     "-> N" opsional = setelah itu kembali ke langkah N.
    - "  > Judul {ikon} :: …" = hasil / keluaran langkah itu (garis bercabang).
    ===================================================================== */
 const FLOWS = `
 # Pendaftaran · MI {🎒} @psb :: Alur penerimaan santri baru jenjang MI, dari mengisi formulir sampai resmi menjadi siswa kelas 1.
 Pendaftaran {📝} @formulir | Wali santri :: Wali mengisi formulir online (atau dibantu panitia di kantor) dan memilih jenjang MI. Data utama: identitas anak, data orang tua/wali, dan nomor WhatsApp.
 Administrasi {🗂️} @bayar | Panitia PSB :: Panitia memeriksa berkas (KK, akta kelahiran, foto) dan bukti pembayaran biaya pendaftaran. Berkas yang kurang diberitahukan ke wali lewat notifikasi.
-Tes {✍️} @seleksi | Penguji :: Observasi kesiapan sekolah, pengenalan huruf hijaiyah, dan wawancara orang tua. Nilai diinput penguji langsung dari HP.
-Pengumuman lolos {📢} @pengumuman | Panitia PSB :: Hasil seleksi diumumkan di aplikasi dan dikirim ke WhatsApp wali.
-  x Tidak lolos {📃} :: Masuk daftar cadangan atau menerima pemberitahuan resmi.
-Daftar ulang {🏁} @daftarulang | Wali santri & bendahara :: Pelunasan biaya masuk, pengambilan seragam, serta penerbitan NIS dan kartu santri.
+Observasi {✍️} @seleksi | Panitia PSB :: Observasi kesiapan sekolah dan wawancara orang tua — bukan tes calistung/akademik (sesuai juknis PMB Kemenag). Kelas 1 MI diterima berdasarkan usia (7 tahun wajib diterima, minimal 6 tahun per 1 Juli) dan daya tampung; hasil observasi dipakai untuk pembagian rombel.
+Pengumuman diterima {📢} @pengumuman | Panitia PSB :: Hasil penerimaan diumumkan di aplikasi dan dikirim ke WhatsApp wali.
+  x Kuota penuh {📃} :: Masuk daftar cadangan bila daya tampung rombel sudah terpenuhi.
+Daftar ulang {🏁} @daftarulang | Wali santri & panitia PSB :: Pelunasan biaya masuk, pengambilan seragam, serta penerbitan NIS dan kartu santri (RFID + QR).
 Siswa MI {🎒} @mi | Wali kelas :: Data otomatis masuk ke kelas 1 (rombel & wali kelas) dan siap mengikuti absensi serta KBM.
 
 # Pendaftaran · MTs {🏫} @psb * :: Alur penerimaan santri baru jenjang MTs, dari mengisi formulir sampai resmi menjadi siswa kelas 7.
 Pendaftaran {📝} @formulir | Calon santri & wali :: Mengisi formulir online dan memilih jenjang MTs. Data utama: identitas & NISN, asal sekolah (SD/MI), data orang tua/wali, dan nomor WhatsApp.
-Administrasi {🗂️} @bayar | Panitia PSB :: Verifikasi berkas (KK, akta kelahiran, ijazah/SKL SD/MI, rapor, foto) dan bukti pembayaran biaya pendaftaran.
+Administrasi {🗂️} @bayar | Panitia PSB :: Verifikasi berkas (KK, akta kelahiran, ijazah/SKL SD/MI, raport, foto) dan bukti pembayaran biaya pendaftaran.
 Tes {✍️} @seleksi | Penguji :: Tes baca Al-Qur'an, tes akademik dasar, dan wawancara santri & wali. Nilai diinput penguji langsung dari HP sehingga bisa direkap otomatis.
 Pengumuman lolos {📢} @pengumuman | Panitia PSB :: Hasil seleksi diumumkan di aplikasi dan dikirim ke WhatsApp wali.
   x Tidak lolos {📃} :: Masuk daftar cadangan atau menerima pemberitahuan resmi.
-Daftar ulang {🏁} @daftarulang | Wali santri & bendahara :: Pelunasan biaya masuk, pembagian kamar asrama, pengambilan seragam, serta penerbitan NIS dan kartu santri ber-RFID.
+Daftar ulang {🏁} @daftarulang | Wali santri & panitia PSB :: Pelunasan biaya masuk, pembagian kamar asrama, pengambilan seragam, serta penerbitan NIS dan kartu santri (RFID + QR).
 Siswa MTs {🧑‍🎓} @mts | Wali kelas & musyrif :: Resmi menjadi siswa kelas 7: masuk rombel, kamar asrama, dan kelas diniyah — siap mengikuti absensi dan KBM.
 
 # Pendaftaran · MA {🎓} @psb :: Alur penerimaan santri baru jenjang MA, dari mengisi formulir sampai resmi menjadi siswa kelas 10.
 Pendaftaran {📝} @formulir | Calon santri & wali :: Mengisi formulir online, memilih jenjang MA dan peminatan (IPA / IPS / Keagamaan). Data utama: identitas & NISN, asal sekolah (SMP/MTs), data orang tua/wali.
-Administrasi {🗂️} @bayar | Panitia PSB :: Verifikasi berkas (KK, akta kelahiran, ijazah/SKL SMP/MTs, rapor, foto) dan bukti pembayaran biaya pendaftaran.
+Administrasi {🗂️} @bayar | Panitia PSB :: Verifikasi berkas (KK, akta kelahiran, ijazah/SKL SMP/MTs, raport, foto) dan bukti pembayaran biaya pendaftaran.
 Tes {✍️} @seleksi | Penguji :: Tes baca Al-Qur'an dan kitab dasar, tes akademik sesuai peminatan, serta wawancara santri & wali.
 Pengumuman lolos {📢} @pengumuman | Panitia PSB :: Hasil seleksi beserta peminatan yang diterima diumumkan di aplikasi dan dikirim ke WhatsApp wali.
   x Tidak lolos {📃} :: Masuk daftar cadangan atau menerima pemberitahuan resmi.
-Daftar ulang {🏁} @daftarulang | Wali santri & bendahara :: Pelunasan biaya masuk, pembagian kamar asrama, pengambilan seragam, serta penerbitan NIS dan kartu santri ber-RFID.
+Daftar ulang {🏁} @daftarulang | Wali santri & panitia PSB :: Pelunasan biaya masuk, pembagian kamar asrama, pengambilan seragam, serta penerbitan NIS dan kartu santri (RFID + QR).
 Siswa MA {🎓} @ma | Wali kelas & musyrif :: Resmi menjadi siswa kelas 10 sesuai peminatan: masuk rombel, kamar asrama, dan kelas diniyah.
 
 # Pendaftaran · PT {🏛️} @psb :: Alur penerimaan mahasiswa baru (Ma'had Aly / STAI), dari mengisi formulir sampai terdaftar di semester 1.
@@ -841,17 +871,17 @@ Administrasi {🗂️} @bayar | Panitia PMB :: Verifikasi berkas (KTP, KK, ijaza
 Tes {✍️} @seleksi | Penguji :: Tes baca kitab / Al-Qur'an, tes potensi akademik, dan wawancara.
 Pengumuman lolos {📢} @pengumuman | Panitia PMB :: Hasil seleksi beserta program studi yang diterima diumumkan di aplikasi.
   x Tidak lolos {📃} :: Menerima pemberitahuan resmi; dapat mendaftar lagi di gelombang berikutnya.
-Daftar ulang {🏁} @daftarulang | Mahasiswa & bagian keuangan :: Pembayaran biaya kuliah, penerbitan NIM dan kartu mahasiswa, serta pengisian KRS semester 1.
+Daftar ulang {🏁} @daftarulang | Mahasiswa, keuangan & BAAK :: Pembayaran biaya kuliah, penerbitan NIM dan kartu mahasiswa, serta pengisian KRS semester 1.
 Mahasiswa {🎓} @pt | Dosen pembimbing akademik :: Resmi terdaftar sebagai mahasiswa semester 1 dan siap mengikuti perkuliahan.
 
-# Absensi {📡} @absensi :: Alur absensi otomatis dengan antena RFID: santri cukup lewat, guru memvalidasi, lalu laporan terbentuk sendiri.
-Siswa melewati antena {📡} @pencatatan | Santri :: Kartu santri ber-chip RFID terbaca otomatis saat santri melewati antena di gerbang atau pintu kelas. Jam kedatangan tercatat tanpa antre.
-  x Kartu tidak terbaca {✏️} :: Lupa membawa kartu atau kartu rusak — guru menginput kehadirannya secara manual saat validasi.
+# Absensi {📡} @absensi :: Alur absensi otomatis dengan antena RFID UHF: santri cukup lewat, guru memvalidasi, lalu laporan terbentuk sendiri.
+Siswa melewati antena {📡} @pencatatan | Santri :: Kartu santri dengan tag RFID UHF terbaca otomatis saat santri melewati antena (gate) di gerbang atau pintu kelas — tanpa perlu ditempel. Jam kedatangan tercatat tanpa antre.
+  x Kartu tidak terbaca {✏️} -> 2 :: Lupa membawa kartu atau kartu rusak — guru menginput kehadirannya secara manual (atau scan QR kartu) saat validasi.
 Guru validasi {🧑‍🏫} @status | Guru / wali kelas :: Guru membuka daftar hadir kelas di HP, mencocokkan dengan santri yang ada, lalu menandai izin, sakit, atau alpa sebelum data dikunci.
 Laporan {📊} @rekap | Sistem (otomatis) :: Data yang sudah divalidasi langsung direkap otomatis dan bisa dilihat kepala madrasah, pengasuh, dan wali santri.
   > Laporan harian {☀️} :: Daftar hadir per kelas hari ini; wali menerima notifikasi bila anaknya alpa.
   > Laporan mingguan {🗓️} :: Rekap kehadiran per minggu untuk evaluasi wali kelas dan musyrif.
-  > Laporan bulanan {🌕} :: Persentase kehadiran per santri dan per kelas untuk rapat bulanan.
+  > Laporan bulanan {🌔} :: Persentase kehadiran per santri dan per kelas untuk rapat bulanan.
   > Laporan semester {📘} :: Total hadir, izin, sakit, dan alpa yang otomatis masuk ke raport.
 `;
 
@@ -1306,6 +1336,7 @@ function setView(v, refit = true) {
   view = v;
   tabs.forEach(t => t.setAttribute('aria-selected', String(t.dataset.view === v)));
   const out = v === 'outline', pro = v === 'proses';
+  viewport.inert = out || pro;
   outlineEl.hidden = !out;
   prosesEl.hidden = !pro;
   document.body.classList.toggle('is-outline', out);
@@ -1487,7 +1518,11 @@ function parseFlows(src) {
       out.push(f);
       last = null;
     } else if (!f) continue;
-    else if (/^x\s/.test(head) && last) last.alt = item(head.slice(2).trim());
+    else if (/^x\s/.test(head) && last) {
+      let to = 0;
+      const t = head.slice(2).trim().replace(/\s*->\s*(\d+)\s*$/, (_, k) => { to = +k; return ''; });
+      last.alt = { ...item(t), to };
+    }
     else if (/^>\s/.test(head) && last) (last.outs = last.outs || []).push(item(head.slice(2).trim()));
     else { last = { ...item(head), actor, key, step: f.steps.length + 1 }; f.steps.push(last); }
   }
@@ -1561,13 +1596,14 @@ function cardHTML(s, kind) {
   return (big ? `<span class="f-num">${s.step}</span>` : '') + icon +
     `<span class="f-tx"><span class="f-t">${esc(s.title)}</span>${s.actor ? `<span class="f-a">${PERSON_ICON}${esc(s.actor)}</span>` : ''}</span>`;
 }
+const altToHTML = (f, a) => (a.to && f.steps[a.to - 1] ? ` <span class="f-to">→ lanjut ke langkah ${a.to}: ${esc(f.steps[a.to - 1].title)}</span>` : '');
 function stepItemHTML(f, s, i) {
   return `<li class="f-item${isOutcome(f, s) ? ' outcome' : ''}" id="fi-${i}">` +
     `<span class="f-num">${s.step}</span>` +
     `<div class="f-item-h">${icoHTML(s, 'ic-fitem')}<div><h3>${esc(s.title)}</h3>${s.actor ? `<span class="tag f-actor">${PERSON_ICON}${esc(s.actor)}</span>` : ''}</div>` +
-    `<button type="button" class="btn f-more" data-open="${i + 1}" aria-label="Detail langkah ${s.step}: ${esc(s.title)}">Detail ›</button></div>` +
+    `<button type="button" class="btn f-more" data-open="${i + 1}" aria-label="Detail langkah ${s.step}: ${esc(s.title)}"><span class="fm-l">Detail</span> ›</button></div>` +
     (s.note ? `<p>${esc(s.note)}</p>` : '') +
-    (s.alt ? `<div class="f-alt">${icoHTML(s.alt, 'ic-falt')}<div><b>${esc(s.alt.title)}</b>${s.alt.note ? ' — ' + esc(s.alt.note) : ''}</div></div>` : '') +
+    (s.alt ? `<div class="f-alt">${icoHTML(s.alt, 'ic-falt')}<div><b>${esc(s.alt.title)}</b>${s.alt.note ? ' — ' + esc(s.alt.note) : ''}${altToHTML(f, s.alt)}</div></div>` : '') +
     (s.outs ? `<div class="f-outs">${s.outs.map(o => `<div class="f-out">${icoHTML(o, 'ic-fout')}<div><b>${esc(o.title)}</b>${o.note ? `<p>${esc(o.note)}</p>` : ''}</div></div>`).join('')}</div>` : '') +
     '</li>';
 }
@@ -1589,32 +1625,37 @@ function renderProses(animate = true) {
     '</div>' +
     `<header class="f-head">${icoHTML(f, 'ic-fhead')}<div><div class="eyebrow">Alur proses${f.variant ? ' · ' + esc(f.variant) : ''}</div><h1>${esc(flowTitle(f))}</h1>${f.note ? `<p>${esc(f.note)}</p>` : ''}` +
     `<div class="f-meta"><span class="tag">${f.steps.length} langkah</span>${actors.map(a => `<span class="tag">${PERSON_ICON}${esc(a)}</span>`).join('')}` +
-    (mapNode ? `<button type="button" class="btn" data-map="${mapNode.id}">Lihat di peta pikiran →</button>` : '') +
-    '<button type="button" class="btn" data-print>Cetak / PDF</button></div></div></header>' +
+    '<span class="f-actions">' + (mapNode ? `<button type="button" class="btn" data-map="${mapNode.id}">Lihat di peta pikiran →</button>` : '') +
+    '<button type="button" class="btn" data-print>Cetak / PDF</button></span></div></div></header>' +
     '<div class="f-board"><div class="f-canvas" id="fCanvas"></div></div>' +
     '<div class="f-key">' +
     '<span><svg width="34" height="10" aria-hidden="true"><path d="M1 5H26" style="stroke:var(--c);stroke-width:2.5;stroke-linecap:round"/><path d="M25 1l8 4-8 4z" style="fill:var(--c)"/></svg>Urutan langkah</span>' +
     (hasAlt ? '<span><svg width="34" height="10" aria-hidden="true"><path d="M1 5H26" style="stroke:var(--alt);stroke-width:2;stroke-dasharray:5 4"/><path d="M25 1l8 4-8 4z" style="fill:var(--alt)"/></svg>Jika gagal / pengecualian</span>' : '') +
-    (hasOuts ? '<span><svg width="34" height="16" aria-hidden="true"><path d="M1 8C12 8 12 2 26 2M1 8C12 8 12 14 26 14" style="fill:none;stroke:var(--c);stroke-width:2"/></svg>Hasil / keluaran</span>' : '') +
-    '<span>Klik kartu untuk melihat rinciannya</span></div>' +
+    (hasOuts ? '<span><svg width="34" height="18" aria-hidden="true"><path d="M1 9C12 9 12 3 24 3M1 9C12 9 12 15 24 15" style="fill:none;stroke:var(--c);stroke-width:2"/><path d="M23 0l8 3-8 3zM23 12l8 3-8 3z" style="fill:var(--c)"/></svg>Hasil / keluaran</span>' : '') +
+    '<span class="desk">Klik kartu untuk melihat detailnya</span><span class="touch">Ketuk kartu untuk melihat detailnya</span></div>' +
     `<h2 class="f-h2">Rincian langkah</h2><ol class="f-list">${f.steps.map((s, i) => stepItemHTML(f, s, i)).join('')}</ol>` +
     '<p class="f-foot">Alur dapat diubah atau ditambah pada bagian FLOWS di file index.html.</p>';
   drawFlow(animate);
 }
 
 let flowBoardW = 0;
-function drawFlow(animate = true) {
+/* Susun diagram: mendatar bila tiap kartu muat ≥122px, selain itu menurun. forceCw = lebar paksa (dipakai saat cetak). */
+function drawFlow(animate = true, forceCw = 0) {
   const f = curFlow, canvas = $('#fCanvas');
   if (!f || !canvas) return;
   const board = canvas.parentElement, cs = getComputedStyle(board);
-  const cw = board.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
-  flowBoardW = board.clientWidth;
+  const cw = forceCw || (board.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight));
+  if (!forceCw) flowBoardW = board.clientWidth;
+  if (cw <= 0) return;
   const anim = animate && !reduceMotion;
   const steps = f.steps, n = steps.length, last = steps[n - 1], fanItems = last.outs || [];
-  const G = 50, FANW = 230, FANGAP = 12;
-  let W = Math.floor((cw - (n - 1) * G - (fanItems.length ? G + FANW : 0)) / n);
-  const horiz = W >= 134;
+  const FANW = 230, FANGAP = 12;
+  const fitW = g => Math.floor((cw - (n - 1) * g - (fanItems.length ? g + FANW : 0)) / n);
+  let G = 50, W = fitW(G);
+  if (W < 134) { G = 30; W = fitW(G); }
+  const horiz = W >= 122;
   W = Math.min(W, 200);
+  const keep = [...canvas.querySelectorAll('img.ic')];
   canvas.innerHTML = '<svg class="f-links" aria-hidden="true"><defs>' +
     '<marker id="fArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto"><path class="ah" d="M0,1 L9,5 L0,9 z"/></marker>' +
     '<marker id="fArrowAlt" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto"><path class="ah alt" d="M0,1 L9,5 L0,9 z"/></marker>' +
@@ -1623,73 +1664,101 @@ function drawFlow(animate = true) {
   const mk = (s, kind, i, j = -1) => {
     const b = document.createElement('button');
     b.type = 'button';
-    b.className = `f-card ${kind} ${horiz ? 'h' : 'v'}`;
+    b.className = `f-card ${kind} ${horiz ? 'h' : 'v'}${horiz && W < 140 ? ' tight' : ''}`;
     b.innerHTML = cardHTML(s, kind);
+    // Pakai ulang gambar ikon yang sudah termuat, agar tidak hilang saat digambar ulang (mis. ketika mencetak).
+    const ni = b.querySelector('img.ic');
+    if (ni) {
+      const k = keep.findIndex(x => x.src === ni.src && x.className === ni.className);
+      if (k > -1) ni.replaceWith(keep.splice(k, 1)[0]);
+    }
     b.dataset.i = i;
     if (j > -1) b.dataset.o = j;
-    b.setAttribute('aria-label', (kind === 'alt' ? 'Jika gagal: ' : kind === 'fan' ? 'Hasil: ' : `Langkah ${s.step}: `) + s.title + (s.actor ? ' — ' + s.actor : ''));
+    b.setAttribute('aria-label', (kind === 'alt' ? `Jika gagal pada langkah ${i + 1}: ` : kind === 'fan' ? `Hasil langkah ${i + 1}: ` : `Langkah ${s.step}: `) + s.title + (s.actor ? ' — ' + s.actor : ''));
     canvas.appendChild(b);
     return b;
   };
-  const cards = steps.map((s, i) => mk(s, isOutcome(f, s) ? 'outcome' : 'main', i));
-  const sides = steps.map((s, i) => [
-    ...(s.alt ? [{ s: s.alt, kind: 'alt' }] : []),
-    ...(s !== last && s.outs ? s.outs.map((o, j) => ({ s: o, kind: 'fan', j })) : []),
-  ].map(x => ({ ...x, el: mk(x.s, x.kind, i, x.j) })));
+  // Urutan DOM = urutan baca (kartu langkah lalu cabangnya), agar navigasi Tab runtut.
+  const cards = [], sides = [];
+  steps.forEach((s, i) => {
+    cards.push(mk(s, isOutcome(f, s) ? 'outcome' : 'main', i));
+    sides.push([
+      ...(s.alt ? [{ s: s.alt, kind: 'alt' }] : []),
+      ...(s !== last && s.outs ? s.outs.map((o, j) => ({ s: o, kind: 'fan', j })) : []),
+    ].map(x => ({ ...x, el: mk(x.s, x.kind, i, x.j) })));
+  });
   const fans = fanItems.map((o, j) => mk(o, 'fan', n - 1, j));
+  const indOf = list => (list.some(x => x.kind === 'fan') ? 16 : 0);
   const pos = new Map();
   const setW = (el, w) => { el.style.width = w + 'px'; };
-  let cwOut, chOut;
+  let cwOut, chOut, beside = false;
   if (horiz) {
+    const AW = Math.max(W - 16, 156), rowW = n * W + (n - 1) * G;
     cards.forEach(c => setW(c, W));
     fans.forEach(c => setW(c, FANW));
-    sides.flat().forEach(x => setW(x.el, W - 16));
+    sides.forEach(list => { const ind = indOf(list); list.forEach(x => setW(x.el, AW - ind)); });
     const mainH = Math.max(...cards.map(c => c.offsetHeight));
     cards.forEach(c => { c.style.height = mainH + 'px'; });
     const fanHs = fans.map(c => c.offsetHeight);
-    const fanTotal = fanHs.reduce((a, b) => a + b, 0) + Math.max(0, fans.length - 1) * FANGAP;
+    const fanTotal = fanHs.reduce((p, q) => p + q, 0) + Math.max(0, fans.length - 1) * FANGAP;
     const band = Math.max(mainH, fanTotal), top = 14, yMid = top + band / 2;
     cards.forEach((c, i) => pos.set(c, { x: i * (W + G), y: yMid - mainH / 2, w: W, h: mainH }));
     let fy = yMid - fanTotal / 2;
-    fans.forEach((c, j) => { pos.set(c, { x: n * (W + G), y: fy, w: FANW, h: fanHs[j] }); fy += fanHs[j] + FANGAP; });
+    fans.forEach((c, j) => { pos.set(c, { x: rowW + G, y: fy, w: FANW, h: fanHs[j] }); fy += fanHs[j] + FANGAP; });
     let bottom = top + band;
     sides.forEach((list, i) => {
+      const ind = indOf(list), x0 = Math.max(0, Math.min(i * (W + G) + (W - AW) / 2, rowW - AW));
       let y = yMid + mainH / 2 + 40;
       list.forEach(x => {
         const h = x.el.offsetHeight;
-        pos.set(x.el, { x: i * (W + G) + 8, y, w: W - 16, h });
+        pos.set(x.el, { x: x0 + (x.kind === 'fan' ? ind : 0), y, w: AW - (x.kind === 'fan' ? ind : 0), h });
         bottom = Math.max(bottom, y + h);
         y += h + 30;
       });
     });
-    cwOut = n * W + (n - 1) * G + (fans.length ? G + FANW : 0);
+    cwOut = rowW + (fans.length ? G + FANW : 0);
     chOut = bottom + 12;
   } else {
-    const Wv = Math.min(cw, 480), sideW = Math.floor(Wv / 2 - 14);
+    const Wv = Math.min(cw, 480), sideB = Math.floor(Wv / 2 - 14);
+    beside = cw >= Wv + 40 + sideB;
+    const sideW = beside ? sideB : Math.floor(Wv / 2 - 30);
     cards.forEach(c => setW(c, Wv));
-    sides.flat().forEach(x => setW(x.el, sideW));
+    sides.forEach(list => { const ind = indOf(list); list.forEach(x => setW(x.el, sideW - (x.kind === 'fan' ? ind : 0))); });
     fans.forEach(c => setW(c, Wv - 46));
     let y = 14;
     cards.forEach((c, i) => {
-      const h = c.offsetHeight;
+      const h = c.offsetHeight, list = sides[i], ind = indOf(list);
       pos.set(c, { x: 0, y, w: Wv, h });
-      y += h;
-      if (sides[i].length) {
-        let sy = y + 18;
-        sides[i].forEach(x => {
-          const sh = x.el.offsetHeight;
-          pos.set(x.el, { x: Wv - sideW, y: sy, w: sideW, h: sh });
-          sy += sh + 12;
+      if (beside && list.length) {
+        // Layar sedang: cabang diletakkan di samping kanan kartu.
+        const hs = list.map(x => x.el.offsetHeight), tot = hs.reduce((p, q) => p + q, 0) + (list.length - 1) * 12;
+        let sy = tot <= h ? y + (h - tot) / 2 : y;
+        list.forEach((x, j) => {
+          const dx = x.kind === 'fan' ? ind : 0;
+          pos.set(x.el, { x: Wv + 40 + dx, y: sy, w: sideW - dx, h: hs[j] });
+          sy += hs[j] + 12;
         });
-        y = Math.max(y + 46, sy + 8);
-      } else if (i < n - 1) y += 46;
+        y = Math.max(y + h, sy - 12) + (i < n - 1 ? (list.some(x => x.s.to) ? 56 : 46) : 0);
+      } else {
+        y += h;
+        if (list.length) {
+          // HP: cabang di kanan bawah kartu, menjauh dari panah utama di tengah.
+          let sy = y + 34;
+          list.forEach(x => {
+            const sh = x.el.offsetHeight, dx = x.kind === 'fan' ? ind : 0;
+            pos.set(x.el, { x: Wv - sideW + dx, y: sy, w: sideW - dx, h: sh });
+            sy += sh + 12;
+          });
+          y = Math.max(y + 46, sy + (list.some(x => x.s.to) ? 22 : 8));
+        } else if (i < n - 1) y += 46;
+      }
     });
     if (fans.length) {
       y += 20;
       fans.forEach(c => { const h = c.offsetHeight; pos.set(c, { x: 46, y, w: Wv - 46, h }); y += h + 10; });
       y -= 10;
     }
-    cwOut = Wv;
+    cwOut = beside && sides.some(l => l.length) ? Wv + 40 + sideW : Wv;
     chOut = y + 12;
   }
   canvas.style.width = cwOut + 'px';
@@ -1704,45 +1773,56 @@ function drawFlow(animate = true) {
 
   const P = el => pos.get(el), paths = [];
   const line = (d, cls, delay) => paths.push({ d, cls, delay });
-  if (horiz) {
-    for (let i = 0; i < n - 1; i++) {
-      const a = P(cards[i]), b = P(cards[i + 1]), y = a.y + a.h / 2;
-      line(`M${a.x + a.w + 5},${y}H${b.x - 4}`, 'main', i + 0.5);
-    }
-    fans.forEach((c, j) => {
-      const a = P(cards[n - 1]), b = P(c);
-      const x1 = a.x + a.w + 5, y1 = a.y + a.h / 2, x2 = b.x - 4, y2 = b.y + b.h / 2, mx = (x1 + x2) / 2;
-      line(`M${x1},${y1}C${mx},${y1} ${mx},${y2} ${x2},${y2}`, 'fan', order.get(c) - 0.3);
-    });
-    sides.forEach((list, i) => {
-      let prev = P(cards[i]);
-      list.forEach(x => {
-        const b = P(x.el), cx = b.x + b.w / 2;
-        line(`M${cx},${prev.y + prev.h + 5}V${b.y - 4}`, x.kind === 'alt' ? 'alt' : 'fan', order.get(x.el) - 0.3);
-        prev = b;
-      });
-    });
-  } else {
-    for (let i = 0; i < n - 1; i++) {
-      const a = P(cards[i]), b = P(cards[i + 1]), x = a.x + a.w / 2;
-      line(`M${x},${a.y + a.h + 5}V${b.y - 4}`, 'main', i + 0.5);
-    }
-    sides.forEach((list, i) => {
-      let prevBottom = P(cards[i]).y + P(cards[i]).h;
-      list.forEach(x => {
-        const b = P(x.el), cx = b.x + b.w / 2;
-        line(`M${cx},${prevBottom + 5}V${b.y - 4}`, x.kind === 'alt' ? 'alt' : 'fan', order.get(x.el) - 0.3);
-        prevBottom = b.y + b.h;
-      });
-    });
-    if (fans.length) {
-      const a = P(cards[n - 1]), tx = a.x + 22;
-      fans.forEach(c => {
-        const b = P(c), my = b.y + b.h / 2;
-        line(`M${tx},${a.y + a.h + 5}V${my - 10}Q${tx},${my} ${tx + 10},${my}H${b.x - 4}`, 'fan', order.get(c) - 0.3);
-      });
-    }
+  // Garis siku dengan sudut membulat: mendatar → tegak di x=tx → mendatar.
+  const elbow = (x1, y1, tx, y2, x2) => {
+    if (Math.abs(y2 - y1) < 1) return `M${x1},${y1}H${x2}`;
+    const sy = Math.sign(y2 - y1), r = Math.min(8, Math.abs(y2 - y1) / 2);
+    return `M${x1},${y1}H${tx - r}Q${tx},${y1} ${tx},${y1 + sy * r}V${y2 - sy * r}Q${tx},${y2} ${tx + r},${y2}H${x2}`;
+  };
+  for (let i = 0; i < n - 1; i++) {
+    const a = P(cards[i]), b = P(cards[i + 1]);
+    if (horiz) line(`M${a.x + a.w + 5},${a.y + a.h / 2}H${b.x - 4}`, 'main', i + 0.5);
+    else line(`M${a.x + a.w / 2},${a.y + a.h + 5}V${b.y - 4}`, 'main', i + 0.5);
   }
+  if (fans.length) {
+    const a = P(cards[n - 1]);
+    fans.forEach(c => {
+      const b = P(c), d = order.get(c) - 0.3;
+      if (horiz) {
+        const x1 = a.x + a.w + 5, y1 = a.y + a.h / 2, x2 = b.x - 4, y2 = b.y + b.h / 2, mx = (x1 + x2) / 2;
+        line(`M${x1},${y1}C${mx},${y1} ${mx},${y2} ${x2},${y2}`, 'fan', d);
+      } else {
+        const tx = a.x + 22, my = b.y + b.h / 2;
+        line(`M${tx},${a.y + a.h + 5}V${my - 10}Q${tx},${my} ${tx + 10},${my}H${b.x - 4}`, 'fan', d);
+      }
+    });
+  }
+  // Cabang samping: semua garis berangkat dari kartu langkahnya (tidak berantai).
+  sides.forEach((list, i) => {
+    const c = P(cards[i]);
+    list.forEach(x => {
+      const b = P(x.el), d = order.get(x.el) - 0.3, cls = x.kind === 'alt' ? 'alt' : 'fan', bm = b.y + b.h / 2;
+      if (!horiz && beside) line(elbow(c.x + c.w + 5, c.y + c.h / 2, c.x + c.w + 20, bm, b.x - 4), cls, d);
+      else if (x.kind === 'alt') line(`M${b.x + b.w / 2},${c.y + c.h + 5}V${b.y - 4}`, cls, d);
+      else {
+        const tx = Math.max(c.x + 10, b.x - 10);
+        line(`M${tx},${c.y + c.h + 5}V${bm - 8}Q${tx},${bm} ${tx + 8},${bm}H${b.x - 4}`, cls, d);
+      }
+      // "-> N": setelah pengecualian, proses kembali ke langkah N.
+      const t = x.kind === 'alt' && x.s.to && cards[x.s.to - 1] && P(cards[x.s.to - 1]);
+      if (!t) return;
+      if (horiz) {
+        const x1 = b.x + b.w + 5, tx = t.x + t.w / 2, dir = tx >= x1 ? 1 : -1;
+        line(`M${x1},${bm}H${tx - 10 * dir}Q${tx},${bm} ${tx},${bm - 10}V${t.y + t.h + 4}`, 'alt', d + 0.4);
+      } else if (beside) {
+        const bx = b.x + b.w / 2, ty = t.y + t.h / 2;
+        line(`M${bx},${b.y + b.h + 5}V${ty - 8}Q${bx},${ty} ${bx - 8},${ty}H${t.x + t.w + 5}`, 'alt', d + 0.4);
+      } else {
+        const bx = b.x + b.w / 2;
+        line(`M${bx},${b.y + b.h + 5}V${t.y - 4}`, 'alt', d + 0.4);
+      }
+    });
+  });
   svgEl.insertAdjacentHTML('beforeend', paths.map(p =>
     `<path class="f-ln ${p.cls}${anim ? ' pre' : ''}" d="${p.d}" marker-end="url(#${p.cls === 'alt' ? 'fArrowAlt' : 'fArrow'})"${anim ? ` style="transition-delay:${Math.round(p.delay * STAG)}ms"` : ''}/>`).join(''));
   if (anim) {
@@ -1791,7 +1871,7 @@ function renderDetail(k, outIdx) {
     `<div class="fd-hero">${s.icon ? `<span class="icw">${icoHTML(s, 'ic-fdet')}</span>` : ''}<div><div class="eyebrow">Langkah ${k}${isOutcome(f, s) ? ' · hasil akhir' : ''}</div>` +
     `<h2 id="fdTitle">${esc(s.title)}</h2>${s.actor ? `<span class="tag">${PERSON_ICON}${esc(s.actor)}</span>` : ''}</div></div>` +
     (s.note ? `<p class="fd-note">${esc(s.note)}</p>` : '') +
-    (s.alt ? `<h3 class="p-h">Jika gagal</h3><div class="f-alt">${icoHTML(s.alt, 'ic-falt')}<div><b>${esc(s.alt.title)}</b>${s.alt.note ? ' — ' + esc(s.alt.note) : ''}</div></div>` : '') +
+    (s.alt ? `<h3 class="p-h">Jika gagal</h3><div class="f-alt">${icoHTML(s.alt, 'ic-falt')}<div><b>${esc(s.alt.title)}</b>${s.alt.note ? ' — ' + esc(s.alt.note) : ''}${altToHTML(f, s.alt)}</div></div>` : '') +
     (s.outs ? `<h3 class="p-h">Hasil <span>${s.outs.length}</span></h3><div class="f-outs">${s.outs.map((o, j) =>
       `<div class="f-out" id="fdo-${j}">${icoHTML(o, 'ic-fout')}<div><b>${esc(o.title)}</b>${o.note ? `<p>${esc(o.note)}</p>` : ''}</div></div>`).join('')}</div>` : '') +
     (rel ? `<button type="button" class="btn fd-rel" data-map="${rel.id}" style="--c:${rel.color}">${icoHTML(rel, 'ic-li')}<span>Lihat di peta pikiran: <b>${esc(rel.title)}</b> →</span></button>` : '') +
@@ -1827,13 +1907,15 @@ function openDetail(k, how = 'push', outIdx = -1) {
 }
 function closeDetail(how = 'replace') {
   if (!detailStep) return;
+  const k = detailStep;
   detailStep = 0;
   markCard(0);
   fdet.classList.remove('open');
   document.body.classList.remove('fdet-open');
   clearTimeout(detailHideTimer);
   detailHideTimer = setTimeout(() => { if (!detailStep) fdet.hidden = true; }, reduceMotion ? 0 : 300);
-  if (detailReturn && detailReturn.isConnected && view === 'proses') detailReturn.focus({ preventScroll: true });
+  const ret = detailReturn && detailReturn.isConnected ? detailReturn : prosesDoc.querySelector(`.f-card:is(.main,.outcome)[data-i="${k - 1}"]`);
+  if (ret && view === 'proses') ret.focus({ preventScroll: true });
   detailReturn = null;
   if (how === 'replace') syncHash();
 }
@@ -2022,7 +2104,12 @@ document.addEventListener('keydown', e => {
 });
 
 /* ---------- Kontrol lain ---------- */
-tabs.forEach(t => t.addEventListener('click', () => { setView(t.dataset.view); syncHash(true); }));
+let pendingView = '';
+tabs.forEach(t => t.addEventListener('click', () => {
+  if (!booted) { pendingView = t.dataset.view; return; }
+  setView(t.dataset.view);
+  syncHash(true);
+}));
 levelBtns.forEach(b => b.addEventListener('click', () => { hideHint(); setLevel(+b.dataset.level); fit(true); }));
 $('#zoomIn').addEventListener('click', () => zoomBy(1.2));
 $('#zoomOut').addEventListener('click', () => zoomBy(1 / 1.2));
@@ -2083,6 +2170,9 @@ function remeasure() {
   for (const n of visible) { n.x = n.X; n.y = n.Y; }
   draw();
 }
+/* Saat mencetak, diagram disusun ulang menurun agar muat di kertas, lalu dikembalikan. */
+window.addEventListener('beforeprint', () => { if (view === 'proses') drawFlow(false, 680); });
+window.addEventListener('afterprint', () => { if (view === 'proses') drawFlow(false); });
 let resizeTimer = 0;
 window.addEventListener('resize', () => {
   clearTimeout(resizeTimer);
@@ -2094,7 +2184,11 @@ window.addEventListener('resize', () => {
   }, 150);
 });
 if (document.fonts && document.fonts.addEventListener) {
-  document.fonts.addEventListener('loadingdone', () => { if (booted) remeasure(); });
+  document.fonts.addEventListener('loadingdone', () => {
+    if (!booted) return;
+    remeasure();
+    if (view === 'proses') drawFlow(false);
+  });
 }
 
 fontsReady().then(() => {
@@ -2111,6 +2205,7 @@ fontsReady().then(() => {
   viewport.classList.add('ready');
   booted = true;
   if (location.hash) applyRoute();
+  else if (pendingView) { setView(pendingView); syncHash(true); }
 });
 })();
 </script>
