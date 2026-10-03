@@ -61,6 +61,7 @@ body.is-outline .search{visibility:hidden}
 .flow-label{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-right:4px;white-space:nowrap}
 .chip{display:inline-flex;align-items:center;gap:7px;white-space:nowrap;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px 5px 9px;font-size:12.5px;font-weight:600;color:var(--text);flex:none;transition:background .15s,border-color .15s}
 .chip .dot{width:8px;height:8px;border-radius:50%;background:var(--c);flex:none}
+.chip{padding-left:7px}
 .chip small{font-size:11.5px;font-weight:500;color:var(--muted)}
 .chip:hover{border-color:var(--c);background:color-mix(in srgb,var(--c) 7%,var(--surface))}
 .chip.active{border-color:var(--c);background:color-mix(in srgb,var(--c) 13%,var(--surface))}
@@ -80,26 +81,54 @@ body.is-outline .search{visibility:hidden}
 /* ---------- Topik ---------- */
 .node{position:absolute;left:0;top:0;width:max-content;cursor:pointer;transform-origin:0 0}
 .node .t{min-width:0}
-.node.root{max-width:260px;padding:16px 24px 18px;background:var(--root-bg);color:var(--root-text);border-radius:18px;text-align:center;box-shadow:0 10px 30px rgba(30,42,74,.22)}
+.node.root{max-width:260px;padding:14px 24px 18px;background:var(--root-bg);color:var(--root-text);border-radius:18px;text-align:center;box-shadow:0 10px 30px rgba(30,42,74,.22)}
 .node.root .eyebrow{display:block;font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;opacity:.65;margin-bottom:6px}
 .node.root .t{display:block;font-size:21px;font-weight:800;line-height:1.22;letter-spacing:-.01em}
-.node.main{max-width:230px;display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--c);color:#fff;border-radius:11px;font-size:15px;font-weight:700;line-height:1.3;box-shadow:0 2px 0 rgba(0,0,0,.07),0 8px 16px -8px color-mix(in srgb,var(--c) 75%,transparent)}
+.node.main{max-width:260px;display:flex;align-items:center;gap:10px;padding:8px 14px 8px 9px;background:var(--c);color:#fff;border-radius:13px;font-size:15.5px;font-weight:700;line-height:1.3;box-shadow:0 2px 0 rgba(0,0,0,.07),0 8px 16px -8px color-mix(in srgb,var(--c) 75%,transparent)}
 .node.main .step{background:#fff;color:var(--c)}
 .node.main .ph{box-shadow:0 0 0 1.5px #fff}
 .node.main .ni{color:#fff;opacity:.85}
-.node.sub{max-width:250px;display:flex;align-items:flex-start;gap:6px;padding:4px 5px;border-bottom:2px solid var(--c);border-radius:5px 5px 0 0;font-size:14px;font-weight:500;line-height:1.38;color:var(--text)}
+.node.sub{max-width:260px;display:flex;align-items:center;gap:7px;padding:4px 5px;border-bottom:2px solid var(--c);border-radius:5px 5px 0 0;font-size:14px;font-weight:500;line-height:1.38;color:var(--text)}
 .node.sub.deep{max-width:240px;font-size:13px;font-weight:400;border-bottom-width:1.5px}
 .node.sub:hover{background:color-mix(in srgb,var(--c) 9%,transparent)}
-.node.sub .ph{margin-top:2px}
-.node.sub .ni{margin-top:3px}
 .node.sel{outline:2px solid var(--sel);outline-offset:3px}
 .node.root.sel{outline-offset:4px}
 .node.sub.match{background:var(--hl)}
 .node.main.match,.node.root.match{box-shadow:0 0 0 3px #fab005}
+.step.sm{width:17px;height:17px;font-size:10px}
 .step{width:20px;height:20px;border-radius:50%;display:inline-grid;place-items:center;font-size:11.5px;font-weight:800;line-height:1;flex:none;background:var(--c);color:#fff}
 .ph{width:16px;height:16px;border-radius:50%;display:inline-grid;place-items:center;font-size:10px;font-weight:800;line-height:1;flex:none;color:#fff}
 .ph1{background:#e03131}.ph2{background:#f59f00;color:#2b1d00}.ph3{background:#1c7ed6}
 .ni{width:13px;height:13px;flex:none;opacity:.5}
+/* ---------- Ikon ---------- */
+.ic{width:var(--s,22px);height:var(--s,22px);flex:none;display:block;object-fit:contain;-webkit-user-drag:none;user-select:none}
+.ic-emo{display:inline-grid;place-items:center;font-size:calc(var(--s,22px) * .8);line-height:1;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
+.icw{position:relative;flex:none;display:inline-flex}
+.icw .step{position:absolute;top:-6px;left:-7px;width:19px;height:19px;font-size:10.5px;box-shadow:0 0 0 2px var(--ring,var(--surface))}
+.node.main .icw{--ring:var(--c)}
+.node.main .icw::before{content:"";position:absolute;inset:-4px;border-radius:12px;background:rgba(255,255,255,.16)}
+.node.main .icw .ic{position:relative}
+.ic-root{--s:58px;margin:0 auto 8px}
+.ic-main{--s:44px}
+.ic-sub{--s:24px}
+.ic-deep{--s:20px}
+.ic-li{--s:24px}
+.ic-title{--s:40px}
+.ic-chip{--s:18px}
+.ic-o{--s:20px}
+.ic-sec{--s:34px}
+.ic-hero{--s:60px;margin-bottom:12px}
+.lg-icons{justify-content:space-between;padding-top:4px;border-top:1px solid var(--line);margin-top:2px}
+.seg.mini{padding:2px;border:1px solid var(--line);border-radius:9px;background:var(--surface-2)}
+.seg.mini button{height:26px;font-size:12px;padding:0 10px}
+.credit{font-size:11px;line-height:1.5;color:var(--muted)}
+.credit a{color:inherit}
+/* OpenMoji punya ruang kosong bawaan di sekeliling gambar → perbesar sedikit. */
+body[data-icons="openmoji"] img.ic{transform:scale(1.2)}
+@media (prefers-color-scheme:dark){
+  /* Garis hitam OpenMoji diberi tepi terang agar tetap terlihat di latar gelap. */
+  body[data-icons="openmoji"] :is(.node.sub,.p-list,.o-row,.chip,.o-sec-h,.p-title) img.ic{filter:drop-shadow(0 0 .7px #fff) drop-shadow(0 0 .7px #fff)}
+}
 .tg{position:absolute;left:0;top:0;width:18px;height:18px;margin:-9px 0 0 -9px;padding:0;border-radius:50%;border:1.5px solid var(--c);background:var(--surface);color:var(--c);font-size:10.5px;font-weight:800;line-height:1;display:grid;place-items:center;opacity:0;transition:opacity .15s}
 .tg.col{opacity:1;background:var(--c);color:#fff}
 .node:hover + .tg,.tg:hover,.node.sel + .tg,.tg:focus-visible{opacity:1}
@@ -152,6 +181,8 @@ body.is-outline .controls,body.is-outline .legend,body.is-outline .hint{display:
 .crumbs button:hover{color:var(--text);text-decoration:underline}
 .p-title{display:flex;align-items:flex-start;gap:10px;margin:2px 0 10px;font-size:20px;font-weight:800;line-height:1.3;letter-spacing:-.01em}
 .p-title .step{margin-top:3px}
+.p-title .icw{margin-top:-2px}
+.p-title:has(.icw){align-items:center}
 .p-meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
 .tag{display:inline-flex;align-items:center;gap:7px;padding:3px 10px 3px 4px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line);font-size:12px;font-weight:600;color:var(--text)}
 .p-note{margin:0 0 6px;font-size:14px;line-height:1.68}
@@ -162,8 +193,7 @@ body.is-outline .controls,body.is-outline .legend,body.is-outline .hint{display:
 .p-list button{width:100%;display:flex;align-items:flex-start;gap:9px;padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:var(--surface);font-size:13.5px;line-height:1.4;text-align:left}
 .p-list button:hover{border-color:var(--c);background:color-mix(in srgb,var(--c) 6%,var(--surface))}
 .p-list .bul{width:8px;height:8px;margin:6px 4px 0;border-radius:50%;background:var(--c);flex:none}
-.p-list .ph{margin-top:1px}
-.p-list .step{margin-top:-1px}
+.p-list button{align-items:center}
 .p-list .it{flex:1;min-width:0}
 .p-list em{flex:none;padding:1px 7px;border-radius:999px;background:var(--surface-2);font-size:11px;font-style:normal;font-weight:700;color:var(--muted)}
 .p-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
@@ -202,6 +232,9 @@ body.panel-open .hint{max-width:calc(100% - 400px)}
 .o-row{display:flex;align-items:flex-start;gap:8px;padding:5px 0;font-size:14.5px;line-height:1.45}
 .o-row .ph{margin-top:2px}
 div.o-row::before{content:"";width:6px;height:6px;margin:8px 5px 0 4px;border-radius:50%;background:var(--c);flex:none}
+div.o-row.has-ic::before{display:none}
+.o-row .ic{margin-top:0}
+.o-row{align-items:center}
 summary.o-row{cursor:pointer;list-style:none;font-weight:600}
 summary.o-row::-webkit-details-marker{display:none}
 summary.o-row::before{content:"";width:7px;height:7px;margin:6px 4px 0 3px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(-45deg);transition:transform .15s;flex:none}
@@ -226,7 +259,9 @@ details[open]>summary.o-row::before{transform:rotate(45deg)}
   .search{display:none}
   .node.root{max-width:210px;padding:12px 18px 14px}
   .node.root .t{font-size:18px}
-  .node.main{max-width:190px;font-size:14px;padding:8px 12px}
+  .node.main{max-width:235px;font-size:14px;padding:7px 12px 7px 8px}
+  .ic-main{--s:36px}
+  .ic-root{--s:48px}
   .flow{padding:7px 12px}
   .o-hero{padding:20px}
   .o-sec{padding:16px 14px 12px}
@@ -302,6 +337,13 @@ details[open]>summary.o-row::before{transform:rotate(45deg)}
       <div class="lg"><svg class="ni" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 2.5h6l3 3v8h-9z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M5.5 8h5M5.5 10.5h5M5.5 5.5h2.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Ada penjelasan — klik topiknya</div>
       <div class="lg"><span class="tg-demo">6</span>Jumlah sub-topik yang masih tertutup</div>
       <div class="lg" id="legendSide"><svg class="lg-side" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4 2 7l3 3M11 6l3 3-3 3M2 7h7M14 9H7"/></svg>Kanan: alur utama · Kiri: pendukung</div>
+      <div class="lg lg-icons"><span>Gaya ikon</span>
+        <div class="seg mini" role="group" aria-label="Gaya ikon">
+          <button type="button" data-icons="fluent" aria-pressed="false">Modern</button>
+          <button type="button" data-icons="openmoji" aria-pressed="false">Garis</button>
+        </div>
+      </div>
+      <div class="credit">Ikon: <a href="https://github.com/microsoft/fluentui-emoji" target="_blank" rel="noopener">Fluent Emoji</a> (MIT) · <a href="https://openmoji.org" target="_blank" rel="noopener">OpenMoji</a> (CC BY-SA 4.0)</div>
     </div>
   </div>
 
@@ -356,206 +398,209 @@ details[open]>summary.o-row::before{transform:rotate(45deg)}
    - [1] [2] [3]        = saran fase pengembangan fitur.
    - #kiri              = cabang utama diletakkan di sisi kiri (pendukung).
    - @kata              = penanda untuk tombol "Alur" di bagian atas.
+   - {🕌}               = ikon topik (pakai emoji). File ikonnya dibuat dengan
+                          "node tools/build-icons.mjs"; jika belum ada, emoji
+                          bawaan perangkat yang ditampilkan.
    ===================================================================== */
 const DATA = `
-Aplikasi Pondok Pesantren :: Analisa awal aplikasi terpadu untuk pondok pesantren yang menaungi beberapa jenjang: MI, MTs, MA, dan Perguruan Tinggi. Alur utamanya: santri mendaftar → diseleksi → daftar ulang → diteruskan ke jenjang tujuan → mengikuti kegiatan harian (absensi, sekolah, diniyah, tahfidz, asrama) → dinilai → menerima raport → naik kelas atau lulus. Cabang kanan adalah alur utama yang berurutan, cabang kiri adalah modul pendukung yang dipakai oleh semua alur. Ini draf v1 — silakan dikoreksi dan dilengkapi.
-  Pendaftaran Santri @psb :: Pintu masuk semua data (Penerimaan Santri Baru / PSB). Data yang diisi di sini dipakai terus sampai santri lulus, jadi formulir harus lengkap dan tervalidasi sejak awal. Pendaftaran bisa dilakukan sendiri oleh wali secara online, atau dibantu panitia di kantor pondok.
-    Formulir online [1] :: Satu formulir untuk semua jenjang. Isian tambahan muncul otomatis sesuai jenjang yang dipilih, misalnya nilai rapor terakhir untuk MTs/MA atau ijazah SMA/MA untuk Perguruan Tinggi.
-      Data diri calon santri (NIK, NISN, tempat & tanggal lahir)
-      Data orang tua / wali & nomor WhatsApp
-      Asal sekolah & nilai terakhir
-      Upload berkas: KK, akta lahir, ijazah/SKL, foto
-      Riwayat kesehatan & kebutuhan khusus
-    Pilih jenjang tujuan [1] :: Pilihan inilah yang menentukan alur berikutnya. Syarat berkas, biaya, jadwal tes, materi tes, dan kelas tujuan berbeda untuk tiap jenjang.
-      MI — usia ± 6–7 tahun
-      MTs — lulusan SD/MI
-      MA — lulusan SMP/MTs
-      Perguruan Tinggi — lulusan SMA/MA
-      Hanya mondok / program tahfidz
-    Pembayaran biaya pendaftaran [1]
-      Transfer bank / virtual account
-      Upload & verifikasi bukti bayar
-      Kuitansi otomatis
-    Seleksi masuk [1] @seleksi :: Jadwal dan materi tes dibuat per jenjang. Penguji memasukkan nilai langsung dari HP sehingga hasilnya bisa direkap otomatis untuk rapat panitia.
-      Jadwal tes per jenjang
-      Tes baca Al-Qur'an
-      Tes akademik / potensi dasar
-      Wawancara santri & wali
-      Rekap nilai & keputusan panitia
-    Pengumuman hasil [1]
-      Diterima / cadangan / tidak diterima
-      Notifikasi WhatsApp ke wali
-    Daftar ulang [1] @daftarulang :: Setelah daftar ulang selesai, status calon santri berubah menjadi santri aktif dan datanya otomatis diteruskan ke jenjang tujuan.
-      Pelunasan biaya masuk
-      Penerbitan NIS & kartu santri ber-QR
-      Pembuatan akun wali santri
-      Pengambilan seragam & perlengkapan
-  Penempatan Jenjang @jenjang :: Setelah daftar ulang, sistem meneruskan santri ke jenjang tujuan berdasarkan pilihan saat mendaftar. Setiap santri punya dua jalur sekaligus: jalur madrasah formal (MI/MTs/MA/PT) dan jalur pesantren (Madrasah Diniyah + kamar asrama).
-    MI — Madrasah Ibtidaiyah [1]
+Aplikasi Pondok Pesantren {🕌} :: Analisa awal aplikasi terpadu untuk pondok pesantren yang menaungi beberapa jenjang: MI, MTs, MA, dan Perguruan Tinggi. Alur utamanya: santri mendaftar → diseleksi → daftar ulang → diteruskan ke jenjang tujuan → mengikuti kegiatan harian (absensi, sekolah, diniyah, tahfidz, asrama) → dinilai → menerima raport → naik kelas atau lulus. Cabang kanan adalah alur utama yang berurutan, cabang kiri adalah modul pendukung yang dipakai oleh semua alur. Ini draf v1 — silakan dikoreksi dan dilengkapi.
+  Pendaftaran Santri {📝} @psb :: Pintu masuk semua data (Penerimaan Santri Baru / PSB). Data yang diisi di sini dipakai terus sampai santri lulus, jadi formulir harus lengkap dan tervalidasi sejak awal. Pendaftaran bisa dilakukan sendiri oleh wali secara online, atau dibantu panitia di kantor pondok.
+    Formulir online {📄} [1] :: Satu formulir untuk semua jenjang. Isian tambahan muncul otomatis sesuai jenjang yang dipilih, misalnya nilai rapor terakhir untuk MTs/MA atau ijazah SMA/MA untuk Perguruan Tinggi.
+      Data diri calon santri (NIK, NISN, tempat & tanggal lahir) {👤}
+      Data orang tua / wali & nomor WhatsApp {🏡}
+      Asal sekolah & nilai terakhir {🏫}
+      Upload berkas: KK, akta lahir, ijazah/SKL, foto {📎}
+      Riwayat kesehatan & kebutuhan khusus {🩺}
+    Pilih jenjang tujuan {🎯} [1] :: Pilihan inilah yang menentukan alur berikutnya. Syarat berkas, biaya, jadwal tes, materi tes, dan kelas tujuan berbeda untuk tiap jenjang.
+      MI — usia ± 6–7 tahun {🎒}
+      MTs — lulusan SD/MI {🏫}
+      MA — lulusan SMP/MTs {🎓}
+      Perguruan Tinggi — lulusan SMA/MA {🏛️}
+      Hanya mondok / program tahfidz {🕌}
+    Pembayaran biaya pendaftaran {💳} [1]
+      Transfer bank / virtual account {🏦}
+      Upload & verifikasi bukti bayar {📸}
+      Kuitansi otomatis {🧾}
+    Seleksi masuk {✍️} [1] @seleksi :: Jadwal dan materi tes dibuat per jenjang. Penguji memasukkan nilai langsung dari HP sehingga hasilnya bisa direkap otomatis untuk rapat panitia.
+      Jadwal tes per jenjang {📅}
+      Tes baca Al-Qur'an {📖}
+      Tes akademik / potensi dasar {✏️}
+      Wawancara santri & wali {🗣️}
+      Rekap nilai & keputusan panitia {🗳️}
+    Pengumuman hasil {📢} [1]
+      Diterima / cadangan / tidak diterima {📃}
+      Notifikasi WhatsApp ke wali {💬}
+    Daftar ulang {🏁} [1] @daftarulang :: Setelah daftar ulang selesai, status calon santri berubah menjadi santri aktif dan datanya otomatis diteruskan ke jenjang tujuan.
+      Pelunasan biaya masuk {💵}
+      Penerbitan NIS & kartu santri ber-QR {🪪}
+      Pembuatan akun wali santri {🔐}
+      Pengambilan seragam & perlengkapan {👕}
+  Penempatan Jenjang {🪜} @jenjang :: Setelah daftar ulang, sistem meneruskan santri ke jenjang tujuan berdasarkan pilihan saat mendaftar. Setiap santri punya dua jalur sekaligus: jalur madrasah formal (MI/MTs/MA/PT) dan jalur pesantren (Madrasah Diniyah + kamar asrama).
+    MI — Madrasah Ibtidaiyah {🎒} [1]
       Kelas 1–6
       Rombel & wali kelas
-    MTs — Madrasah Tsanawiyah [1]
+    MTs — Madrasah Tsanawiyah {🏫} [1]
       Kelas 7–9
       Rombel & wali kelas
-    MA — Madrasah Aliyah [1]
+    MA — Madrasah Aliyah {🎓} [1]
       Kelas 10–12
       Peminatan: IPA / IPS / Keagamaan
       Rombel & wali kelas
-    Perguruan Tinggi (Ma'had Aly / STAI) [3] :: Pengelolaan perguruan tinggi berbeda dengan madrasah (memakai SKS, KRS, dan KHS), sehingga disarankan masuk fase terakhir atau dihubungkan dengan sistem akademik kampus yang sudah ada.
+    Perguruan Tinggi (Ma'had Aly / STAI) {🏛️} [3] :: Pengelolaan perguruan tinggi berbeda dengan madrasah (memakai SKS, KRS, dan KHS), sehingga disarankan masuk fase terakhir atau dihubungkan dengan sistem akademik kampus yang sudah ada.
       Program studi
       Semester, SKS & KRS
       Dosen pembimbing akademik
-    Madrasah Diniyah (semua santri) [1] :: Kelas diniyah ditentukan oleh tes kemampuan kitab, bukan oleh usia atau kelas formal. Jadi santri MA bisa saja duduk di tingkat Ula.
+    Madrasah Diniyah (semua santri) {📚} [1] :: Kelas diniyah ditentukan oleh tes kemampuan kitab, bukan oleh usia atau kelas formal. Jadi santri MA bisa saja duduk di tingkat Ula.
       Tingkat Ula · Wustho · Ulya
       Penempatan berdasarkan tes kitab
-    Asrama [1]
-      Pembagian kamar putra / putri
-      Musyrif / pembina kamar
-    Mutasi: pindah kelas, pindah jenjang, keluar [2]
-  Absensi @absensi :: Di pondok, kehadiran dicatat di banyak titik — bukan hanya di kelas: sekolah, diniyah, sholat berjamaah, kegiatan, sampai cek asrama malam. Semua status masuk ke satu rekap yang nanti otomatis tampil di raport dan bisa dilihat wali.
-    Absensi santri [1]
-      Sekolah formal (per jam pelajaran) [1]
-      Madrasah Diniyah / ngaji kitab [1]
-      Sholat berjamaah [2]
-      Kegiatan & ekstrakurikuler [2]
-      Cek asrama malam [2]
-    Absensi guru & ustadz [1]
-      Datang & pulang
-      Kehadiran mengajar sesuai jadwal
-      Guru pengganti (inval)
-    Cara pencatatan :: Mulai dari yang paling sederhana (guru mengisi di HP), lalu ditingkatkan ke kartu QR atau perangkat biometrik bila sudah siap.
-      Manual oleh guru lewat HP / tablet [1]
-      Scan QR kartu santri [2]
-      RFID / sidik jari / wajah [3]
-    Status kehadiran
-      Hadir
-      Terlambat
-      Izin
-      Sakit
-      Alpa
-    Perizinan santri [2] :: Izin dicatat di sistem sehingga status absensi otomatis menjadi "Izin", dan pengurus tahu santri mana yang sedang berada di luar pondok.
-      Izin pulang / bermalam
-      Izin keluar pondok sementara
-      Persetujuan wali & pengurus
-      Catat jam keluar & kembali
-    Rekap & peringatan [2]
+    Asrama {🛏️} [1]
+      Pembagian kamar putra / putri {🚻}
+      Musyrif / pembina kamar {🔑}
+    Mutasi: pindah kelas, pindah jenjang, keluar {🔄} [2]
+  Absensi {📋} @absensi :: Di pondok, kehadiran dicatat di banyak titik — bukan hanya di kelas: sekolah, diniyah, sholat berjamaah, kegiatan, sampai cek asrama malam. Semua status masuk ke satu rekap yang nanti otomatis tampil di raport dan bisa dilihat wali.
+    Absensi santri {🧑‍🎓} [1]
+      Sekolah formal (per jam pelajaran) {🏫} [1]
+      Madrasah Diniyah / ngaji kitab {📚} [1]
+      Sholat berjamaah {🕌} [2]
+      Kegiatan & ekstrakurikuler {⚽} [2]
+      Cek asrama malam {🌙} [2]
+    Absensi guru & ustadz {🧑‍🏫} [1]
+      Datang & pulang {⌚}
+      Kehadiran mengajar sesuai jadwal {📅}
+      Guru pengganti (inval) {🔁}
+    Cara pencatatan {📱} :: Mulai dari yang paling sederhana (guru mengisi di HP), lalu ditingkatkan ke kartu QR atau perangkat biometrik bila sudah siap.
+      Manual oleh guru lewat HP / tablet {✏️} [1]
+      Scan QR kartu santri {📷} [2]
+      RFID / sidik jari / wajah {👆} [3]
+    Status kehadiran {🚦}
+      Hadir {✅}
+      Terlambat {⏰}
+      Izin {📝}
+      Sakit {🤒}
+      Alpa {❌}
+    Perizinan santri {🚪} [2] :: Izin dicatat di sistem sehingga status absensi otomatis menjadi "Izin", dan pengurus tahu santri mana yang sedang berada di luar pondok.
+      Izin pulang / bermalam {🏠}
+      Izin keluar pondok sementara {🚶}
+      Persetujuan wali & pengurus {🖊️}
+      Catat jam keluar & kembali {🕒}
+    Rekap & peringatan {📈} [2]
       Rekap harian, bulanan & semester
       Peringatan otomatis jika alpa berulang
-  Kegiatan Santri & Guru @kegiatan :: Mencatat aktivitas harian di pondok. Bagian inilah yang membedakan aplikasi pondok dari aplikasi sekolah biasa: santri berada di pondok 24 jam, sehingga kegiatan di luar kelas juga perlu dipantau.
-    Kegiatan santri :: Mencakup kegiatan akademik, keagamaan, dan pembinaan karakter. Masing-masing dicatat oleh ustadz, musyrif, atau pengurus yang bertanggung jawab.
-      Jadwal harian pondok (bangun s.d. tidur) [1]
-      KBM sekolah formal [1]
-      Ngaji kitab / diniyah [1]
-      Tahfidz Al-Qur'an [2] :: Setiap setoran dicatat oleh ustadz pembimbing halaqah. Capaian hafalan otomatis masuk ke raport tahfidz dan bisa dipantau wali.
+  Kegiatan Santri & Guru {🗓️} @kegiatan :: Mencatat aktivitas harian di pondok. Bagian inilah yang membedakan aplikasi pondok dari aplikasi sekolah biasa: santri berada di pondok 24 jam, sehingga kegiatan di luar kelas juga perlu dipantau.
+    Kegiatan santri {🧑‍🎓} :: Mencakup kegiatan akademik, keagamaan, dan pembinaan karakter. Masing-masing dicatat oleh ustadz, musyrif, atau pengurus yang bertanggung jawab.
+      Jadwal harian pondok (bangun s.d. tidur) {⏰} [1]
+      KBM sekolah formal {🏫} [1]
+      Ngaji kitab / diniyah {📚} [1]
+      Tahfidz Al-Qur'an {📖} [2] :: Setiap setoran dicatat oleh ustadz pembimbing halaqah. Capaian hafalan otomatis masuk ke raport tahfidz dan bisa dipantau wali.
         Setoran hafalan baru (ziyadah)
         Murojaah (mengulang hafalan)
         Target & capaian per juz
-      Ibadah [2]
-        Sholat berjamaah
-        Qiyamul lail
-        Wirid & dzikir rutin
-      Ekstrakurikuler [2]
-        Muhadharah (latihan pidato)
-        Pramuka
-        Hadrah & sholawat
-        Olahraga
-        Bahasa Arab & Inggris
-      Kedisiplinan [2] :: Pelanggaran dicatat dengan poin. Jika poin mencapai batas tertentu, sistem memberi tanda agar pengurus dan wali segera menindaklanjuti.
-        Catatan pelanggaran & poin
-        Ta'zir (sanksi yang mendidik)
-        Bimbingan konseling
-      Prestasi & lomba [3]
-      Kesehatan / klinik pondok [3]
-    Kegiatan guru & ustadz :: Guru dan ustadz memakai aplikasi untuk pekerjaan sehari-hari: melihat jadwal, mengisi jurnal, absensi kelas, dan nilai. Data ini sekaligus menjadi bahan evaluasi kinerja.
-      Jadwal mengajar [1]
-      Jurnal mengajar (materi & catatan kelas) [1] :: Diisi setiap selesai mengajar. Jurnal sekaligus menjadi bukti kehadiran mengajar dan bahan supervisi kepala madrasah.
-      Input absensi & nilai [1]
-      Pembimbing tahfidz / halaqah [2]
-      Piket & tugas asrama (musyrif) [2]
-      Perangkat ajar (modul / RPP) [3]
-      Evaluasi kinerja guru [3]
-  Penilaian & Raport @nilai :: Ujung dari seluruh alur. Raport disusun otomatis dari nilai, absensi, capaian tahfidz, dan catatan sikap, sehingga wali kelas tidak perlu menyalin ulang. Pondok umumnya punya dua raport: raport madrasah (formal) dan raport pesantren.
-    Komponen nilai [1] @penilaian
+      Ibadah {🤲} [2]
+        Sholat berjamaah {🕌}
+        Qiyamul lail {🌙}
+        Wirid & dzikir rutin {📿}
+      Ekstrakurikuler {⚽} [2]
+        Muhadharah (latihan pidato) {🎤}
+        Pramuka {⛺}
+        Hadrah & sholawat {🥁}
+        Olahraga {🏸}
+        Bahasa Arab & Inggris {🗣️}
+      Kedisiplinan {⚖️} [2] :: Pelanggaran dicatat dengan poin. Jika poin mencapai batas tertentu, sistem memberi tanda agar pengurus dan wali segera menindaklanjuti.
+        Catatan pelanggaran & poin {⚠️}
+        Ta'zir (sanksi yang mendidik) {🧹}
+        Bimbingan konseling {🫂}
+      Prestasi & lomba {🏆} [3]
+      Kesehatan / klinik pondok {🩺} [3]
+    Kegiatan guru & ustadz {🧑‍🏫} :: Guru dan ustadz memakai aplikasi untuk pekerjaan sehari-hari: melihat jadwal, mengisi jurnal, absensi kelas, dan nilai. Data ini sekaligus menjadi bahan evaluasi kinerja.
+      Jadwal mengajar {📅} [1]
+      Jurnal mengajar (materi & catatan kelas) {📓} [1] :: Diisi setiap selesai mengajar. Jurnal sekaligus menjadi bukti kehadiran mengajar dan bahan supervisi kepala madrasah.
+      Input absensi & nilai {✏️} [1]
+      Pembimbing tahfidz / halaqah {📖} [2]
+      Piket & tugas asrama (musyrif) {🔦} [2]
+      Perangkat ajar (modul / RPP) {🗂️} [3]
+      Evaluasi kinerja guru {⭐} [3]
+  Penilaian & Raport {📊} @nilai :: Ujung dari seluruh alur. Raport disusun otomatis dari nilai, absensi, capaian tahfidz, dan catatan sikap, sehingga wali kelas tidak perlu menyalin ulang. Pondok umumnya punya dua raport: raport madrasah (formal) dan raport pesantren.
+    Komponen nilai {💯} [1] @penilaian
       Nilai harian / tugas
       Penilaian tengah semester (PTS)
       Penilaian akhir semester (PAS)
       Praktik / keterampilan
       Bobot nilai & KKM per mapel
-    Raport madrasah (formal) [1] @raport :: Format mengikuti kurikulum yang dipakai (Kurikulum Merdeka atau K13) untuk MI, MTs, dan MA.
+    Raport madrasah (formal) {📘} [1] @raport :: Format mengikuti kurikulum yang dipakai (Kurikulum Merdeka atau K13) untuk MI, MTs, dan MA.
       MI · MTs · MA
       Deskripsi capaian otomatis
       Rekap kehadiran dari absensi
       Catatan wali kelas
-    Raport pesantren [2]
+    Raport pesantren {📗} [2]
       Nilai diniyah / kitab
       Capaian tahfidz
       Akhlak, adab & kedisiplinan
       Kebersihan & kemandirian
       Catatan musyrif
-    KHS & transkrip (Perguruan Tinggi) [3]
-    Cetak & publikasi [1]
+    KHS & transkrip (Perguruan Tinggi) {📜} [3]
+    Cetak & publikasi {🖨️} [1]
       Cetak PDF dengan QR validasi
       Tampil di akun wali santri [2]
-    Kenaikan kelas & kelulusan [2] @lulus
-      Naik kelas / tinggal kelas
-      Lulus → data alumni
-      Lanjut ke jenjang berikutnya :: Santri yang lulus MI bisa langsung didaftarkan ke MTs (dan seterusnya) di pondok yang sama tanpa mengisi ulang data — cukup "pendaftaran internal". Alur kembali ke cabang Pendaftaran.
-  Data Master #kiri [1] :: Data induk yang dipakai bersama oleh semua modul. Dibuat sekali, dipakai di mana-mana — inilah yang pertama kali harus dibangun.
-    Tahun ajaran & semester
-    Buku induk santri
-    Guru, ustadz & pegawai
-    Wali santri
-    Kelas, rombel & jurusan
-    Mata pelajaran & kitab
-    Jadwal pelajaran
-    Gedung, asrama & kamar
-  Pengguna & Hak Akses #kiri [1] :: Setiap peran hanya melihat menu yang relevan. Contoh: guru MTs tidak bisa mengubah nilai MA, dan wali santri hanya melihat data anaknya sendiri.
-    Pengasuh / Kyai — dashboard ringkas
-    Admin / operator pondok
-    Panitia PSB
-    Kepala madrasah (per jenjang)
-    Guru, ustadz & dosen
-    Musyrif / pengurus asrama
-    Bendahara
-    Wali santri
-    Santri / mahasiswa
-  Keuangan #kiri [3] :: Tidak disebut di kebutuhan awal, tetapi hampir semua pondok membutuhkannya. Disarankan masuk fase 3 — atau dimajukan jika penagihan syahriyah adalah masalah yang paling mendesak.
-    Syahriyah / SPP bulanan
-    Tagihan per jenjang
-    Pembayaran & kuitansi
-    Tabungan / uang saku santri
-    Laporan keuangan
-  Laporan & Notifikasi #kiri [2]
-    Dashboard pengasuh & kepala madrasah
-    Rekap per jenjang, kelas & kamar
-    Notifikasi WhatsApp ke wali
-    Pengumuman pondok
-    Ekspor data EMIS Kemenag :: Data siswa dan guru madrasah dilaporkan ke EMIS Kemenag. Sediakan ekspor Excel sesuai format EMIS agar operator tidak perlu input dua kali.
-  Platform & Teknologi #kiri :: Rekomendasi teknis awal; bisa disesuaikan dengan kemampuan tim dan anggaran pondok.
-    Aplikasi web untuk admin, guru & pengurus
-    Aplikasi HP / PWA untuk wali & santri
-    Satu database terpusat untuk semua jenjang
-    WhatsApp gateway untuk notifikasi
-    Backup otomatis & keamanan data
-  Tahapan Pengembangan #kiri :: Disarankan dibangun bertahap supaya cepat dipakai, mudah diuji, dan masukan pengguna bisa diperbaiki di fase berikutnya. Tanda 1, 2, 3 berwarna pada peta menunjukkan fase tiap fitur.
-    Fase 1 — Pondasi (MVP) [1]
+    Kenaikan kelas & kelulusan {🎉} [2] @lulus
+      Naik kelas / tinggal kelas {⬆️}
+      Lulus → data alumni {🎓}
+      Lanjut ke jenjang berikutnya {➡️} :: Santri yang lulus MI bisa langsung didaftarkan ke MTs (dan seterusnya) di pondok yang sama tanpa mengisi ulang data — cukup "pendaftaran internal". Alur kembali ke cabang Pendaftaran.
+  Data Master {🗄️} #kiri [1] :: Data induk yang dipakai bersama oleh semua modul. Dibuat sekali, dipakai di mana-mana — inilah yang pertama kali harus dibangun.
+    Tahun ajaran & semester {📆}
+    Buku induk santri {📒}
+    Guru, ustadz & pegawai {🧑‍🏫}
+    Wali santri {🏡}
+    Kelas, rombel & jurusan {🪑}
+    Mata pelajaran & kitab {📚}
+    Jadwal pelajaran {📅}
+    Gedung, asrama & kamar {🏘️}
+  Pengguna & Hak Akses {👥} #kiri [1] :: Setiap peran hanya melihat menu yang relevan. Contoh: guru MTs tidak bisa mengubah nilai MA, dan wali santri hanya melihat data anaknya sendiri.
+    Pengasuh / Kyai — dashboard ringkas {👳}
+    Admin / operator pondok {🧑‍💻}
+    Panitia PSB {🤝}
+    Kepala madrasah (per jenjang) {🧑‍💼}
+    Guru, ustadz & dosen {🧑‍🏫}
+    Musyrif / pengurus asrama {🔑}
+    Bendahara {🧮}
+    Wali santri {🏡}
+    Santri / mahasiswa {🧑‍🎓}
+  Keuangan {💰} #kiri [3] :: Tidak disebut di kebutuhan awal, tetapi hampir semua pondok membutuhkannya. Disarankan masuk fase 3 — atau dimajukan jika penagihan syahriyah adalah masalah yang paling mendesak.
+    Syahriyah / SPP bulanan {🧾}
+    Tagihan per jenjang {📑}
+    Pembayaran & kuitansi {💵}
+    Tabungan / uang saku santri {🪙}
+    Laporan keuangan {🗒️}
+  Laporan & Notifikasi {🔔} #kiri [2]
+    Dashboard pengasuh & kepala madrasah {🖥️}
+    Rekap per jenjang, kelas & kamar {📈}
+    Notifikasi WhatsApp ke wali {💬}
+    Pengumuman pondok {📌}
+    Ekspor data EMIS Kemenag {📤} :: Data siswa dan guru madrasah dilaporkan ke EMIS Kemenag. Sediakan ekspor Excel sesuai format EMIS agar operator tidak perlu input dua kali.
+  Platform & Teknologi {💻} #kiri :: Rekomendasi teknis awal; bisa disesuaikan dengan kemampuan tim dan anggaran pondok.
+    Aplikasi web untuk admin, guru & pengurus {🌐}
+    Aplikasi HP / PWA untuk wali & santri {📱}
+    Satu database terpusat untuk semua jenjang {🗃️}
+    WhatsApp gateway untuk notifikasi {📲}
+    Backup otomatis & keamanan data {🛡️}
+  Tahapan Pengembangan {🚀} #kiri :: Disarankan dibangun bertahap supaya cepat dipakai, mudah diuji, dan masukan pengguna bisa diperbaiki di fase berikutnya. Tanda 1, 2, 3 berwarna pada peta menunjukkan fase tiap fitur.
+    Fase 1 — Pondasi (MVP) {🌱} [1]
       Data master & hak akses
       Pendaftaran & penempatan jenjang
       Absensi manual santri & guru
       Jadwal, jurnal & nilai
       Raport madrasah
-    Fase 2 — Kehidupan pondok [2]
+    Fase 2 — Kehidupan pondok {🌿} [2]
       Tahfidz, ibadah & ekstrakurikuler
       Perizinan & kedisiplinan
-      Raport pesantren
+      Raport pesantren {📗}
       Kartu QR & notifikasi WhatsApp
       Portal wali & kenaikan kelas
-    Fase 3 — Pengembangan [3]
+    Fase 3 — Pengembangan {🌳} [3]
       Perguruan tinggi (KRS / KHS)
-      Keuangan
+      Keuangan {💰}
       Kesehatan & prestasi
       Absensi biometrik
-      Evaluasi kinerja guru
+      Evaluasi kinerja guru {⭐}
 `;
 
 /* Tombol "Alur" di bagian atas: [penanda, label, keterangan kecil] */
@@ -583,6 +628,21 @@ const isWide = () => matchMedia('(min-width: 900px)').matches;
 const NOTE_ICON = '<svg class="ni" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 2.5h6l3 3v8h-9z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M5.5 8h5M5.5 10.5h5M5.5 5.5h2.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>';
 const phHTML = p => `<span class="ph ph${p}" title="${PHASE[p]}">${p}</span>`;
 
+/* Ikon: file SVG di assets/icons/<gaya>/<kode-emoji>.svg */
+const ICON_SETS = ['fluent', 'openmoji'];
+let iconSet = 'fluent';
+try { const v = localStorage.getItem('iconSet'); if (ICON_SETS.includes(v)) iconSet = v; } catch (_) {}
+const emojiKey = e => [...e].map(c => c.codePointAt(0).toString(16)).filter(cp => cp !== 'fe0f').join('-');
+const icoHTML = (n, cls) => n.icon
+  ? `<img class="ic ${cls}" src="assets/icons/${iconSet}/${n.iconKey}.svg" data-k="${n.iconKey}" data-e="${esc(n.icon)}" alt="" draggable="false">`
+  : '';
+/* Ikon + nomor langkah: lencana kecil di pojok ikon, atau di sampingnya untuk ikon kecil (inline). */
+function leadHTML(n, cls, inline = false) {
+  const step = n.step ? `<span class="step${inline ? ' sm' : ''}">${n.step}</span>` : '';
+  if (!n.icon) return step;
+  return inline ? step + icoHTML(n, cls) : `<span class="icw">${icoHTML(n, cls)}${step}</span>`;
+}
+
 /* ---------- Parse data ---------- */
 function parse(src) {
   let root = null;
@@ -592,11 +652,12 @@ function parse(src) {
     if (!line.trim() || line.trim().startsWith('//')) continue;
     const depth = Math.floor(line.match(/^ */)[0].length / 2);
     const [headRaw, ...rest] = line.trim().split('::');
-    let head = ' ' + headRaw, phase = 0, side = null, key = null;
+    let head = ' ' + headRaw, phase = 0, side = null, key = null, icon = null;
+    head = head.replace(/\s\{([^}\s]+)\}/, (_, e) => { icon = e; return ' '; });
     head = head.replace(/\s\[([123])\]/, (_, d) => { phase = +d; return ' '; });
     head = head.replace(/\s#kiri\b/, () => { side = 'left'; return ' '; });
     head = head.replace(/\s@(\w+)/, (_, k) => { key = k; return ' '; });
-    const node = { title: head.replace(/\s+/g, ' ').trim(), note: rest.join('::').trim(), phase, side, key, children: [], collapsed: false };
+    const node = { title: head.replace(/\s+/g, ' ').trim(), note: rest.join('::').trim(), phase, side, key, icon, iconKey: icon && emojiKey(icon), children: [], collapsed: false };
     if (!root) { root = node; stack[0] = node; continue; }
     const d = clamp(depth, 1, stack.length);
     const parent = stack[d - 1];
@@ -630,10 +691,10 @@ const levelBtns = [...document.querySelectorAll('[data-level]')];
 const SVGNS = 'http://www.w3.org/2000/svg';
 
 function nodeHTML(n) {
-  if (n.depth === 0) return `<span class="eyebrow">Analisa Sistem</span><span class="t">${esc(n.title)}</span>`;
-  return (n.step ? `<span class="step">${n.step}</span>` : '') +
-    (n.phase ? phHTML(n.phase) : '') +
+  if (n.depth === 0) return icoHTML(n, 'ic-root') + `<span class="eyebrow">Analisa Sistem</span><span class="t">${esc(n.title)}</span>`;
+  return leadHTML(n, n.depth === 1 ? 'ic-main' : n.depth === 2 ? 'ic-sub' : 'ic-deep') +
     `<span class="t">${esc(n.title)}</span>` +
+    (n.phase ? phHTML(n.phase) : '') +
     (n.note ? NOTE_ICON : '');
 }
 
@@ -997,8 +1058,8 @@ function kicker(n) {
 }
 function itemHTML(c) {
   return `<li><button type="button" data-go="${c.id}" style="--c:${c.color}">` +
-    (c.step ? `<span class="step">${c.step}</span>` : c.phase ? phHTML(c.phase) : '<span class="bul"></span>') +
-    `<span class="it">${esc(c.title)}</span>` +
+    (c.icon || c.step ? leadHTML(c, 'ic-li', true) : '<span class="bul"></span>') +
+    `<span class="it">${esc(c.title)}</span>` + (c.phase ? phHTML(c.phase) : '') +
     (c.children.length ? `<em>${c.children.length}</em>` : '') + '</button></li>';
 }
 function rootExtra() {
@@ -1021,7 +1082,7 @@ function renderPanel(n) {
   for (let p = n.parent; p; p = p.parent) path.unshift(p);
   let h = '';
   if (path.length) h += `<nav class="crumbs" aria-label="Lokasi topik">${path.map(p => `<button type="button" data-go="${p.id}" data-noexpand>${esc(p.title)}</button>`).join('<span aria-hidden="true">›</span>')}</nav>`;
-  h += `<h2 class="p-title">${n.step ? `<span class="step">${n.step}</span>` : ''}<span>${esc(n.title)}</span></h2>`;
+  h += `<h2 class="p-title">${leadHTML(n, 'ic-title')}<span>${esc(n.title)}</span></h2>`;
   if (n.phase) h += `<div class="p-meta"><span class="tag">${phHTML(n.phase)}${PHASE[n.phase]}</span></div>`;
   if (n.note) h += `<p class="p-note">${esc(n.note)}</p>`;
   else if (n !== root) h += `<p class="p-note muted">${n.children.length ? 'Rincian topik ini ada pada sub-topik di bawah.' : `Bagian dari “${esc(n.parent.title)}”.`}</p>`;
@@ -1073,7 +1134,7 @@ function buildChips() {
     b.type = 'button';
     b.className = 'chip';
     b.style.setProperty('--c', n.color);
-    b.innerHTML = `<span class="dot"></span>${esc(label)}${small ? ` <small>${esc(small)}</small>` : ''}`;
+    b.innerHTML = `${n.icon ? icoHTML(n, 'ic-chip') : '<span class="dot"></span>'}${esc(label)}${small ? ` <small>${esc(small)}</small>` : ''}`;
     b.addEventListener('click', () => goTo(n));
     flow.appendChild(b);
     chipEls[key] = b;
@@ -1089,24 +1150,25 @@ function updateChips(n) {
 /* ---------- Outline ---------- */
 function buildOutline() {
   const li = n => {
-    const head = (n.phase ? phHTML(n.phase) : '') + `<span>${esc(n.title)}</span>`;
+    const head = icoHTML(n, 'ic-o') + `<span>${esc(n.title)}</span>` + (n.phase ? phHTML(n.phase) : '');
     const note = n.note ? `<p class="o-note">${esc(n.note)}</p>` : '';
-    if (!n.children.length) return `<li><div class="o-row">${head}</div>${note}</li>`;
+    if (!n.children.length) return `<li><div class="o-row${n.icon ? ' has-ic' : ''}">${head}</div>${note}</li>`;
     return `<li><details open><summary class="o-row">${head}<span class="o-count">${n.children.length}</span></summary>${note}<ul>${n.children.map(li).join('')}</ul></details></li>`;
   };
   const sec = m => `<section class="o-sec" style="--c:${m.color}"><header class="o-sec-h">` +
-    (m.step ? `<span class="step">${m.step}</span>` : '') + `<h3>${esc(m.title)}</h3>` + (m.phase ? phHTML(m.phase) : '') +
+    leadHTML(m, 'ic-sec') + `<h3>${esc(m.title)}</h3>` + (m.phase ? phHTML(m.phase) : '') +
     `<button type="button" class="o-go" data-go="${m.id}">Lihat di peta →</button></header>` +
     (m.note ? `<p class="o-note lead">${esc(m.note)}</p>` : '') +
     `<ul class="o-tree">${m.children.map(li).join('')}</ul></section>`;
   const right = root.children.filter(m => m.side === 'right'), left = root.children.filter(m => m.side === 'left');
   $('#outlineDoc').innerHTML =
-    `<div class="o-hero"><div class="eyebrow">Analisa Kebutuhan Sistem</div><h1>${esc(root.title)}</h1><p>${esc(root.note)}</p>` +
+    `<div class="o-hero">${icoHTML(root, 'ic-hero')}<div class="eyebrow">Analisa Kebutuhan Sistem</div><h1>${esc(root.title)}</h1><p>${esc(root.note)}</p>` +
     `<div class="o-tools"><button type="button" class="btn" data-o="open">Buka semua</button><button type="button" class="btn" data-o="close">Tutup semua</button><button type="button" class="btn" data-o="print">Cetak / simpan PDF</button></div>` +
     `<div class="o-legend"><span>${phHTML(1)} ${PHASE[1]}</span><span>${phHTML(2)} ${PHASE[2]}</span><span>${phHTML(3)} ${PHASE[3]}</span></div></div>` +
     `<h2 class="o-group">Alur utama <span>— berurutan dari pendaftaran sampai kelulusan</span></h2>${right.map(sec).join('')}` +
     `<h2 class="o-group">Modul pendukung <span>— dipakai bersama oleh seluruh alur</span></h2>${left.map(sec).join('')}` +
-    `<footer class="o-foot">Draf analisa v1 · isi peta dapat diubah pada bagian DATA di file index.html</footer>`;
+    `<footer class="o-foot">Draf analisa v1 · isi peta dapat diubah pada bagian DATA di file index.html<br>` +
+    `<span class="credit">Ikon: <a href="https://github.com/microsoft/fluentui-emoji" target="_blank" rel="noopener">Fluent Emoji</a> © Microsoft (MIT) · <a href="https://openmoji.org" target="_blank" rel="noopener">OpenMoji</a> (CC BY-SA 4.0)</span></footer>`;
 }
 outlineEl.addEventListener('click', e => {
   const go = e.target.closest('[data-go]');
@@ -1282,6 +1344,27 @@ $('#legendBtn').addEventListener('click', () => {
   const c = legend.classList.toggle('collapsed');
   $('#legendBtn').setAttribute('aria-expanded', String(!c));
 });
+const iconBtns = [...document.querySelectorAll('[data-icons]')];
+function setIconSet(v) {
+  iconSet = v;
+  document.body.dataset.icons = v;
+  try { localStorage.setItem('iconSet', v); } catch (_) {}
+  document.querySelectorAll('img.ic').forEach(img => { img.src = `assets/icons/${v}/${img.dataset.k}.svg`; });
+  iconBtns.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.icons === v)));
+}
+iconBtns.forEach(b => b.addEventListener('click', () => setIconSet(b.dataset.icons)));
+document.body.dataset.icons = iconSet;
+iconBtns.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.icons === iconSet)));
+/* File ikon tidak ada → tampilkan emoji bawaan perangkat dengan ukuran yang sama. */
+document.addEventListener('error', e => {
+  const img = e.target;
+  if (!(img instanceof HTMLImageElement) || !img.classList.contains('ic')) return;
+  const span = document.createElement('span');
+  span.className = img.className + ' ic-emo';
+  span.textContent = img.dataset.e;
+  span.setAttribute('aria-hidden', 'true');
+  img.replaceWith(span);
+}, true);
 let hintTimer = setTimeout(hideHint, 10000);
 function hideHint() { clearTimeout(hintTimer); hint.classList.add('hide'); }
 
