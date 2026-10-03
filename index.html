@@ -1,0 +1,1330 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Analisa Aplikasi Pondok Pesantren</title>
+<meta name="description" content="Peta pikiran analisa aplikasi pondok pesantren: pendaftaran santri, penempatan jenjang MI/MTs/MA/Perguruan Tinggi, absensi, kegiatan santri & guru, sampai raport.">
+<meta property="og:title" content="Analisa Aplikasi Pondok Pesantren">
+<meta property="og:description" content="Peta pikiran alur & fitur: pendaftaran → jenjang (MI, MTs, MA, PT) → absensi → kegiatan → raport.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231e2a4a'/%3E%3Cg fill='none' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='M16 16c4 0 4-7 9-7' stroke='%23ff8a4c'/%3E%3Cpath d='M16 16c4 0 4 7 9 7' stroke='%2351cf66'/%3E%3Cpath d='M16 16c-4 0-4-7-9-7' stroke='%234dabf7'/%3E%3Cpath d='M16 16c-4 0-4 7-9 7' stroke='%23b197fc'/%3E%3C/g%3E%3Ccircle cx='16' cy='16' r='4' fill='white'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  --bg:#f3f4f6; --surface:#fff; --surface-2:#f6f7f9; --text:#1d2330; --muted:#677084;
+  --line:#e3e6eb; --line-2:#cfd4dc; --canvas:#fafafa; --dot:#dadde3;
+  --root-bg:#1e2a4a; --root-text:#fff; --sel:#2f7cf6; --hl:#fff0b3;
+  --shadow:0 1px 2px rgba(16,24,40,.06),0 8px 24px rgba(16,24,40,.08);
+  --font:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#111318; --surface:#1a1d24; --surface-2:#21252d; --text:#e8eaf0; --muted:#9ba3b2;
+    --line:#2b3039; --line-2:#3a404c; --canvas:#14161b; --dot:#262b34;
+    --root-bg:#e9edf7; --root-text:#131a2c; --sel:#6aa5ff; --hl:rgba(250,190,40,.28);
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
+    color-scheme:dark;
+  }
+}
+html,body{margin:0;height:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--text);display:flex;flex-direction:column;height:100vh;height:100dvh;overflow:hidden;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--sel);outline-offset:2px}
+
+/* ---------- Header ---------- */
+.top{display:flex;align-items:center;gap:16px;padding:10px 16px;background:var(--surface);border-bottom:1px solid var(--line);position:relative;z-index:10;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:11px;min-width:0;flex:1 1 260px}
+.brand .logo{flex:none}
+.brand-text{min-width:0}
+.brand-title{font-weight:800;font-size:16px;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand-sub{font-size:12px;color:var(--muted);margin-top:1px}
+.tabs{display:flex;gap:2px;padding:3px;background:var(--surface-2);border:1px solid var(--line);border-radius:10px}
+.tabs button{display:flex;align-items:center;gap:7px;border:0;background:transparent;padding:6px 12px;border-radius:7px;font-size:13px;font-weight:600;color:var(--muted);white-space:nowrap}
+.tabs button:hover{color:var(--text)}
+.tabs button[aria-selected="true"]{background:var(--surface);color:var(--text);box-shadow:0 1px 2px rgba(16,24,40,.1),0 0 0 1px var(--line)}
+.tabs .s{display:none}
+.search{position:relative;display:flex;align-items:center}
+.search svg{position:absolute;left:10px;color:var(--muted);pointer-events:none}
+.search input{width:230px;height:34px;border:1px solid var(--line);background:var(--surface-2);border-radius:9px;padding:0 70px 0 32px;font:inherit;font-size:13px;color:var(--text);outline:none;-webkit-appearance:none;appearance:none}
+.search input::-webkit-search-cancel-button{display:none}
+.search input:focus{border-color:var(--sel);background:var(--surface);box-shadow:0 0 0 3px color-mix(in srgb,var(--sel) 20%,transparent)}
+.search .count{position:absolute;right:10px;font-size:11px;color:var(--muted);pointer-events:none}
+body.is-outline .search{visibility:hidden}
+
+/* ---------- Alur (stepper) ---------- */
+.flow{display:flex;align-items:center;gap:6px;padding:8px 16px;background:var(--surface);border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none;position:relative;z-index:9;flex:none}
+.flow::-webkit-scrollbar{display:none}
+.flow-label{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-right:4px;white-space:nowrap}
+.chip{display:inline-flex;align-items:center;gap:7px;white-space:nowrap;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px 5px 9px;font-size:12.5px;font-weight:600;color:var(--text);flex:none;transition:background .15s,border-color .15s}
+.chip .dot{width:8px;height:8px;border-radius:50%;background:var(--c);flex:none}
+.chip small{font-size:11.5px;font-weight:500;color:var(--muted)}
+.chip:hover{border-color:var(--c);background:color-mix(in srgb,var(--c) 7%,var(--surface))}
+.chip.active{border-color:var(--c);background:color-mix(in srgb,var(--c) 13%,var(--surface))}
+.flow .arr{color:var(--line-2);flex:none}
+
+/* ---------- Kanvas ---------- */
+.stage{position:relative;flex:1;min-height:0;overflow:hidden}
+.viewport{position:absolute;inset:0;overflow:hidden;background-color:var(--canvas);background-image:radial-gradient(var(--dot) 1.1px,transparent 1.3px);background-size:22px 22px;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;outline:none}
+.viewport.grabbing{cursor:grabbing}
+.world{position:absolute;left:0;top:0;width:0;height:0;transform-origin:0 0;opacity:0;transition:opacity .35s}
+.ready .world{opacity:1}
+.links{position:absolute;left:0;top:0;width:1px;height:1px;overflow:visible;pointer-events:none}
+.lk{fill:none;stroke:var(--c);stroke-width:2;stroke-linecap:round}
+.lk.deep{stroke-width:1.5}
+.lk.trunk{fill:var(--c);stroke:none}
+
+/* ---------- Topik ---------- */
+.node{position:absolute;left:0;top:0;width:max-content;cursor:pointer;transform-origin:0 0}
+.node .t{min-width:0}
+.node.root{max-width:260px;padding:16px 24px 18px;background:var(--root-bg);color:var(--root-text);border-radius:18px;text-align:center;box-shadow:0 10px 30px rgba(30,42,74,.22)}
+.node.root .eyebrow{display:block;font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;opacity:.65;margin-bottom:6px}
+.node.root .t{display:block;font-size:21px;font-weight:800;line-height:1.22;letter-spacing:-.01em}
+.node.main{max-width:230px;display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--c);color:#fff;border-radius:11px;font-size:15px;font-weight:700;line-height:1.3;box-shadow:0 2px 0 rgba(0,0,0,.07),0 8px 16px -8px color-mix(in srgb,var(--c) 75%,transparent)}
+.node.main .step{background:#fff;color:var(--c)}
+.node.main .ph{box-shadow:0 0 0 1.5px #fff}
+.node.main .ni{color:#fff;opacity:.85}
+.node.sub{max-width:250px;display:flex;align-items:flex-start;gap:6px;padding:4px 5px;border-bottom:2px solid var(--c);border-radius:5px 5px 0 0;font-size:14px;font-weight:500;line-height:1.38;color:var(--text)}
+.node.sub.deep{max-width:240px;font-size:13px;font-weight:400;border-bottom-width:1.5px}
+.node.sub:hover{background:color-mix(in srgb,var(--c) 9%,transparent)}
+.node.sub .ph{margin-top:2px}
+.node.sub .ni{margin-top:3px}
+.node.sel{outline:2px solid var(--sel);outline-offset:3px}
+.node.root.sel{outline-offset:4px}
+.node.sub.match{background:var(--hl)}
+.node.main.match,.node.root.match{box-shadow:0 0 0 3px #fab005}
+.step{width:20px;height:20px;border-radius:50%;display:inline-grid;place-items:center;font-size:11.5px;font-weight:800;line-height:1;flex:none;background:var(--c);color:#fff}
+.ph{width:16px;height:16px;border-radius:50%;display:inline-grid;place-items:center;font-size:10px;font-weight:800;line-height:1;flex:none;color:#fff}
+.ph1{background:#e03131}.ph2{background:#f59f00;color:#2b1d00}.ph3{background:#1c7ed6}
+.ni{width:13px;height:13px;flex:none;opacity:.5}
+.tg{position:absolute;left:0;top:0;width:18px;height:18px;margin:-9px 0 0 -9px;padding:0;border-radius:50%;border:1.5px solid var(--c);background:var(--surface);color:var(--c);font-size:10.5px;font-weight:800;line-height:1;display:grid;place-items:center;opacity:0;transition:opacity .15s}
+.tg.col{opacity:1;background:var(--c);color:#fff}
+.node:hover + .tg,.tg:hover,.node.sel + .tg,.tg:focus-visible{opacity:1}
+@media (hover:none){.tg{opacity:1}}
+@media (pointer:coarse){.tg{width:22px;height:22px;margin:-11px 0 0 -11px;font-size:11.5px}}
+@media (prefers-color-scheme:dark){
+  .lk{stroke:color-mix(in srgb,var(--c) 72%,#fff)}
+  .lk.trunk{fill:color-mix(in srgb,var(--c) 80%,#fff)}
+  .node.sub{border-bottom-color:color-mix(in srgb,var(--c) 72%,#fff)}
+  .node.root{box-shadow:0 10px 30px rgba(0,0,0,.4)}
+}
+
+/* ---------- Kartu mengambang ---------- */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow)}
+.hint{position:absolute;z-index:3;left:16px;right:16px;top:14px;margin:0 auto;width:max-content;display:flex;align-items:center;gap:8px;max-width:calc(100% - 32px);padding:8px 15px;border-radius:999px;background:var(--text);color:var(--surface);font-size:12.5px;font-weight:500;line-height:1.4;box-shadow:var(--shadow);pointer-events:none;transition:opacity .4s,transform .4s}
+.hint.hide{opacity:0;transform:translateY(-8px)}
+.hint .touch{display:none}
+@media (hover:none){.hint .desk{display:none}.hint .touch{display:inline}}
+.legend{position:absolute;z-index:4;left:12px;bottom:12px;max-width:300px;font-size:12.5px}
+.legend-btn{display:flex;align-items:center;gap:8px;width:100%;border:0;background:none;padding:10px 12px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.legend-btn svg{margin-left:auto;transition:transform .2s}
+.legend.collapsed .legend-btn svg{transform:rotate(180deg)}
+.legend-body{display:grid;gap:7px;padding:0 12px 12px}
+.legend.collapsed .legend-body{display:none}
+.lg{display:flex;align-items:center;gap:9px;color:var(--text)}
+.lg[hidden]{display:none}
+.lg .ni{opacity:.7;width:16px;height:16px}
+.tg-demo{width:18px;height:18px;border-radius:50%;background:var(--muted);color:var(--surface);display:inline-grid;place-items:center;font-size:10.5px;font-weight:800;flex:none}
+.lg-side{width:16px;height:16px;flex:none;color:var(--muted)}
+.controls{position:absolute;z-index:4;right:12px;bottom:12px;display:flex;gap:8px;align-items:center;transition:right .28s cubic-bezier(.2,.8,.2,1)}
+.seg{display:flex;align-items:center;gap:2px;padding:4px}
+.seg .lbl{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:0 6px}
+.seg button{min-width:30px;height:30px;padding:0 8px;border:0;border-radius:8px;background:transparent;font-size:13px;font-weight:600;color:var(--muted);display:grid;place-items:center}
+.seg button:hover{background:var(--surface-2);color:var(--text)}
+.seg button[aria-pressed="true"]{background:var(--text);color:var(--surface)}
+#zoomPct{min-width:54px;font-variant-numeric:tabular-nums}
+body.is-outline .controls,body.is-outline .legend,body.is-outline .hint{display:none}
+
+/* ---------- Panel detail ---------- */
+.panel{position:absolute;z-index:6;top:12px;right:12px;bottom:12px;width:min(360px,calc(100% - 24px));display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden;transform:translateX(calc(100% + 24px));visibility:hidden;transition:transform .28s cubic-bezier(.2,.8,.2,1),visibility 0s linear .28s}
+.panel.open{transform:none;visibility:visible;transition:transform .28s cubic-bezier(.2,.8,.2,1)}
+.p-bar{height:5px;background:var(--c);flex:none}
+.p-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 10px 0 18px;flex:none}
+.p-kicker{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.p-close{width:34px;height:34px;flex:none;border:0;border-radius:9px;background:transparent;color:var(--muted);display:grid;place-items:center}
+.p-close:hover{background:var(--surface-2);color:var(--text)}
+.p-body{overflow:auto;padding:4px 18px 22px;overscroll-behavior:contain}
+.crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:4px;font-size:12px;color:var(--muted);margin-bottom:4px}
+.crumbs button{border:0;background:none;padding:2px 0;font-size:12px;color:var(--muted);text-align:left}
+.crumbs button:hover{color:var(--text);text-decoration:underline}
+.p-title{display:flex;align-items:flex-start;gap:10px;margin:2px 0 10px;font-size:20px;font-weight:800;line-height:1.3;letter-spacing:-.01em}
+.p-title .step{margin-top:3px}
+.p-meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.tag{display:inline-flex;align-items:center;gap:7px;padding:3px 10px 3px 4px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line);font-size:12px;font-weight:600;color:var(--text)}
+.p-note{margin:0 0 6px;font-size:14px;line-height:1.68}
+.p-note.muted{color:var(--muted)}
+.p-h{display:flex;align-items:center;gap:7px;margin:20px 0 8px;font-size:11.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.p-h span{padding:0 7px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line);font-size:11px;letter-spacing:0}
+.p-list{list-style:none;margin:0;padding:0;display:grid;gap:5px}
+.p-list button{width:100%;display:flex;align-items:flex-start;gap:9px;padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:var(--surface);font-size:13.5px;line-height:1.4;text-align:left}
+.p-list button:hover{border-color:var(--c);background:color-mix(in srgb,var(--c) 6%,var(--surface))}
+.p-list .bul{width:8px;height:8px;margin:6px 4px 0;border-radius:50%;background:var(--c);flex:none}
+.p-list .ph{margin-top:1px}
+.p-list .step{margin-top:-1px}
+.p-list .it{flex:1;min-width:0}
+.p-list em{flex:none;padding:1px 7px;border-radius:999px;background:var(--surface-2);font-size:11px;font-style:normal;font-weight:700;color:var(--muted)}
+.p-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.btn{padding:8px 12px;border:1px solid var(--line);border-radius:9px;background:var(--surface);font-size:13px;font-weight:600}
+.btn:hover{background:var(--surface-2)}
+.btn.primary{background:var(--c);border-color:var(--c);color:#fff}
+.btn.primary:hover{filter:brightness(1.08)}
+.p-tips{margin:0;padding-left:18px;font-size:13.5px;line-height:1.6}
+.p-tips li{margin-bottom:7px}
+.p-tips .ph{vertical-align:-3px}
+body.panel-open .controls,body.panel-open .hint{right:384px}
+body.panel-open .hint{max-width:calc(100% - 400px)}
+
+/* ---------- Outline ---------- */
+.outline{position:absolute;inset:0;z-index:7;overflow:auto;background:var(--bg);padding:28px 16px 72px}
+.outline[hidden]{display:none}
+.doc{max-width:860px;margin:0 auto}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.o-hero{padding:26px 28px;margin-bottom:8px;background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}
+.o-hero h1{margin:6px 0 10px;font-size:clamp(24px,4vw,34px);line-height:1.15;letter-spacing:-.02em}
+.o-hero p{margin:0;max-width:70ch;font-size:15px;line-height:1.7}
+.o-tools{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.o-legend{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:16px;font-size:12.5px;color:var(--muted)}
+.o-legend>span{display:inline-flex;align-items:center;gap:7px}
+.o-group{margin:34px 0 12px;font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.o-group span{font-weight:500;letter-spacing:0;text-transform:none;color:var(--muted)}
+.o-sec{margin-bottom:14px;padding:18px 20px 14px;background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--c);border-radius:14px}
+.o-sec-h{display:flex;align-items:center;flex-wrap:wrap;gap:10px}
+.o-sec-h h3{margin:0;font-size:18px;letter-spacing:-.01em}
+.o-go{margin-left:auto;padding:4px 0;border:0;background:none;font-size:12.5px;font-weight:700;color:var(--c)}
+@media (prefers-color-scheme:dark){.o-go{color:color-mix(in srgb,var(--c) 60%,#fff)}}
+.o-note{margin:2px 0 8px 21px;font-size:13.5px;line-height:1.6;color:var(--muted)}
+.o-note.lead{margin:10px 0 10px;font-size:14px;color:var(--text)}
+.o-tree,.o-tree ul{list-style:none;margin:0;padding:0}
+.o-tree ul{margin-left:9px;padding-left:15px;border-left:1.5px solid color-mix(in srgb,var(--c) 30%,transparent)}
+.o-row{display:flex;align-items:flex-start;gap:8px;padding:5px 0;font-size:14.5px;line-height:1.45}
+.o-row .ph{margin-top:2px}
+div.o-row::before{content:"";width:6px;height:6px;margin:8px 5px 0 4px;border-radius:50%;background:var(--c);flex:none}
+summary.o-row{cursor:pointer;list-style:none;font-weight:600}
+summary.o-row::-webkit-details-marker{display:none}
+summary.o-row::before{content:"";width:7px;height:7px;margin:6px 4px 0 3px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(-45deg);transition:transform .15s;flex:none}
+details[open]>summary.o-row::before{transform:rotate(45deg)}
+.o-count{margin-left:auto;padding:1px 8px;border-radius:999px;background:var(--surface-2);font-size:11px;font-weight:600;color:var(--muted);flex:none}
+.o-foot{margin-top:30px;text-align:center;font-size:12.5px;color:var(--muted)}
+
+/* ---------- Responsif ---------- */
+@media (max-width:1023px){.tabs .l{display:none}.tabs .s{display:inline}}
+@media (max-width:899px){
+  .panel{top:auto;left:0;right:0;bottom:0;width:auto;max-height:56%;border-radius:18px 18px 0 0;border-bottom:0;transform:translateY(calc(100% + 12px))}
+  body.panel-open .controls{right:12px}
+  body.panel-open .hint{right:16px;max-width:calc(100% - 32px)}
+  .controls{flex-direction:column;align-items:flex-end}
+}
+@media (max-width:699px){
+  .top{gap:10px;padding:10px 12px}
+  .brand{flex-basis:100%}
+  .brand-sub{display:none}
+  .tabs{flex:1}
+  .tabs button{flex:1;justify-content:center}
+  .search{display:none}
+  .node.root{max-width:210px;padding:12px 18px 14px}
+  .node.root .t{font-size:18px}
+  .node.main{max-width:190px;font-size:14px;padding:8px 12px}
+  .flow{padding:7px 12px}
+  .o-hero{padding:20px}
+  .o-sec{padding:16px 14px 12px}
+}
+@media print{
+  body{display:block;height:auto;overflow:visible;background:#fff}
+  .top,.flow,.viewport,.controls,.legend,.panel,.hint,.o-tools,.o-go{display:none!important}
+  .stage{overflow:visible}
+  .outline{display:block!important;position:static;overflow:visible;padding:0;background:#fff}
+  .o-sec,.o-hero{box-shadow:none;break-inside:avoid-page}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">
+    <svg class="logo" width="34" height="34" viewBox="0 0 32 32" aria-hidden="true">
+      <rect width="32" height="32" rx="9" fill="#1e2a4a"/>
+      <g fill="none" stroke-width="2.4" stroke-linecap="round">
+        <path d="M16 16c4 0 4-7 9-7" stroke="#ff8a4c"/><path d="M16 16c4 0 4 7 9 7" stroke="#51cf66"/>
+        <path d="M16 16c-4 0-4-7-9-7" stroke="#4dabf7"/><path d="M16 16c-4 0-4 7-9 7" stroke="#b197fc"/>
+      </g>
+      <circle cx="16" cy="16" r="4" fill="#fff"/>
+    </svg>
+    <div class="brand-text">
+      <div class="brand-title">Analisa Aplikasi Pondok Pesantren</div>
+      <div class="brand-sub">Peta pikiran alur &amp; fitur · draf v1</div>
+    </div>
+  </div>
+  <div class="tabs" role="tablist" aria-label="Tampilan">
+    <button type="button" role="tab" data-view="map" aria-selected="true">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><rect x="5.5" y="6.5" width="5" height="3" rx="1"/><path d="M10.5 8c1.6 0 1.4-4 3-4M10.5 8c1.6 0 1.4 4 3 4M5.5 8c-1.6 0-1.4-4-3-4M5.5 8c-1.6 0-1.4 4-3 4"/></svg>
+      <span class="l">Peta Pikiran</span><span class="s">Peta</span>
+    </button>
+    <button type="button" role="tab" data-view="logic" aria-selected="false">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><rect x="1.5" y="6.5" width="4" height="3" rx="1"/><path d="M5.5 8H8M8 3.5v9M8 3.5h6M8 8h6M8 12.5h6"/></svg>
+      <span class="l">Diagram Logika</span><span class="s">Logika</span>
+    </button>
+    <button type="button" role="tab" data-view="outline" aria-selected="false">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M2.5 3.5h11M5.5 8h8M5.5 12.5h8M2.5 8h.01M2.5 12.5h.01"/></svg>
+      <span class="l">Outline</span><span class="s">Outline</span>
+    </button>
+  </div>
+  <label class="search">
+    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5 14 14"/></svg>
+    <input id="q" type="search" placeholder="Cari topik…" autocomplete="off" aria-label="Cari topik di peta">
+    <span class="count" id="qCount" aria-live="polite"></span>
+  </label>
+</header>
+
+<nav class="flow" id="flow" aria-label="Alur utama"><span class="flow-label">Alur</span></nav>
+
+<div class="stage">
+  <div class="viewport" id="viewport" tabindex="0" aria-label="Peta pikiran. Klik topik untuk membuka cabang. Gunakan tombol panah untuk berpindah topik.">
+    <div class="world" id="world"><svg class="links" id="links" aria-hidden="true"></svg></div>
+  </div>
+
+  <div class="hint" id="hint" role="status">
+    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="8" cy="8" r="6.5"/><path d="M8 7.2v4M8 4.8h.01"/></svg>
+    <span class="desk">Klik topik untuk membuka cabang &amp; membaca penjelasan · seret kanvas untuk menggeser · scroll untuk zoom</span>
+    <span class="touch">Ketuk topik untuk membuka cabang · geser &amp; cubit untuk zoom</span>
+  </div>
+
+  <div class="legend card collapsed" id="legend">
+    <button class="legend-btn" id="legendBtn" type="button" aria-expanded="false" aria-controls="legendBody">Keterangan
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M3 7.5 6 4.5l3 3"/></svg>
+    </button>
+    <div class="legend-body" id="legendBody">
+      <div class="lg"><span class="ph ph1">1</span>Fase 1 · MVP, dibangun pertama</div>
+      <div class="lg"><span class="ph ph2">2</span>Fase 2 · kehidupan pondok</div>
+      <div class="lg"><span class="ph ph3">3</span>Fase 3 · pengembangan lanjutan</div>
+      <div class="lg"><svg class="ni" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 2.5h6l3 3v8h-9z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M5.5 8h5M5.5 10.5h5M5.5 5.5h2.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Ada penjelasan — klik topiknya</div>
+      <div class="lg"><span class="tg-demo">6</span>Jumlah sub-topik yang masih tertutup</div>
+      <div class="lg" id="legendSide"><svg class="lg-side" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4 2 7l3 3M11 6l3 3-3 3M2 7h7M14 9H7"/></svg>Kanan: alur utama · Kiri: pendukung</div>
+    </div>
+  </div>
+
+  <div class="controls" id="controls">
+    <div class="seg card" role="group" aria-label="Tingkat cabang yang ditampilkan">
+      <span class="lbl">Tingkat</span>
+      <button type="button" data-level="1" aria-pressed="false">1</button>
+      <button type="button" data-level="2" aria-pressed="false">2</button>
+      <button type="button" data-level="3" aria-pressed="false">3</button>
+      <button type="button" data-level="99" aria-pressed="false">Semua</button>
+    </div>
+    <div class="seg card" role="group" aria-label="Zoom">
+      <button type="button" id="zoomOut" aria-label="Perkecil">
+        <svg width="14" height="14" viewBox="0 0 14 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M3 7h8"/></svg>
+      </button>
+      <button type="button" id="zoomPct" title="Kembali ke 100%">100%</button>
+      <button type="button" id="zoomIn" aria-label="Perbesar">
+        <svg width="14" height="14" viewBox="0 0 14 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M3 7h8M7 3v8"/></svg>
+      </button>
+      <button type="button" id="fitBtn" aria-label="Sesuaikan ke layar" title="Sesuaikan ke layar">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <aside class="panel" id="panel" aria-label="Detail topik">
+    <div class="p-bar"></div>
+    <div class="p-head">
+      <span class="p-kicker" id="pKicker">Detail topik</span>
+      <button class="p-close" id="pClose" type="button" aria-label="Tutup panel">
+        <svg width="16" height="16" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="m4 4 8 8M12 4l-8 8"/></svg>
+      </button>
+    </div>
+    <div class="p-body" id="panelBody"></div>
+  </aside>
+
+  <div class="outline" id="outline" hidden><div class="doc" id="outlineDoc"></div></div>
+</div>
+
+<noscript><p style="padding:24px">Halaman ini membutuhkan JavaScript untuk menampilkan peta pikiran.</p></noscript>
+
+<script>
+(() => {
+'use strict';
+
+/* =====================================================================
+   DATA PETA PIKIRAN
+   ---------------------------------------------------------------------
+   Ubah isi peta cukup di sini.
+   - Setiap 2 spasi di awal baris = satu tingkat lebih dalam.
+   - Teks setelah "::"  = penjelasan (muncul di panel detail & outline).
+   - [1] [2] [3]        = saran fase pengembangan fitur.
+   - #kiri              = cabang utama diletakkan di sisi kiri (pendukung).
+   - @kata              = penanda untuk tombol "Alur" di bagian atas.
+   ===================================================================== */
+const DATA = `
+Aplikasi Pondok Pesantren :: Analisa awal aplikasi terpadu untuk pondok pesantren yang menaungi beberapa jenjang: MI, MTs, MA, dan Perguruan Tinggi. Alur utamanya: santri mendaftar → diseleksi → daftar ulang → diteruskan ke jenjang tujuan → mengikuti kegiatan harian (absensi, sekolah, diniyah, tahfidz, asrama) → dinilai → menerima raport → naik kelas atau lulus. Cabang kanan adalah alur utama yang berurutan, cabang kiri adalah modul pendukung yang dipakai oleh semua alur. Ini draf v1 — silakan dikoreksi dan dilengkapi.
+  Pendaftaran Santri @psb :: Pintu masuk semua data (Penerimaan Santri Baru / PSB). Data yang diisi di sini dipakai terus sampai santri lulus, jadi formulir harus lengkap dan tervalidasi sejak awal. Pendaftaran bisa dilakukan sendiri oleh wali secara online, atau dibantu panitia di kantor pondok.
+    Formulir online [1] :: Satu formulir untuk semua jenjang. Isian tambahan muncul otomatis sesuai jenjang yang dipilih, misalnya nilai rapor terakhir untuk MTs/MA atau ijazah SMA/MA untuk Perguruan Tinggi.
+      Data diri calon santri (NIK, NISN, tempat & tanggal lahir)
+      Data orang tua / wali & nomor WhatsApp
+      Asal sekolah & nilai terakhir
+      Upload berkas: KK, akta lahir, ijazah/SKL, foto
+      Riwayat kesehatan & kebutuhan khusus
+    Pilih jenjang tujuan [1] :: Pilihan inilah yang menentukan alur berikutnya. Syarat berkas, biaya, jadwal tes, materi tes, dan kelas tujuan berbeda untuk tiap jenjang.
+      MI — usia ± 6–7 tahun
+      MTs — lulusan SD/MI
+      MA — lulusan SMP/MTs
+      Perguruan Tinggi — lulusan SMA/MA
+      Hanya mondok / program tahfidz
+    Pembayaran biaya pendaftaran [1]
+      Transfer bank / virtual account
+      Upload & verifikasi bukti bayar
+      Kuitansi otomatis
+    Seleksi masuk [1] @seleksi :: Jadwal dan materi tes dibuat per jenjang. Penguji memasukkan nilai langsung dari HP sehingga hasilnya bisa direkap otomatis untuk rapat panitia.
+      Jadwal tes per jenjang
+      Tes baca Al-Qur'an
+      Tes akademik / potensi dasar
+      Wawancara santri & wali
+      Rekap nilai & keputusan panitia
+    Pengumuman hasil [1]
+      Diterima / cadangan / tidak diterima
+      Notifikasi WhatsApp ke wali
+    Daftar ulang [1] @daftarulang :: Setelah daftar ulang selesai, status calon santri berubah menjadi santri aktif dan datanya otomatis diteruskan ke jenjang tujuan.
+      Pelunasan biaya masuk
+      Penerbitan NIS & kartu santri ber-QR
+      Pembuatan akun wali santri
+      Pengambilan seragam & perlengkapan
+  Penempatan Jenjang @jenjang :: Setelah daftar ulang, sistem meneruskan santri ke jenjang tujuan berdasarkan pilihan saat mendaftar. Setiap santri punya dua jalur sekaligus: jalur madrasah formal (MI/MTs/MA/PT) dan jalur pesantren (Madrasah Diniyah + kamar asrama).
+    MI — Madrasah Ibtidaiyah [1]
+      Kelas 1–6
+      Rombel & wali kelas
+    MTs — Madrasah Tsanawiyah [1]
+      Kelas 7–9
+      Rombel & wali kelas
+    MA — Madrasah Aliyah [1]
+      Kelas 10–12
+      Peminatan: IPA / IPS / Keagamaan
+      Rombel & wali kelas
+    Perguruan Tinggi (Ma'had Aly / STAI) [3] :: Pengelolaan perguruan tinggi berbeda dengan madrasah (memakai SKS, KRS, dan KHS), sehingga disarankan masuk fase terakhir atau dihubungkan dengan sistem akademik kampus yang sudah ada.
+      Program studi
+      Semester, SKS & KRS
+      Dosen pembimbing akademik
+    Madrasah Diniyah (semua santri) [1] :: Kelas diniyah ditentukan oleh tes kemampuan kitab, bukan oleh usia atau kelas formal. Jadi santri MA bisa saja duduk di tingkat Ula.
+      Tingkat Ula · Wustho · Ulya
+      Penempatan berdasarkan tes kitab
+    Asrama [1]
+      Pembagian kamar putra / putri
+      Musyrif / pembina kamar
+    Mutasi: pindah kelas, pindah jenjang, keluar [2]
+  Absensi @absensi :: Di pondok, kehadiran dicatat di banyak titik — bukan hanya di kelas: sekolah, diniyah, sholat berjamaah, kegiatan, sampai cek asrama malam. Semua status masuk ke satu rekap yang nanti otomatis tampil di raport dan bisa dilihat wali.
+    Absensi santri [1]
+      Sekolah formal (per jam pelajaran) [1]
+      Madrasah Diniyah / ngaji kitab [1]
+      Sholat berjamaah [2]
+      Kegiatan & ekstrakurikuler [2]
+      Cek asrama malam [2]
+    Absensi guru & ustadz [1]
+      Datang & pulang
+      Kehadiran mengajar sesuai jadwal
+      Guru pengganti (inval)
+    Cara pencatatan :: Mulai dari yang paling sederhana (guru mengisi di HP), lalu ditingkatkan ke kartu QR atau perangkat biometrik bila sudah siap.
+      Manual oleh guru lewat HP / tablet [1]
+      Scan QR kartu santri [2]
+      RFID / sidik jari / wajah [3]
+    Status kehadiran
+      Hadir
+      Terlambat
+      Izin
+      Sakit
+      Alpa
+    Perizinan santri [2] :: Izin dicatat di sistem sehingga status absensi otomatis menjadi "Izin", dan pengurus tahu santri mana yang sedang berada di luar pondok.
+      Izin pulang / bermalam
+      Izin keluar pondok sementara
+      Persetujuan wali & pengurus
+      Catat jam keluar & kembali
+    Rekap & peringatan [2]
+      Rekap harian, bulanan & semester
+      Peringatan otomatis jika alpa berulang
+  Kegiatan Santri & Guru @kegiatan :: Mencatat aktivitas harian di pondok. Bagian inilah yang membedakan aplikasi pondok dari aplikasi sekolah biasa: santri berada di pondok 24 jam, sehingga kegiatan di luar kelas juga perlu dipantau.
+    Kegiatan santri :: Mencakup kegiatan akademik, keagamaan, dan pembinaan karakter. Masing-masing dicatat oleh ustadz, musyrif, atau pengurus yang bertanggung jawab.
+      Jadwal harian pondok (bangun s.d. tidur) [1]
+      KBM sekolah formal [1]
+      Ngaji kitab / diniyah [1]
+      Tahfidz Al-Qur'an [2] :: Setiap setoran dicatat oleh ustadz pembimbing halaqah. Capaian hafalan otomatis masuk ke raport tahfidz dan bisa dipantau wali.
+        Setoran hafalan baru (ziyadah)
+        Murojaah (mengulang hafalan)
+        Target & capaian per juz
+      Ibadah [2]
+        Sholat berjamaah
+        Qiyamul lail
+        Wirid & dzikir rutin
+      Ekstrakurikuler [2]
+        Muhadharah (latihan pidato)
+        Pramuka
+        Hadrah & sholawat
+        Olahraga
+        Bahasa Arab & Inggris
+      Kedisiplinan [2] :: Pelanggaran dicatat dengan poin. Jika poin mencapai batas tertentu, sistem memberi tanda agar pengurus dan wali segera menindaklanjuti.
+        Catatan pelanggaran & poin
+        Ta'zir (sanksi yang mendidik)
+        Bimbingan konseling
+      Prestasi & lomba [3]
+      Kesehatan / klinik pondok [3]
+    Kegiatan guru & ustadz :: Guru dan ustadz memakai aplikasi untuk pekerjaan sehari-hari: melihat jadwal, mengisi jurnal, absensi kelas, dan nilai. Data ini sekaligus menjadi bahan evaluasi kinerja.
+      Jadwal mengajar [1]
+      Jurnal mengajar (materi & catatan kelas) [1] :: Diisi setiap selesai mengajar. Jurnal sekaligus menjadi bukti kehadiran mengajar dan bahan supervisi kepala madrasah.
+      Input absensi & nilai [1]
+      Pembimbing tahfidz / halaqah [2]
+      Piket & tugas asrama (musyrif) [2]
+      Perangkat ajar (modul / RPP) [3]
+      Evaluasi kinerja guru [3]
+  Penilaian & Raport @nilai :: Ujung dari seluruh alur. Raport disusun otomatis dari nilai, absensi, capaian tahfidz, dan catatan sikap, sehingga wali kelas tidak perlu menyalin ulang. Pondok umumnya punya dua raport: raport madrasah (formal) dan raport pesantren.
+    Komponen nilai [1] @penilaian
+      Nilai harian / tugas
+      Penilaian tengah semester (PTS)
+      Penilaian akhir semester (PAS)
+      Praktik / keterampilan
+      Bobot nilai & KKM per mapel
+    Raport madrasah (formal) [1] @raport :: Format mengikuti kurikulum yang dipakai (Kurikulum Merdeka atau K13) untuk MI, MTs, dan MA.
+      MI · MTs · MA
+      Deskripsi capaian otomatis
+      Rekap kehadiran dari absensi
+      Catatan wali kelas
+    Raport pesantren [2]
+      Nilai diniyah / kitab
+      Capaian tahfidz
+      Akhlak, adab & kedisiplinan
+      Kebersihan & kemandirian
+      Catatan musyrif
+    KHS & transkrip (Perguruan Tinggi) [3]
+    Cetak & publikasi [1]
+      Cetak PDF dengan QR validasi
+      Tampil di akun wali santri [2]
+    Kenaikan kelas & kelulusan [2] @lulus
+      Naik kelas / tinggal kelas
+      Lulus → data alumni
+      Lanjut ke jenjang berikutnya :: Santri yang lulus MI bisa langsung didaftarkan ke MTs (dan seterusnya) di pondok yang sama tanpa mengisi ulang data — cukup "pendaftaran internal". Alur kembali ke cabang Pendaftaran.
+  Data Master #kiri [1] :: Data induk yang dipakai bersama oleh semua modul. Dibuat sekali, dipakai di mana-mana — inilah yang pertama kali harus dibangun.
+    Tahun ajaran & semester
+    Buku induk santri
+    Guru, ustadz & pegawai
+    Wali santri
+    Kelas, rombel & jurusan
+    Mata pelajaran & kitab
+    Jadwal pelajaran
+    Gedung, asrama & kamar
+  Pengguna & Hak Akses #kiri [1] :: Setiap peran hanya melihat menu yang relevan. Contoh: guru MTs tidak bisa mengubah nilai MA, dan wali santri hanya melihat data anaknya sendiri.
+    Pengasuh / Kyai — dashboard ringkas
+    Admin / operator pondok
+    Panitia PSB
+    Kepala madrasah (per jenjang)
+    Guru, ustadz & dosen
+    Musyrif / pengurus asrama
+    Bendahara
+    Wali santri
+    Santri / mahasiswa
+  Keuangan #kiri [3] :: Tidak disebut di kebutuhan awal, tetapi hampir semua pondok membutuhkannya. Disarankan masuk fase 3 — atau dimajukan jika penagihan syahriyah adalah masalah yang paling mendesak.
+    Syahriyah / SPP bulanan
+    Tagihan per jenjang
+    Pembayaran & kuitansi
+    Tabungan / uang saku santri
+    Laporan keuangan
+  Laporan & Notifikasi #kiri [2]
+    Dashboard pengasuh & kepala madrasah
+    Rekap per jenjang, kelas & kamar
+    Notifikasi WhatsApp ke wali
+    Pengumuman pondok
+    Ekspor data EMIS Kemenag :: Data siswa dan guru madrasah dilaporkan ke EMIS Kemenag. Sediakan ekspor Excel sesuai format EMIS agar operator tidak perlu input dua kali.
+  Platform & Teknologi #kiri :: Rekomendasi teknis awal; bisa disesuaikan dengan kemampuan tim dan anggaran pondok.
+    Aplikasi web untuk admin, guru & pengurus
+    Aplikasi HP / PWA untuk wali & santri
+    Satu database terpusat untuk semua jenjang
+    WhatsApp gateway untuk notifikasi
+    Backup otomatis & keamanan data
+  Tahapan Pengembangan #kiri :: Disarankan dibangun bertahap supaya cepat dipakai, mudah diuji, dan masukan pengguna bisa diperbaiki di fase berikutnya. Tanda 1, 2, 3 berwarna pada peta menunjukkan fase tiap fitur.
+    Fase 1 — Pondasi (MVP) [1]
+      Data master & hak akses
+      Pendaftaran & penempatan jenjang
+      Absensi manual santri & guru
+      Jadwal, jurnal & nilai
+      Raport madrasah
+    Fase 2 — Kehidupan pondok [2]
+      Tahfidz, ibadah & ekstrakurikuler
+      Perizinan & kedisiplinan
+      Raport pesantren
+      Kartu QR & notifikasi WhatsApp
+      Portal wali & kenaikan kelas
+    Fase 3 — Pengembangan [3]
+      Perguruan tinggi (KRS / KHS)
+      Keuangan
+      Kesehatan & prestasi
+      Absensi biometrik
+      Evaluasi kinerja guru
+`;
+
+/* Tombol "Alur" di bagian atas: [penanda, label, keterangan kecil] */
+const FLOW = [
+  ['psb', 'Pendaftaran'],
+  ['seleksi', 'Seleksi'],
+  ['daftarulang', 'Daftar Ulang'],
+  ['jenjang', 'Penempatan Jenjang', 'MI · MTs · MA · PT'],
+  ['absensi', 'Absensi'],
+  ['kegiatan', 'Kegiatan Santri & Guru'],
+  ['penilaian', 'Penilaian'],
+  ['raport', 'Raport'],
+  ['lulus', 'Naik Kelas / Lulus'],
+];
+
+const PALETTE = ['#D9480F', '#2B8A3E', '#1971C2', '#7048E8', '#0B7285', '#495057', '#9C36B5', '#087F5B', '#3B5BDB', '#C2255C', '#C92A2A'];
+const PHASE = { 1: 'Fase 1 · MVP', 2: 'Fase 2 · Kehidupan pondok', 3: 'Fase 3 · Pengembangan lanjutan' };
+const DUR = 320, MIN_S = 0.2, MAX_S = 2.5;
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const isWide = () => matchMedia('(min-width: 900px)').matches;
+const NOTE_ICON = '<svg class="ni" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 2.5h6l3 3v8h-9z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M5.5 8h5M5.5 10.5h5M5.5 5.5h2.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>';
+const phHTML = p => `<span class="ph ph${p}" title="${PHASE[p]}">${p}</span>`;
+
+/* ---------- Parse data ---------- */
+function parse(src) {
+  let root = null;
+  const stack = [];
+  for (const raw of src.split('\n')) {
+    const line = raw.replace(/\s+$/, '');
+    if (!line.trim() || line.trim().startsWith('//')) continue;
+    const depth = Math.floor(line.match(/^ */)[0].length / 2);
+    const [headRaw, ...rest] = line.trim().split('::');
+    let head = ' ' + headRaw, phase = 0, side = null, key = null;
+    head = head.replace(/\s\[([123])\]/, (_, d) => { phase = +d; return ' '; });
+    head = head.replace(/\s#kiri\b/, () => { side = 'left'; return ' '; });
+    head = head.replace(/\s@(\w+)/, (_, k) => { key = k; return ' '; });
+    const node = { title: head.replace(/\s+/g, ' ').trim(), note: rest.join('::').trim(), phase, side, key, children: [], collapsed: false };
+    if (!root) { root = node; stack[0] = node; continue; }
+    const d = clamp(depth, 1, stack.length);
+    const parent = stack[d - 1];
+    node.parent = parent;
+    parent.children.push(node);
+    stack.length = d;
+    stack.push(node);
+  }
+  return root;
+}
+
+const root = parse(DATA);
+const all = [];
+(function walk(n, d) { n.depth = d; n.id = all.length; all.push(n); n.children.forEach(c => walk(c, d + 1)); })(root, 0);
+let stepNo = 0;
+root.children.forEach((m, i) => {
+  m.color = PALETTE[i % PALETTE.length];
+  m.main = m;
+  if (m.side !== 'left') { m.side = 'right'; m.step = ++stepNo; }
+});
+all.forEach(n => { if (n.depth >= 2) { n.color = n.parent.color; n.main = n.parent.main; } });
+const byKey = {};
+all.forEach(n => { if (n.key) byKey[n.key] = n; });
+
+/* ---------- Elemen ---------- */
+const viewport = $('#viewport'), world = $('#world'), svg = $('#links');
+const panel = $('#panel'), panelBody = $('#panelBody'), outlineEl = $('#outline');
+const zoomPct = $('#zoomPct'), hint = $('#hint'), legend = $('#legend');
+const tabs = [...document.querySelectorAll('.tabs [role=tab]')];
+const levelBtns = [...document.querySelectorAll('[data-level]')];
+const SVGNS = 'http://www.w3.org/2000/svg';
+
+function nodeHTML(n) {
+  if (n.depth === 0) return `<span class="eyebrow">Analisa Sistem</span><span class="t">${esc(n.title)}</span>`;
+  return (n.step ? `<span class="step">${n.step}</span>` : '') +
+    (n.phase ? phHTML(n.phase) : '') +
+    `<span class="t">${esc(n.title)}</span>` +
+    (n.note ? NOTE_ICON : '');
+}
+
+for (const n of all) {
+  const el = document.createElement('div');
+  el.className = 'node ' + (n.depth === 0 ? 'root' : n.depth === 1 ? 'main' : 'sub' + (n.depth >= 3 ? ' deep' : ''));
+  if (n.depth) el.style.setProperty('--c', n.color);
+  el.dataset.id = n.id;
+  el.innerHTML = nodeHTML(n);
+  el.style.display = 'none';
+  world.appendChild(el);
+  n.el = el;
+  if (n.depth && n.children.length) {
+    const tg = document.createElement('button');
+    tg.type = 'button';
+    tg.className = 'tg';
+    tg.dataset.id = n.id;
+    tg.style.setProperty('--c', n.color);
+    tg.style.display = 'none';
+    world.appendChild(tg);
+    n.tg = tg;
+  }
+  if (n.depth) {
+    const p = document.createElementNS(SVGNS, 'path');
+    p.setAttribute('class', 'lk' + (n.depth === 1 ? ' trunk' : n.depth >= 3 ? ' deep' : ''));
+    p.style.setProperty('--c', n.color);
+    p.style.display = 'none';
+    svg.appendChild(p);
+    n.path = p;
+  }
+}
+
+/* ---------- State ---------- */
+let visible = [], selected = null, panelOpen = false, panelNode = null;
+let mode = 'map', view = 'map', booted = false;
+const cam = { x: 0, y: 0, s: 1 };
+let camGoal = null;
+
+/* ---------- Tata letak ---------- */
+const visKids = n => (n === root || !n.collapsed) ? n.children : [];
+const dirOf = n => (mode === 'logic' || n === root) ? 1 : (n.main.side === 'left' ? -1 : 1);
+const HG = p => p.depth === 0 ? (mode === 'logic' ? 70 : 90) : p.depth === 1 ? 38 : 30;
+const VG = p => p.depth === 0 ? 22 : p.depth === 1 ? 6 : 3;
+const gapBetween = (p, a, b) => VG(p) + ((visKids(a).length || visKids(b).length) ? (p.depth === 0 ? 8 : 10) : 0);
+
+function stackH(p, kids) {
+  return kids.reduce((s, k, i) => s + k.sh + (i ? gapBetween(p, kids[i - 1], k) : 0), 0);
+}
+function subH(n) {
+  const kids = visKids(n);
+  kids.forEach(subH);
+  n.sh = kids.length ? Math.max(n.h, stackH(n, kids)) : n.h;
+  return n.sh;
+}
+function place(n, x, cy, d) {
+  n.X = d === 1 ? x : x - n.w;
+  n.Y = cy - n.h / 2;
+  const kids = visKids(n);
+  if (!kids.length) return;
+  const cx = d === 1 ? n.X + n.w + HG(n) : n.X - HG(n);
+  let y = cy - stackH(n, kids) / 2;
+  kids.forEach((k, i) => {
+    if (i) y += gapBetween(n, kids[i - 1], k);
+    place(k, cx, y + k.sh / 2, d);
+    y += k.sh;
+  });
+}
+function layoutTargets() {
+  root.X = -root.w / 2; root.Y = -root.h / 2;
+  const groups = mode === 'logic'
+    ? [[1, root.children]]
+    : [[1, root.children.filter(m => m.side === 'right')], [-1, root.children.filter(m => m.side === 'left')]];
+  for (const [d, list] of groups) {
+    if (!list.length) continue;
+    list.forEach(subH);
+    let y = -stackH(root, list) / 2;
+    const x = d === 1 ? root.w / 2 + HG(root) : -root.w / 2 - HG(root);
+    list.forEach((k, i) => {
+      if (i) y += gapBetween(root, list[i - 1], k);
+      place(k, x, y + k.sh / 2, d);
+      y += k.sh;
+    });
+  }
+}
+function computeVisible() {
+  const out = [];
+  (function w(n) { out.push(n); visKids(n).forEach(w); })(root);
+  return out;
+}
+function visibleSubtree(n) {
+  const out = [];
+  (function w(k) { out.push(k); visKids(k).forEach(w); })(n);
+  return out;
+}
+
+function relayout({ animate = true } = {}) {
+  const prev = new Set(visible);
+  visible = computeVisible();
+  const now = new Set(visible);
+  for (const n of prev) if (!now.has(n)) hideNode(n);
+  const fresh = visible.filter(n => !prev.has(n));
+  for (const n of fresh) {
+    n.el.style.display = '';
+    if (n.tg) n.tg.style.display = '';
+    if (n.path) n.path.style.display = '';
+  }
+  for (const n of fresh) if (!n.w) { n.w = n.el.offsetWidth; n.h = n.el.offsetHeight; }
+  layoutTargets();
+  const anim = animate && !reduceMotion;
+  for (const n of visible) {
+    if (n.x == null) {
+      const p = n.parent;
+      if (anim && p && p.x != null) { n.x = p.x + (p.w - n.w) / 2; n.y = p.y + (p.h - n.h) / 2; fadeIn(n); }
+      else { n.x = n.X; n.y = n.Y; }
+    }
+    n.x0 = n.x; n.y0 = n.y;
+  }
+  for (const n of visible) if (n.tg) {
+    n.tg.textContent = n.collapsed ? n.children.length : '−';
+    n.tg.classList.toggle('col', n.collapsed);
+    n.tg.setAttribute('aria-expanded', String(!n.collapsed));
+    n.tg.setAttribute('aria-label', (n.collapsed ? 'Buka' : 'Tutup') + ' cabang ' + n.title);
+  }
+  tween('layout', anim ? DUR : 0, e => {
+    for (const n of visible) { n.x = n.x0 + (n.X - n.x0) * e; n.y = n.y0 + (n.Y - n.y0) * e; }
+    draw();
+  });
+}
+function hideNode(n) {
+  n.el.style.display = 'none';
+  if (n.tg) n.tg.style.display = 'none';
+  if (n.path) n.path.style.display = 'none';
+  n.x = n.y = null;
+}
+function fadeIn(n) {
+  if (!n.el.animate) return;
+  const k = [{ opacity: 0 }, { opacity: 1 }], o = { duration: 260, easing: 'ease-out' };
+  n.el.animate(k, o);
+  if (n.path) n.path.animate(k, o);
+}
+
+/* ---------- Gambar garis ---------- */
+function anchorOut(n) {
+  const d = dirOf(n), y = n.depth === 1 ? n.y + n.h / 2 : n.y + n.h - 1;
+  return { x: d === 1 ? n.x + n.w : n.x, y };
+}
+function anchorIn(n) {
+  const d = dirOf(n), y = n.depth === 1 ? n.y + n.h / 2 : n.y + n.h - 1;
+  return { x: d === 1 ? n.x : n.x + n.w, y };
+}
+const f1 = v => v.toFixed(1);
+function taper(a, b, w0, w1) {
+  const q = { x: a.x + (b.x - a.x) * 0.35, y: b.y };
+  const N = 26, L = [], R = [];
+  for (let i = 0; i <= N; i++) {
+    const t = i / N, u = 1 - t;
+    const x = u * u * a.x + 2 * u * t * q.x + t * t * b.x;
+    const y = u * u * a.y + 2 * u * t * q.y + t * t * b.y;
+    const dx = 2 * u * (q.x - a.x) + 2 * t * (b.x - q.x);
+    const dy = 2 * u * (q.y - a.y) + 2 * t * (b.y - q.y);
+    const len = Math.hypot(dx, dy) || 1, w = (w0 + (w1 - w0) * t) / 2;
+    const nx = -dy / len * w, ny = dx / len * w;
+    L.push(f1(x + nx) + ',' + f1(y + ny));
+    R.push(f1(x - nx) + ',' + f1(y - ny));
+  }
+  return 'M' + L.join('L') + 'L' + R.reverse().join('L') + 'Z';
+}
+function linkPath(n) {
+  const p = n.parent, b = anchorIn(n);
+  if (p === root) {
+    const a = { x: p.x + p.w / 2 + dirOf(n) * p.w * 0.22, y: p.y + p.h / 2 };
+    return taper(a, b, 8, 2.5);
+  }
+  const a = anchorOut(p), mx = (a.x + b.x) / 2;
+  return `M${f1(a.x)},${f1(a.y)}C${f1(mx)},${f1(a.y)} ${f1(mx)},${f1(b.y)} ${f1(b.x)},${f1(b.y)}`;
+}
+function draw() {
+  for (const n of visible) {
+    n.el.style.transform = `translate(${n.x}px,${n.y}px)`;
+    if (n.path) n.path.setAttribute('d', linkPath(n));
+    if (n.tg) {
+      const a = anchorOut(n);
+      n.tg.style.transform = `translate(${a.x + dirOf(n) * 12}px,${a.y}px)`;
+    }
+  }
+}
+
+/* ---------- Animasi & kamera ---------- */
+const raf = {};
+function tween(key, dur, fn, done) {
+  cancelAnimationFrame(raf[key]);
+  if (!dur || reduceMotion) { fn(1); if (done) done(); return; }
+  const t0 = performance.now();
+  const step = t => {
+    const k = clamp((t - t0) / dur, 0, 1);
+    fn(1 - Math.pow(1 - k, 3));
+    if (k < 1) raf[key] = requestAnimationFrame(step);
+    else if (done) done();
+  };
+  raf[key] = requestAnimationFrame(step);
+}
+function applyCam() {
+  world.style.transform = `translate(${cam.x}px,${cam.y}px) scale(${cam.s})`;
+  zoomPct.textContent = Math.round(cam.s * 100) + '%';
+  let g = 22 * cam.s;
+  while (g < 11) g *= 2;
+  viewport.style.backgroundSize = `${g}px ${g}px`;
+  viewport.style.backgroundPosition = `${cam.x}px ${cam.y}px`;
+}
+function camTo(x, y, s, dur = DUR) {
+  const a = { ...cam };
+  camGoal = { x, y, s };
+  tween('cam', dur, e => {
+    cam.x = a.x + (x - a.x) * e; cam.y = a.y + (y - a.y) * e; cam.s = a.s + (s - a.s) * e;
+    applyCam();
+  }, () => { camGoal = null; });
+}
+function stopCam() { cancelAnimationFrame(raf.cam); camGoal = null; }
+function viewRect() {
+  const r = { x: 0, y: 0, w: viewport.clientWidth, h: viewport.clientHeight };
+  if (panelOpen) {
+    if (isWide()) r.w -= panel.offsetWidth + 24;
+    else r.h -= panel.offsetHeight;
+  }
+  return r;
+}
+function bbox(list) {
+  let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+  for (const n of list) {
+    x0 = Math.min(x0, n.X); y0 = Math.min(y0, n.Y);
+    x1 = Math.max(x1, n.X + n.w); y1 = Math.max(y1, n.Y + n.h);
+  }
+  return { x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
+}
+const nodeBox = n => ({ x: n.X, y: n.Y, w: n.w, h: n.h });
+function nudgeInto(b, x, y, s, r, m) {
+  const R = (b.x + b.w) * s + x; if (R > r.x + r.w - m) x -= R - (r.x + r.w - m);
+  const L = b.x * s + x;         if (L < r.x + m) x += r.x + m - L;
+  const B = (b.y + b.h) * s + y; if (B > r.y + r.h - m) y -= B - (r.y + r.h - m);
+  const T = b.y * s + y;         if (T < r.y + m) y += r.y + m - T;
+  return [x, y];
+}
+function fit(animate = true) {
+  const b = bbox(visible), r = viewRect();
+  const m = isWide() ? 48 : 18, top = isWide() ? 56 : 64, bottom = isWide() ? 64 : 92;
+  const sw = (r.w - 2 * m) / b.w, sh = (r.h - top - bottom) / b.h;
+  let s = clamp(Math.min(sw, sh, 1), MIN_S, MAX_S);
+  let y = r.y + top + (r.h - top - bottom) / 2 - (b.y + b.h / 2) * s;
+  if (!isWide() && s < 0.7 && sw > s) {
+    // Layar HP: utamakan lebar agar tulisan terbaca, mulai dari atas lalu geser ke bawah.
+    s = clamp(Math.min(sw, 1), MIN_S, MAX_S);
+    y = r.y + top - b.y * s;
+  }
+  const x = r.x + r.w / 2 - (b.x + b.w / 2) * s;
+  camTo(x, y, s, animate ? DUR + 140 : 0);
+}
+function focusBox(n) {
+  if (n === root) { fit(); return; }
+  const b = bbox(visibleSubtree(n)), r = viewRect(), m = 36;
+  const s = clamp(Math.min((r.w - 2 * m) / b.w, (r.h - 2 * m) / b.h), 0.7, 1.05);
+  let x = r.x + r.w / 2 - (b.x + b.w / 2) * s;
+  let y = r.y + r.h / 2 - (b.y + b.h / 2) * s;
+  [x, y] = nudgeInto(nodeBox(n), x, y, s, r, m);
+  camTo(x, y, s, DUR + 80);
+}
+function ensureNodeVisible(n) {
+  const base = camGoal || cam;
+  const [x, y] = nudgeInto(nodeBox(n), base.x, base.y, base.s, viewRect(), 32);
+  if (x !== base.x || y !== base.y) camTo(x, y, base.s);
+}
+function relayoutAnchored(n) {
+  const bx = n.x, by = n.y;
+  relayout({ animate: true });
+  const s = cam.s, r = viewRect(), m = 24;
+  let x = cam.x - (n.X - bx) * s, y = cam.y - (n.Y - by) * s;
+  if (!n.collapsed) [x, y] = nudgeInto(bbox(visibleSubtree(n)), x, y, s, r, m);
+  [x, y] = nudgeInto(nodeBox(n), x, y, s, r, m);
+  camTo(x, y, s);
+}
+function zoomAt(sx, sy, s) {
+  s = clamp(s, MIN_S, MAX_S);
+  const wx = (sx - cam.x) / cam.s, wy = (sy - cam.y) / cam.s;
+  cam.x = sx - wx * s; cam.y = sy - wy * s; cam.s = s;
+  applyCam();
+}
+function zoomBy(k) {
+  const base = camGoal || cam, r = viewRect();
+  const sx = r.x + r.w / 2, sy = r.y + r.h / 2, s = clamp(base.s * k, MIN_S, MAX_S);
+  const wx = (sx - base.x) / base.s, wy = (sy - base.y) / base.s;
+  camTo(sx - wx * s, sy - wy * s, s, 200);
+}
+
+/* ---------- Aksi ---------- */
+function clearLevel() { levelBtns.forEach(b => b.setAttribute('aria-pressed', 'false')); }
+function setLevel(k, animate = true) {
+  for (const n of all) if (n.depth && n.children.length) n.collapsed = n.depth >= k;
+  levelBtns.forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.level === k)));
+  relayout({ animate });
+}
+function toggle(n) {
+  if (n === root || !n.children.length) return;
+  n.collapsed = !n.collapsed;
+  clearLevel();
+  relayoutAnchored(n);
+  if (panelOpen && panelNode === n) renderPanel(n);
+}
+function expandAll(n) {
+  (function w(k) { k.collapsed = false; k.children.forEach(w); })(n);
+  clearLevel();
+  relayout({ animate: true });
+  focusBox(n);
+  if (panelOpen && panelNode === n) renderPanel(n);
+}
+function select(n) {
+  if (selected) selected.el.classList.remove('sel');
+  selected = n;
+  n.el.classList.add('sel');
+  if (panelOpen) renderPanel(n);
+  updateChips(n);
+}
+function onNodeClick(n) {
+  hideHint();
+  const expand = n.collapsed;
+  if (expand) { n.collapsed = false; clearLevel(); }
+  select(n);
+  openPanel(n);
+  if (expand) relayoutAnchored(n);
+  else ensureNodeVisible(n);
+}
+function goTo(n, { expand = true } = {}) {
+  hideHint();
+  if (view === 'outline') setView(mode, false);
+  for (let p = n.parent; p; p = p.parent) p.collapsed = false;
+  if (expand && n.children.length && n !== root) n.collapsed = false;
+  clearLevel();
+  relayout({ animate: true });
+  select(n);
+  openPanel(n);
+  focusBox(n);
+}
+function setView(v, refit = true) {
+  view = v;
+  tabs.forEach(t => t.setAttribute('aria-selected', String(t.dataset.view === v)));
+  const out = v === 'outline';
+  outlineEl.hidden = !out;
+  document.body.classList.toggle('is-outline', out);
+  if (out) { closePanel(); outlineEl.focus && outlineEl.scrollTo(0, 0); return; }
+  $('#legendSide').hidden = v !== 'map';
+  if (mode !== v) {
+    mode = v;
+    relayout({ animate: true });
+    if (refit) fit(true);
+  }
+}
+
+/* ---------- Panel detail ---------- */
+function kicker(n) {
+  if (n === root) return 'Topik pusat · ringkasan';
+  if (n.depth === 1) return n.side === 'left' ? 'Modul pendukung' : `Alur utama · langkah ${n.step}`;
+  return n.main.title;
+}
+function itemHTML(c) {
+  return `<li><button type="button" data-go="${c.id}" style="--c:${c.color}">` +
+    (c.step ? `<span class="step">${c.step}</span>` : c.phase ? phHTML(c.phase) : '<span class="bul"></span>') +
+    `<span class="it">${esc(c.title)}</span>` +
+    (c.children.length ? `<em>${c.children.length}</em>` : '') + '</button></li>';
+}
+function rootExtra() {
+  const right = root.children.filter(m => m.side === 'right'), left = root.children.filter(m => m.side === 'left');
+  return `<h3 class="p-h">Alur utama <span>${right.length}</span></h3><ul class="p-list">${right.map(itemHTML).join('')}</ul>` +
+    `<h3 class="p-h">Modul pendukung <span>${left.length}</span></h3><ul class="p-list">${left.map(itemHTML).join('')}</ul>` +
+    `<h3 class="p-h">Cara membaca</h3><ul class="p-tips">` +
+    `<li><b>Peta Pikiran:</b> cabang kanan = alur utama (berurutan 1 → ${right.length}), cabang kiri = modul pendukung.</li>` +
+    `<li>Klik topik untuk membuka cabangnya dan membaca penjelasannya di panel ini.</li>` +
+    `<li>Angka dalam lingkaran di ujung topik = jumlah sub-topik yang masih tertutup.</li>` +
+    `<li>${phHTML(1)} ${phHTML(2)} ${phHTML(3)} = saran fase pembangunan fitur.</li>` +
+    `<li>Pilih <b>Outline</b> di atas untuk membaca seluruh analisa sebagai dokumen (bisa dicetak / PDF).</li></ul>`;
+}
+function renderPanel(n) {
+  const same = panelNode === n;
+  panelNode = n;
+  panel.style.setProperty('--c', n.depth ? n.color : 'var(--root-bg)');
+  $('#pKicker').textContent = kicker(n);
+  const path = [];
+  for (let p = n.parent; p; p = p.parent) path.unshift(p);
+  let h = '';
+  if (path.length) h += `<nav class="crumbs" aria-label="Lokasi topik">${path.map(p => `<button type="button" data-go="${p.id}" data-noexpand>${esc(p.title)}</button>`).join('<span aria-hidden="true">›</span>')}</nav>`;
+  h += `<h2 class="p-title">${n.step ? `<span class="step">${n.step}</span>` : ''}<span>${esc(n.title)}</span></h2>`;
+  if (n.phase) h += `<div class="p-meta"><span class="tag">${phHTML(n.phase)}${PHASE[n.phase]}</span></div>`;
+  if (n.note) h += `<p class="p-note">${esc(n.note)}</p>`;
+  else if (n !== root) h += `<p class="p-note muted">${n.children.length ? 'Rincian topik ini ada pada sub-topik di bawah.' : `Bagian dari “${esc(n.parent.title)}”.`}</p>`;
+  if (n === root) h += rootExtra();
+  else if (n.children.length) {
+    h += `<h3 class="p-h">Sub-topik <span>${n.children.length}</span></h3><ul class="p-list">${n.children.map(itemHTML).join('')}</ul>`;
+    h += `<div class="p-actions"><button type="button" class="btn primary" data-act="toggle">${n.collapsed ? 'Buka cabang di peta' : 'Tutup cabang di peta'}</button>` +
+      (n.children.some(c => c.children.length) ? '<button type="button" class="btn" data-act="expandAll">Buka semua isinya</button>' : '') + '</div>';
+  }
+  panelBody.innerHTML = h;
+  if (!same) panelBody.scrollTop = 0;
+}
+function openPanel(n) {
+  renderPanel(n);
+  if (panelOpen) return;
+  panelOpen = true;
+  panel.classList.add('open');
+  document.body.classList.add('panel-open');
+}
+function closePanel() {
+  if (!panelOpen) return;
+  panelOpen = false;
+  panel.classList.remove('open');
+  document.body.classList.remove('panel-open');
+}
+panel.addEventListener('click', e => {
+  const go = e.target.closest('[data-go]');
+  if (go) { goTo(all[+go.dataset.go], { expand: !go.hasAttribute('data-noexpand') }); return; }
+  const act = e.target.closest('[data-act]');
+  if (act && panelNode) {
+    if (act.dataset.act === 'toggle') toggle(panelNode);
+    else expandAll(panelNode);
+  }
+});
+$('#pClose').addEventListener('click', closePanel);
+
+/* ---------- Tombol alur (stepper) ---------- */
+const chipEls = {};
+function buildChips() {
+  const flow = $('#flow');
+  const arrow = '<svg class="arr" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h8M8 4l3 3-3 3"/></svg>';
+  let first = true;
+  for (const [key, label, small] of FLOW) {
+    const n = byKey[key];
+    if (!n) continue;
+    if (!first) flow.insertAdjacentHTML('beforeend', arrow);
+    first = false;
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'chip';
+    b.style.setProperty('--c', n.color);
+    b.innerHTML = `<span class="dot"></span>${esc(label)}${small ? ` <small>${esc(small)}</small>` : ''}`;
+    b.addEventListener('click', () => goTo(n));
+    flow.appendChild(b);
+    chipEls[key] = b;
+  }
+}
+function updateChips(n) {
+  let k = n;
+  while (k && !(k.key && chipEls[k.key])) k = k.parent;
+  for (const key in chipEls) chipEls[key].classList.toggle('active', !!k && key === k.key);
+  if (k) chipEls[k.key].scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: reduceMotion ? 'auto' : 'smooth' });
+}
+
+/* ---------- Outline ---------- */
+function buildOutline() {
+  const li = n => {
+    const head = (n.phase ? phHTML(n.phase) : '') + `<span>${esc(n.title)}</span>`;
+    const note = n.note ? `<p class="o-note">${esc(n.note)}</p>` : '';
+    if (!n.children.length) return `<li><div class="o-row">${head}</div>${note}</li>`;
+    return `<li><details open><summary class="o-row">${head}<span class="o-count">${n.children.length}</span></summary>${note}<ul>${n.children.map(li).join('')}</ul></details></li>`;
+  };
+  const sec = m => `<section class="o-sec" style="--c:${m.color}"><header class="o-sec-h">` +
+    (m.step ? `<span class="step">${m.step}</span>` : '') + `<h3>${esc(m.title)}</h3>` + (m.phase ? phHTML(m.phase) : '') +
+    `<button type="button" class="o-go" data-go="${m.id}">Lihat di peta →</button></header>` +
+    (m.note ? `<p class="o-note lead">${esc(m.note)}</p>` : '') +
+    `<ul class="o-tree">${m.children.map(li).join('')}</ul></section>`;
+  const right = root.children.filter(m => m.side === 'right'), left = root.children.filter(m => m.side === 'left');
+  $('#outlineDoc').innerHTML =
+    `<div class="o-hero"><div class="eyebrow">Analisa Kebutuhan Sistem</div><h1>${esc(root.title)}</h1><p>${esc(root.note)}</p>` +
+    `<div class="o-tools"><button type="button" class="btn" data-o="open">Buka semua</button><button type="button" class="btn" data-o="close">Tutup semua</button><button type="button" class="btn" data-o="print">Cetak / simpan PDF</button></div>` +
+    `<div class="o-legend"><span>${phHTML(1)} ${PHASE[1]}</span><span>${phHTML(2)} ${PHASE[2]}</span><span>${phHTML(3)} ${PHASE[3]}</span></div></div>` +
+    `<h2 class="o-group">Alur utama <span>— berurutan dari pendaftaran sampai kelulusan</span></h2>${right.map(sec).join('')}` +
+    `<h2 class="o-group">Modul pendukung <span>— dipakai bersama oleh seluruh alur</span></h2>${left.map(sec).join('')}` +
+    `<footer class="o-foot">Draf analisa v1 · isi peta dapat diubah pada bagian DATA di file index.html</footer>`;
+}
+outlineEl.addEventListener('click', e => {
+  const go = e.target.closest('[data-go]');
+  if (go) { goTo(all[+go.dataset.go]); return; }
+  const o = e.target.closest('[data-o]');
+  if (!o) return;
+  if (o.dataset.o === 'print') window.print();
+  else outlineEl.querySelectorAll('details').forEach(d => { d.open = o.dataset.o === 'open'; });
+});
+
+/* ---------- Pencarian ---------- */
+const q = $('#q'), qCount = $('#qCount');
+let matches = [], mi = -1;
+const norm = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+function runSearch() {
+  const term = norm(q.value.trim());
+  for (const n of matches) n.el.classList.remove('match');
+  matches = []; mi = -1;
+  if (term.length < 2) { qCount.textContent = ''; return; }
+  const inTitle = all.filter(n => norm(n.title).includes(term));
+  matches = inTitle.concat(all.filter(n => !inTitle.includes(n) && norm(n.note).includes(term)));
+  let changed = false;
+  for (const n of matches) {
+    n.el.classList.add('match');
+    for (let p = n.parent; p; p = p.parent) if (p !== root && p.collapsed) { p.collapsed = false; changed = true; }
+  }
+  if (changed) { clearLevel(); relayout({ animate: true }); }
+  qCount.textContent = matches.length ? `${matches.length} hasil` : 'tidak ada';
+}
+q.addEventListener('input', runSearch);
+q.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && matches.length) {
+    e.preventDefault();
+    mi = (mi + 1) % matches.length;
+    const n = matches[mi];
+    select(n);
+    if (isWide()) openPanel(n);
+    const r = viewRect(), s = clamp(Math.max(cam.s, 0.9), MIN_S, MAX_S);
+    camTo(r.x + r.w / 2 - (n.X + n.w / 2) * s, r.y + r.h / 2 - (n.Y + n.h / 2) * s, s);
+    qCount.textContent = `${mi + 1}/${matches.length}`;
+  } else if (e.key === 'Escape') {
+    q.value = ''; runSearch(); q.blur();
+  }
+});
+
+/* ---------- Geser, zoom, sentuh ---------- */
+const pointers = new Map();
+let gesture = null, dragged = false;
+const dist = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
+const mid = (a, b) => ({ x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 });
+
+viewport.addEventListener('pointerdown', e => {
+  if (e.pointerType === 'mouse' && e.button !== 0) return;
+  hideHint();
+  stopCam();
+  pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+  if (pointers.size === 1) {
+    dragged = false;
+    gesture = { type: 'pan', sx: e.clientX, sy: e.clientY, cx: cam.x, cy: cam.y, moved: false };
+  } else if (pointers.size === 2) {
+    const [a, b] = [...pointers.values()];
+    const r = viewport.getBoundingClientRect(), m = mid(a, b);
+    dragged = true;
+    for (const id of pointers.keys()) { try { viewport.setPointerCapture(id); } catch (_) {} }
+    gesture = { type: 'pinch', d0: dist(a, b) || 1, s0: cam.s, wx: (m.x - r.left - cam.x) / cam.s, wy: (m.y - r.top - cam.y) / cam.s };
+  }
+});
+viewport.addEventListener('pointermove', e => {
+  if (!pointers.has(e.pointerId) || !gesture) return;
+  pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+  if (gesture.type === 'pan') {
+    const dx = e.clientX - gesture.sx, dy = e.clientY - gesture.sy;
+    if (!gesture.moved && Math.hypot(dx, dy) > 5) {
+      gesture.moved = true; dragged = true;
+      try { viewport.setPointerCapture(e.pointerId); } catch (_) {}
+      viewport.classList.add('grabbing');
+    }
+    if (gesture.moved) { cam.x = gesture.cx + dx; cam.y = gesture.cy + dy; applyCam(); }
+  } else if (pointers.size >= 2) {
+    const [a, b] = [...pointers.values()];
+    const r = viewport.getBoundingClientRect(), m = mid(a, b);
+    const s = clamp(gesture.s0 * dist(a, b) / gesture.d0, MIN_S, MAX_S);
+    cam.s = s; cam.x = m.x - r.left - gesture.wx * s; cam.y = m.y - r.top - gesture.wy * s;
+    applyCam();
+  }
+});
+function endPointer(e) {
+  pointers.delete(e.pointerId);
+  if (!pointers.size) { gesture = null; viewport.classList.remove('grabbing'); }
+  else if (gesture && gesture.type === 'pinch') {
+    const p = [...pointers.values()][0];
+    gesture = { type: 'pan', sx: p.x, sy: p.y, cx: cam.x, cy: cam.y, moved: true };
+  }
+}
+viewport.addEventListener('pointerup', endPointer);
+viewport.addEventListener('pointercancel', endPointer);
+
+viewport.addEventListener('click', e => {
+  if (dragged) { dragged = false; return; }
+  const tg = e.target.closest('.tg');
+  if (tg) { hideHint(); toggle(all[+tg.dataset.id]); return; }
+  const nd = e.target.closest('.node');
+  if (nd) onNodeClick(all[+nd.dataset.id]);
+});
+
+viewport.addEventListener('wheel', e => {
+  e.preventDefault();
+  stopCam();
+  hideHint();
+  const r = viewport.getBoundingClientRect();
+  const isZoom = e.ctrlKey || e.metaKey || e.deltaMode === 1 ||
+    (e.deltaX === 0 && Math.abs(e.deltaY) >= 40 && Number.isInteger(e.deltaY));
+  if (isZoom) {
+    const k = Math.exp(-e.deltaY * (e.deltaMode === 1 ? 0.05 : e.ctrlKey ? 0.01 : 0.0015));
+    zoomAt(e.clientX - r.left, e.clientY - r.top, cam.s * k);
+  } else {
+    cam.x -= e.deltaX; cam.y -= e.deltaY;
+    applyCam();
+  }
+}, { passive: false });
+
+/* Safari (trackpad) */
+let gs0 = 1;
+viewport.addEventListener('gesturestart', e => { e.preventDefault(); gs0 = cam.s; });
+viewport.addEventListener('gesturechange', e => {
+  e.preventDefault();
+  if (pointers.size >= 2) return;
+  const r = viewport.getBoundingClientRect();
+  zoomAt(e.clientX - r.left, e.clientY - r.top, gs0 * e.scale);
+});
+
+/* ---------- Keyboard ---------- */
+function nav(key) {
+  const n = selected || root;
+  let t = null;
+  if (key === 'ArrowRight' || key === 'ArrowLeft') {
+    const want = key === 'ArrowRight' ? 1 : -1;
+    if (n === root) t = root.children.find(m => dirOf(m) === want);
+    else if (dirOf(n) === want) {
+      if (n.children.length) {
+        if (n.collapsed) { n.collapsed = false; clearLevel(); relayout({ animate: true }); }
+        t = n.children[0];
+      }
+    } else t = n.parent;
+  } else if (n !== root) {
+    const sibs = n.parent === root ? root.children.filter(m => dirOf(m) === dirOf(n)) : n.parent.children;
+    t = sibs[sibs.indexOf(n) + (key === 'ArrowDown' ? 1 : -1)];
+  }
+  if (t) { select(t); ensureNodeVisible(t); }
+}
+document.addEventListener('keydown', e => {
+  if (e.target.matches('input, textarea') || e.ctrlKey || e.metaKey || e.altKey) return;
+  if (view === 'outline') return;
+  const k = e.key;
+  if (k === '+' || k === '=') zoomBy(1.2);
+  else if (k === '-' || k === '_') zoomBy(1 / 1.2);
+  else if (k === '0') fit();
+  else if (k === 'Escape') closePanel();
+  else if (k === '/') { e.preventDefault(); q.focus(); }
+  else if (k.startsWith('Arrow')) { e.preventDefault(); hideHint(); nav(k); }
+  else if (k === ' ' && selected) { e.preventDefault(); toggle(selected); }
+  else if (k === 'Enter' && selected) openPanel(selected);
+});
+
+/* ---------- Kontrol lain ---------- */
+tabs.forEach(t => t.addEventListener('click', () => setView(t.dataset.view)));
+levelBtns.forEach(b => b.addEventListener('click', () => { hideHint(); setLevel(+b.dataset.level); fit(true); }));
+$('#zoomIn').addEventListener('click', () => zoomBy(1.2));
+$('#zoomOut').addEventListener('click', () => zoomBy(1 / 1.2));
+$('#zoomPct').addEventListener('click', () => zoomBy(1 / (camGoal || cam).s));
+$('#fitBtn').addEventListener('click', () => fit(true));
+$('#legendBtn').addEventListener('click', () => {
+  const c = legend.classList.toggle('collapsed');
+  $('#legendBtn').setAttribute('aria-expanded', String(!c));
+});
+let hintTimer = setTimeout(hideHint, 10000);
+function hideHint() { clearTimeout(hintTimer); hint.classList.add('hide'); }
+
+/* ---------- Mulai ---------- */
+function fontsReady() {
+  if (!document.fonts || !document.fonts.load) return Promise.resolve();
+  const fam = '"Plus Jakarta Sans"';
+  const loads = ['800 21px', '700 15px', '500 14px', '400 13px'].map(w => document.fonts.load(`${w} ${fam}`));
+  return Promise.race([Promise.all(loads).catch(() => {}), new Promise(r => setTimeout(r, 1500))]);
+}
+function remeasure() {
+  cancelAnimationFrame(raf.layout);
+  for (const n of all) n.w = 0;
+  for (const n of visible) { n.w = n.el.offsetWidth; n.h = n.el.offsetHeight; }
+  layoutTargets();
+  for (const n of visible) { n.x = n.X; n.y = n.Y; }
+  draw();
+}
+let resizeTimer = 0;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => { if (booted) remeasure(); }, 150);
+});
+if (document.fonts && document.fonts.addEventListener) {
+  document.fonts.addEventListener('loadingdone', () => { if (booted) remeasure(); });
+}
+
+fontsReady().then(() => {
+  buildChips();
+  buildOutline();
+  if (window.innerWidth < 700) {
+    // Di HP, Diagram Logika (bercabang ke kanan) lebih mudah dibaca dalam posisi tegak.
+    mode = view = 'logic';
+    tabs.forEach(t => t.setAttribute('aria-selected', String(t.dataset.view === 'logic')));
+    $('#legendSide').hidden = true;
+  }
+  setLevel(1, false);
+  if (window.innerWidth >= 1100) { select(root); openPanel(root); }
+  fit(false);
+  viewport.classList.add('ready');
+  booted = true;
+});
+})();
+</script>
+</body>
+</html>
