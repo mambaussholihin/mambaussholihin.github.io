@@ -19,6 +19,7 @@
   --root-bg:#1e2a4a; --root-text:#fff; --sel:#2f7cf6; --hl:#fff0b3;
   --shadow:0 1px 2px rgba(16,24,40,.06),0 8px 24px rgba(16,24,40,.08);
   --font:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --alt:#e03131; --ok:#2b8a3e;
   color-scheme:light;
 }
 @media (prefers-color-scheme:dark){
@@ -27,6 +28,7 @@
     --line:#2b3039; --line-2:#3a404c; --canvas:#14161b; --dot:#262b34;
     --root-bg:#e9edf7; --root-text:#131a2c; --sel:#6aa5ff; --hl:rgba(250,190,40,.28);
     --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
+    --alt:#ff6b6b; --ok:#2f9e44;
     color-scheme:dark;
   }
 }
@@ -258,7 +260,7 @@ summary.o-row::before{margin-top:5.5px}
 .o-foot{margin-top:30px;text-align:center;font-size:12.5px;color:var(--muted)}
 
 /* ---------- Alur proses ---------- */
-.proses{position:absolute;inset:0;z-index:7;overflow:auto;background:var(--bg);padding:22px 16px 72px;--alt:#e03131;--ok:#2b8a3e}
+.proses{position:absolute;inset:0;z-index:7;overflow:auto;background:var(--bg);padding:22px 16px 72px}
 .proses[hidden]{display:none}
 .pdoc{max-width:1240px;margin:0 auto}
 .f-sel{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin-bottom:14px}
@@ -333,7 +335,6 @@ summary.o-row::before{margin-top:5.5px}
 .f-out p{margin:4px 0 0;font-size:13.5px;line-height:1.55;color:var(--muted)}
 .f-foot{margin-top:26px;text-align:center;font-size:12.5px;color:var(--muted)}
 @media (prefers-color-scheme:dark){
-  .proses{--alt:#ff6b6b;--ok:#2f9e44}
   .f-ln{stroke:color-mix(in srgb,var(--c) 72%,#fff)}
   .f-links .ah{fill:color-mix(in srgb,var(--c) 72%,#fff)}
   body[data-icons="fluent"] :is(.f-group,.f-head,.f-item-h,.f-alt,.f-out,.f-card.fan,.f-card.alt) img.ic{filter:drop-shadow(0 0 .8px rgba(255,255,255,.75))}
@@ -349,6 +350,61 @@ summary.o-row::before{margin-top:5.5px}
   .f-item{margin-left:40px;padding:14px}
   .f-item>.f-num{left:-40px;width:28px;height:28px}
   .f-list::before{left:13px}
+}
+
+/* ---------- Detail langkah (dengan tombol Kembali) ---------- */
+.f-card.sel{outline:3px solid var(--sel);outline-offset:3px}
+.f-item-h .f-more{margin-left:auto;align-self:center;padding:6px 12px;font-size:12.5px;white-space:nowrap}
+.fdet{position:absolute;inset:0;z-index:9;display:grid;place-items:center;padding:24px}
+.fdet[hidden]{display:none}
+.fd-backdrop{position:absolute;inset:0;background:rgba(15,20,30,.45);opacity:0;transition:opacity .25s ease}
+.fdet.open .fd-backdrop{opacity:1}
+.fd-sheet{position:relative;width:min(660px,100%);max-height:100%;display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:20px;box-shadow:0 24px 60px rgba(0,0,0,.28);overflow:hidden;opacity:0;transform:translateY(18px) scale(.98);transition:transform .28s cubic-bezier(.2,.8,.2,1),opacity .2s ease}
+.fdet.open .fd-sheet{opacity:1;transform:none}
+.fd-top{display:flex;align-items:center;gap:12px;padding:10px 14px 10px 10px;border-bottom:1px solid var(--line);flex:none}
+.fd-back{display:inline-flex;align-items:center;gap:4px;height:42px;padding:0 16px 0 8px;border:1px solid var(--line);border-radius:11px;background:var(--surface);font-size:14.5px;font-weight:800;color:var(--text);flex:none}
+.fd-back:hover{background:var(--surface-2)}
+.fd-where{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12.5px;font-weight:600;color:var(--muted)}
+.fd-scroll{flex:1;overflow:auto;padding:18px 20px 20px;overscroll-behavior:contain}
+.fd-hero{display:flex;align-items:center;gap:18px;padding:18px;border-radius:16px;background:var(--c);color:#fff}
+.fd-hero .icw::before{content:"";position:absolute;inset:-5px;border-radius:14px;background:color-mix(in srgb,var(--c) 8%,#fff);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.fd-hero .icw .ic{position:relative}
+.ic-fdet{--s:58px}
+.fd-hero .eyebrow{color:#fff;opacity:.85}
+.fd-hero h2{margin:3px 0 8px;font-size:clamp(20px,3.4vw,26px);line-height:1.2;letter-spacing:-.01em}
+.fd-hero .tag{background:rgba(255,255,255,.18);border-color:transparent;color:#fff}
+.fd-hero .tag svg{color:#fff}
+.fd-note{margin:16px 2px 0;font-size:15.5px;line-height:1.7}
+.fd-scroll .p-h{margin-top:20px}
+.fd-scroll .f-outs{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+.fd-rel{display:inline-flex;align-items:center;gap:8px;margin-top:18px;text-align:left}
+.fd-dots{display:flex;align-items:center;margin:24px 2px 2px}
+.fd-dot{width:30px;height:30px;flex:none;display:grid;place-items:center;padding:0;border:2px solid color-mix(in srgb,var(--c) 45%,var(--line));border-radius:50%;background:var(--surface);font-size:12.5px;font-weight:800;color:var(--muted)}
+.fd-dot.done{background:color-mix(in srgb,var(--c) 16%,var(--surface));color:var(--text)}
+.fd-dot.cur{background:var(--c);border-color:var(--c);color:#fff;box-shadow:0 0 0 4px color-mix(in srgb,var(--c) 22%,transparent)}
+.fd-seg{flex:1;height:2px;min-width:8px;background:color-mix(in srgb,var(--c) 35%,var(--line))}
+.fd-nav{display:flex;gap:10px;padding:12px;border-top:1px solid var(--line);flex:none}
+.fd-nav button{flex:1;min-width:0;display:flex;align-items:center;gap:10px;min-height:54px;padding:8px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface);font-size:14px;font-weight:700;color:var(--text);text-align:left}
+.fd-nav button span:not(.arr){min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fd-nav button[data-fd="next"]{justify-content:flex-end;text-align:right}
+.fd-nav button.primary{background:var(--c);border-color:var(--c);color:#fff}
+.fd-nav button.primary small{color:rgba(255,255,255,.85)}
+.fd-nav button:not(:disabled):hover{filter:brightness(1.04);border-color:var(--c)}
+.fd-nav button:disabled{opacity:.45;cursor:default}
+.fd-nav small{display:block;font-size:11px;font-weight:600;color:var(--muted)}
+.fd-nav .arr{font-size:22px;line-height:1;flex:none}
+@media (max-width:699px){
+  .fdet{padding:0;place-items:stretch}
+  .fd-backdrop{display:none}
+  .fd-sheet{width:100%;height:100%;max-height:none;border:0;border-radius:0;box-shadow:none;opacity:1;transform:translateX(100%)}
+  .fdet.open .fd-sheet{transform:none}
+  .fd-hero{gap:14px;padding:14px}
+  .ic-fdet{--s:48px}
+  .f-item-h .f-more{padding:5px 10px}
+}
+@media (prefers-color-scheme:dark){
+  body[data-icons="fluent"] :is(.fd-scroll .f-alt,.fd-scroll .f-out,.fd-rel) img.ic{filter:drop-shadow(0 0 .8px rgba(255,255,255,.75))}
+  body[data-icons="openmoji"] :is(.fd-scroll .f-alt,.fd-scroll .f-out,.fd-rel) img.ic{filter:drop-shadow(0 0 .7px #fff) drop-shadow(0 0 .7px #fff)}
 }
 
 /* ---------- Responsif ---------- */
@@ -384,7 +440,7 @@ summary.o-row::before{margin-top:5.5px}
   body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
   body.is-proses .outline{display:none!important}
   body.is-proses .proses{display:block!important;position:static;overflow:visible;padding:0;background:#fff}
-  .f-sel,.f-meta .btn{display:none!important}
+  .f-sel,.f-meta .btn,.f-more,.fdet{display:none!important}
   .f-item,.f-board,.f-head{break-inside:avoid-page;box-shadow:none}
 }
 </style>
@@ -500,6 +556,10 @@ summary.o-row::before{margin-top:5.5px}
 
   <div class="outline" id="outline" hidden><div class="doc" id="outlineDoc"></div></div>
   <div class="proses" id="proses" hidden><div class="pdoc" id="prosesDoc"></div></div>
+  <div class="fdet" id="fdet" hidden>
+    <div class="fd-backdrop" data-fd="back"></div>
+    <section class="fd-sheet" id="fdSheet" role="dialog" aria-modal="true" aria-labelledby="fdTitle"></section>
+  </div>
 </div>
 
 <noscript><p style="padding:24px">Halaman ini membutuhkan JavaScript untuk menampilkan peta pikiran.</p></noscript>
@@ -524,7 +584,7 @@ summary.o-row::before{margin-top:5.5px}
 const DATA = `
 Aplikasi Pondok Pesantren {🕌} :: Analisa awal aplikasi terpadu untuk pondok pesantren yang menaungi beberapa jenjang: MI, MTs, MA, dan Perguruan Tinggi. Alur utamanya: santri mendaftar → diseleksi → daftar ulang → diteruskan ke jenjang tujuan → mengikuti kegiatan harian (absensi, sekolah, diniyah, tahfidz, asrama) → dinilai → menerima raport → naik kelas atau lulus. Cabang kanan adalah alur utama yang berurutan, cabang kiri adalah modul pendukung yang dipakai oleh semua alur. Ini draf v1 — silakan dikoreksi dan dilengkapi.
   Pendaftaran Santri {📝} @psb :: Pintu masuk semua data (Penerimaan Santri Baru / PSB). Data yang diisi di sini dipakai terus sampai santri lulus, jadi formulir harus lengkap dan tervalidasi sejak awal. Pendaftaran bisa dilakukan sendiri oleh wali secara online, atau dibantu panitia di kantor pondok.
-    Formulir online {📄} [1] :: Satu formulir untuk semua jenjang. Isian tambahan muncul otomatis sesuai jenjang yang dipilih, misalnya nilai rapor terakhir untuk MTs/MA atau ijazah SMA/MA untuk Perguruan Tinggi.
+    Formulir online {📄} [1] @formulir :: Satu formulir untuk semua jenjang. Isian tambahan muncul otomatis sesuai jenjang yang dipilih, misalnya nilai rapor terakhir untuk MTs/MA atau ijazah SMA/MA untuk Perguruan Tinggi.
       Data diri calon santri (NIK, NISN, tempat & tanggal lahir) {👤}
       Data orang tua / wali & nomor WhatsApp {🏡}
       Asal sekolah & nilai terakhir {🏫}
@@ -536,7 +596,7 @@ Aplikasi Pondok Pesantren {🕌} :: Analisa awal aplikasi terpadu untuk pondok p
       MA — lulusan SMP/MTs {🎓}
       Perguruan Tinggi — lulusan SMA/MA {🏛️}
       Hanya mondok / program tahfidz {🕌}
-    Pembayaran biaya pendaftaran {💳} [1]
+    Pembayaran biaya pendaftaran {💳} [1] @bayar
       Transfer bank / virtual account {🏦}
       Upload & verifikasi bukti bayar {📸}
       Kuitansi otomatis {🧾}
@@ -546,7 +606,7 @@ Aplikasi Pondok Pesantren {🕌} :: Analisa awal aplikasi terpadu untuk pondok p
       Tes akademik / potensi dasar {✏️}
       Wawancara santri & wali {🗣️}
       Rekap nilai & keputusan panitia {🗳️}
-    Pengumuman hasil {📢} [1]
+    Pengumuman hasil {📢} [1] @pengumuman
       Diterima / cadangan / tidak diterima {📃}
       Notifikasi WhatsApp ke wali {📩}
     Daftar ulang {🏁} [1] @daftarulang :: Setelah daftar ulang selesai, status calon santri berubah menjadi santri aktif dan datanya otomatis diteruskan ke jenjang tujuan.
@@ -555,17 +615,17 @@ Aplikasi Pondok Pesantren {🕌} :: Analisa awal aplikasi terpadu untuk pondok p
       Pembuatan akun wali santri {🔐}
       Pengambilan seragam & perlengkapan {👕}
   Penempatan Jenjang {🪜} @jenjang :: Setelah daftar ulang, sistem meneruskan santri ke jenjang tujuan berdasarkan pilihan saat mendaftar. Setiap santri punya dua jalur sekaligus: jalur madrasah formal (MI/MTs/MA/PT) dan jalur pesantren (Madrasah Diniyah + kamar asrama).
-    MI — Madrasah Ibtidaiyah {🎒} [1]
+    MI — Madrasah Ibtidaiyah {🎒} [1] @mi
       Kelas 1–6
       Rombel & wali kelas
-    MTs — Madrasah Tsanawiyah {🏫} [1]
+    MTs — Madrasah Tsanawiyah {🏫} [1] @mts
       Kelas 7–9
       Rombel & wali kelas
-    MA — Madrasah Aliyah {🎓} [1]
+    MA — Madrasah Aliyah {🎓} [1] @ma
       Kelas 10–12
       Peminatan: IPA / IPS / Keagamaan
       Rombel & wali kelas
-    Perguruan Tinggi (Ma'had Aly / STAI) {🏛️} [3] :: Pengelolaan perguruan tinggi berbeda dengan madrasah (memakai SKS, KRS, dan KHS), sehingga disarankan masuk fase terakhir atau dihubungkan dengan sistem akademik kampus yang sudah ada.
+    Perguruan Tinggi (Ma'had Aly / STAI) {🏛️} [3] @pt :: Pengelolaan perguruan tinggi berbeda dengan madrasah (memakai SKS, KRS, dan KHS), sehingga disarankan masuk fase terakhir atau dihubungkan dengan sistem akademik kampus yang sudah ada.
       Program studi
       Semester, SKS & KRS
       Dosen pembimbing akademik
@@ -587,11 +647,11 @@ Aplikasi Pondok Pesantren {🕌} :: Analisa awal aplikasi terpadu untuk pondok p
       Datang & pulang {⌚}
       Kehadiran mengajar sesuai jadwal {📅}
       Guru pengganti (inval) {🔁}
-    Cara pencatatan {📱} :: Mulai dari yang paling sederhana (guru mengisi di HP), lalu ditingkatkan ke kartu QR atau perangkat biometrik bila sudah siap.
+    Cara pencatatan {📱} @pencatatan :: Mulai dari yang paling sederhana (guru mengisi di HP), lalu ditingkatkan ke kartu QR atau perangkat biometrik bila sudah siap.
       Manual oleh guru lewat HP / tablet {✏️} [1]
       Scan QR kartu santri {📷} [2]
       RFID / sidik jari / wajah {👆} [3]
-    Status kehadiran {🚦}
+    Status kehadiran {🚦} @status
       Hadir {✅}
       Terlambat {⏰}
       Izin {📝}
@@ -602,7 +662,7 @@ Aplikasi Pondok Pesantren {🕌} :: Analisa awal aplikasi terpadu untuk pondok p
       Izin keluar pondok sementara {🚶}
       Persetujuan wali & pengurus {🖊️}
       Catat jam keluar & kembali {🕒}
-    Rekap & peringatan {📈} [2]
+    Rekap & peringatan {📈} [2] @rekap
       Rekap harian, bulanan & semester
       Peringatan otomatis jika alpa berulang
   Kegiatan Santri & Guru {🗓️} @kegiatan :: Mencatat aktivitas harian di pondok. Bagian inilah yang membedakan aplikasi pondok dari aplikasi sekolah biasa: santri berada di pondok 24 jam, sehingga kegiatan di luar kelas juga perlu dipantau.
@@ -742,52 +802,53 @@ const FLOW = [
        Alur dengan Grup sama (mis. Pendaftaran) tampil sebagai pilihan
        jenjang. @penanda = topik terkait di peta pikiran. * = alur yang
        dibuka pertama kali.
-   - "Judul {ikon} | Pelaku :: penjelasan" = satu langkah (berurutan).
+   - "Judul {ikon} @penanda | Pelaku :: penjelasan" = satu langkah (berurutan);
+     @penanda opsional = topik terkait di peta pikiran (muncul di halaman detail).
    - "  x Judul {ikon} :: …" = cabang jika gagal / pengecualian (garis putus-putus).
    - "  > Judul {ikon} :: …" = hasil / keluaran langkah itu (garis bercabang).
    ===================================================================== */
 const FLOWS = `
 # Pendaftaran · MI {🎒} @psb :: Alur penerimaan santri baru jenjang MI, dari mengisi formulir sampai resmi menjadi siswa kelas 1.
-Pendaftaran {📝} | Wali santri :: Wali mengisi formulir online (atau dibantu panitia di kantor) dan memilih jenjang MI. Data utama: identitas anak, data orang tua/wali, dan nomor WhatsApp.
-Administrasi {🗂️} | Panitia PSB :: Panitia memeriksa berkas (KK, akta kelahiran, foto) dan bukti pembayaran biaya pendaftaran. Berkas yang kurang diberitahukan ke wali lewat notifikasi.
-Tes {✍️} | Penguji :: Observasi kesiapan sekolah, pengenalan huruf hijaiyah, dan wawancara orang tua. Nilai diinput penguji langsung dari HP.
-Pengumuman lolos {📢} | Panitia PSB :: Hasil seleksi diumumkan di aplikasi dan dikirim ke WhatsApp wali.
+Pendaftaran {📝} @formulir | Wali santri :: Wali mengisi formulir online (atau dibantu panitia di kantor) dan memilih jenjang MI. Data utama: identitas anak, data orang tua/wali, dan nomor WhatsApp.
+Administrasi {🗂️} @bayar | Panitia PSB :: Panitia memeriksa berkas (KK, akta kelahiran, foto) dan bukti pembayaran biaya pendaftaran. Berkas yang kurang diberitahukan ke wali lewat notifikasi.
+Tes {✍️} @seleksi | Penguji :: Observasi kesiapan sekolah, pengenalan huruf hijaiyah, dan wawancara orang tua. Nilai diinput penguji langsung dari HP.
+Pengumuman lolos {📢} @pengumuman | Panitia PSB :: Hasil seleksi diumumkan di aplikasi dan dikirim ke WhatsApp wali.
   x Tidak lolos {📃} :: Masuk daftar cadangan atau menerima pemberitahuan resmi.
-Daftar ulang {🏁} | Wali santri & bendahara :: Pelunasan biaya masuk, pengambilan seragam, serta penerbitan NIS dan kartu santri.
-Siswa MI {🎒} | Wali kelas :: Data otomatis masuk ke kelas 1 (rombel & wali kelas) dan siap mengikuti absensi serta KBM.
+Daftar ulang {🏁} @daftarulang | Wali santri & bendahara :: Pelunasan biaya masuk, pengambilan seragam, serta penerbitan NIS dan kartu santri.
+Siswa MI {🎒} @mi | Wali kelas :: Data otomatis masuk ke kelas 1 (rombel & wali kelas) dan siap mengikuti absensi serta KBM.
 
 # Pendaftaran · MTs {🏫} @psb * :: Alur penerimaan santri baru jenjang MTs, dari mengisi formulir sampai resmi menjadi siswa kelas 7.
-Pendaftaran {📝} | Calon santri & wali :: Mengisi formulir online dan memilih jenjang MTs. Data utama: identitas & NISN, asal sekolah (SD/MI), data orang tua/wali, dan nomor WhatsApp.
-Administrasi {🗂️} | Panitia PSB :: Verifikasi berkas (KK, akta kelahiran, ijazah/SKL SD/MI, rapor, foto) dan bukti pembayaran biaya pendaftaran.
-Tes {✍️} | Penguji :: Tes baca Al-Qur'an, tes akademik dasar, dan wawancara santri & wali. Nilai diinput penguji langsung dari HP sehingga bisa direkap otomatis.
-Pengumuman lolos {📢} | Panitia PSB :: Hasil seleksi diumumkan di aplikasi dan dikirim ke WhatsApp wali.
+Pendaftaran {📝} @formulir | Calon santri & wali :: Mengisi formulir online dan memilih jenjang MTs. Data utama: identitas & NISN, asal sekolah (SD/MI), data orang tua/wali, dan nomor WhatsApp.
+Administrasi {🗂️} @bayar | Panitia PSB :: Verifikasi berkas (KK, akta kelahiran, ijazah/SKL SD/MI, rapor, foto) dan bukti pembayaran biaya pendaftaran.
+Tes {✍️} @seleksi | Penguji :: Tes baca Al-Qur'an, tes akademik dasar, dan wawancara santri & wali. Nilai diinput penguji langsung dari HP sehingga bisa direkap otomatis.
+Pengumuman lolos {📢} @pengumuman | Panitia PSB :: Hasil seleksi diumumkan di aplikasi dan dikirim ke WhatsApp wali.
   x Tidak lolos {📃} :: Masuk daftar cadangan atau menerima pemberitahuan resmi.
-Daftar ulang {🏁} | Wali santri & bendahara :: Pelunasan biaya masuk, pembagian kamar asrama, pengambilan seragam, serta penerbitan NIS dan kartu santri ber-RFID.
-Siswa MTs {🧑‍🎓} | Wali kelas & musyrif :: Resmi menjadi siswa kelas 7: masuk rombel, kamar asrama, dan kelas diniyah — siap mengikuti absensi dan KBM.
+Daftar ulang {🏁} @daftarulang | Wali santri & bendahara :: Pelunasan biaya masuk, pembagian kamar asrama, pengambilan seragam, serta penerbitan NIS dan kartu santri ber-RFID.
+Siswa MTs {🧑‍🎓} @mts | Wali kelas & musyrif :: Resmi menjadi siswa kelas 7: masuk rombel, kamar asrama, dan kelas diniyah — siap mengikuti absensi dan KBM.
 
 # Pendaftaran · MA {🎓} @psb :: Alur penerimaan santri baru jenjang MA, dari mengisi formulir sampai resmi menjadi siswa kelas 10.
-Pendaftaran {📝} | Calon santri & wali :: Mengisi formulir online, memilih jenjang MA dan peminatan (IPA / IPS / Keagamaan). Data utama: identitas & NISN, asal sekolah (SMP/MTs), data orang tua/wali.
-Administrasi {🗂️} | Panitia PSB :: Verifikasi berkas (KK, akta kelahiran, ijazah/SKL SMP/MTs, rapor, foto) dan bukti pembayaran biaya pendaftaran.
-Tes {✍️} | Penguji :: Tes baca Al-Qur'an dan kitab dasar, tes akademik sesuai peminatan, serta wawancara santri & wali.
-Pengumuman lolos {📢} | Panitia PSB :: Hasil seleksi beserta peminatan yang diterima diumumkan di aplikasi dan dikirim ke WhatsApp wali.
+Pendaftaran {📝} @formulir | Calon santri & wali :: Mengisi formulir online, memilih jenjang MA dan peminatan (IPA / IPS / Keagamaan). Data utama: identitas & NISN, asal sekolah (SMP/MTs), data orang tua/wali.
+Administrasi {🗂️} @bayar | Panitia PSB :: Verifikasi berkas (KK, akta kelahiran, ijazah/SKL SMP/MTs, rapor, foto) dan bukti pembayaran biaya pendaftaran.
+Tes {✍️} @seleksi | Penguji :: Tes baca Al-Qur'an dan kitab dasar, tes akademik sesuai peminatan, serta wawancara santri & wali.
+Pengumuman lolos {📢} @pengumuman | Panitia PSB :: Hasil seleksi beserta peminatan yang diterima diumumkan di aplikasi dan dikirim ke WhatsApp wali.
   x Tidak lolos {📃} :: Masuk daftar cadangan atau menerima pemberitahuan resmi.
-Daftar ulang {🏁} | Wali santri & bendahara :: Pelunasan biaya masuk, pembagian kamar asrama, pengambilan seragam, serta penerbitan NIS dan kartu santri ber-RFID.
-Siswa MA {🎓} | Wali kelas & musyrif :: Resmi menjadi siswa kelas 10 sesuai peminatan: masuk rombel, kamar asrama, dan kelas diniyah.
+Daftar ulang {🏁} @daftarulang | Wali santri & bendahara :: Pelunasan biaya masuk, pembagian kamar asrama, pengambilan seragam, serta penerbitan NIS dan kartu santri ber-RFID.
+Siswa MA {🎓} @ma | Wali kelas & musyrif :: Resmi menjadi siswa kelas 10 sesuai peminatan: masuk rombel, kamar asrama, dan kelas diniyah.
 
 # Pendaftaran · PT {🏛️} @psb :: Alur penerimaan mahasiswa baru (Ma'had Aly / STAI), dari mengisi formulir sampai terdaftar di semester 1.
-Pendaftaran {📝} | Calon mahasiswa :: Mengisi formulir online dan memilih program studi. Data utama: identitas (NIK), asal sekolah (SMA/MA), dan kontak.
-Administrasi {🗂️} | Panitia PMB :: Verifikasi berkas (KTP, KK, ijazah & transkrip SMA/MA, foto) dan bukti pembayaran biaya pendaftaran.
-Tes {✍️} | Penguji :: Tes baca kitab / Al-Qur'an, tes potensi akademik, dan wawancara.
-Pengumuman lolos {📢} | Panitia PMB :: Hasil seleksi beserta program studi yang diterima diumumkan di aplikasi.
+Pendaftaran {📝} @formulir | Calon mahasiswa :: Mengisi formulir online dan memilih program studi. Data utama: identitas (NIK), asal sekolah (SMA/MA), dan kontak.
+Administrasi {🗂️} @bayar | Panitia PMB :: Verifikasi berkas (KTP, KK, ijazah & transkrip SMA/MA, foto) dan bukti pembayaran biaya pendaftaran.
+Tes {✍️} @seleksi | Penguji :: Tes baca kitab / Al-Qur'an, tes potensi akademik, dan wawancara.
+Pengumuman lolos {📢} @pengumuman | Panitia PMB :: Hasil seleksi beserta program studi yang diterima diumumkan di aplikasi.
   x Tidak lolos {📃} :: Menerima pemberitahuan resmi; dapat mendaftar lagi di gelombang berikutnya.
-Daftar ulang {🏁} | Mahasiswa & bagian keuangan :: Pembayaran biaya kuliah, penerbitan NIM dan kartu mahasiswa, serta pengisian KRS semester 1.
-Mahasiswa {🎓} | Dosen pembimbing akademik :: Resmi terdaftar sebagai mahasiswa semester 1 dan siap mengikuti perkuliahan.
+Daftar ulang {🏁} @daftarulang | Mahasiswa & bagian keuangan :: Pembayaran biaya kuliah, penerbitan NIM dan kartu mahasiswa, serta pengisian KRS semester 1.
+Mahasiswa {🎓} @pt | Dosen pembimbing akademik :: Resmi terdaftar sebagai mahasiswa semester 1 dan siap mengikuti perkuliahan.
 
 # Absensi {📡} @absensi :: Alur absensi otomatis dengan antena RFID: santri cukup lewat, guru memvalidasi, lalu laporan terbentuk sendiri.
-Siswa melewati antena {📡} | Santri :: Kartu santri ber-chip RFID terbaca otomatis saat santri melewati antena di gerbang atau pintu kelas. Jam kedatangan tercatat tanpa antre.
+Siswa melewati antena {📡} @pencatatan | Santri :: Kartu santri ber-chip RFID terbaca otomatis saat santri melewati antena di gerbang atau pintu kelas. Jam kedatangan tercatat tanpa antre.
   x Kartu tidak terbaca {✏️} :: Lupa membawa kartu atau kartu rusak — guru menginput kehadirannya secara manual saat validasi.
-Guru validasi {🧑‍🏫} | Guru / wali kelas :: Guru membuka daftar hadir kelas di HP, mencocokkan dengan santri yang ada, lalu menandai izin, sakit, atau alpa sebelum data dikunci.
-Laporan {📊} | Sistem (otomatis) :: Data yang sudah divalidasi langsung direkap otomatis dan bisa dilihat kepala madrasah, pengasuh, dan wali santri.
+Guru validasi {🧑‍🏫} @status | Guru / wali kelas :: Guru membuka daftar hadir kelas di HP, mencocokkan dengan santri yang ada, lalu menandai izin, sakit, atau alpa sebelum data dikunci.
+Laporan {📊} @rekap | Sistem (otomatis) :: Data yang sudah divalidasi langsung direkap otomatis dan bisa dilihat kepala madrasah, pengasuh, dan wali santri.
   > Laporan harian {☀️} :: Daftar hadir per kelas hari ini; wali menerima notifikasi bila anaknya alpa.
   > Laporan mingguan {🗓️} :: Rekap kehadiran per minggu untuk evaluasi wali kelas dan musyrif.
   > Laporan bulanan {🌕} :: Persentase kehadiran per santri dan per kelas untuk rapat bulanan.
@@ -932,6 +993,8 @@ for (const n of all) {
 /* ---------- State ---------- */
 let visible = [], selected = null, panelOpen = false, panelNode = null;
 let mode = 'map', view = 'map', booted = false;
+/* Tampilan awal: HP memakai Diagram Logika (lebih mudah dibaca dalam posisi tegak). */
+const defaultView = window.innerWidth < 700 ? 'logic' : 'map';
 const cam = { x: 0, y: 0, s: 1 };
 let camGoal = null;
 
@@ -1229,7 +1292,7 @@ function onNodeClick(n) {
 }
 function goTo(n, { expand = true } = {}) {
   hideHint();
-  if (view === 'outline' || view === 'proses') setView(mode, false);
+  if (view === 'outline' || view === 'proses') { setView(mode, false); syncHash(true); }
   for (let p = n.parent; p; p = p.parent) p.collapsed = false;
   if (expand && n.children.length && n !== root) n.collapsed = false;
   clearLevel();
@@ -1239,6 +1302,7 @@ function goTo(n, { expand = true } = {}) {
   focusBox(n);
 }
 function setView(v, refit = true) {
+  if (v !== 'proses') closeDetail(false);
   view = v;
   tabs.forEach(t => t.setAttribute('aria-selected', String(t.dataset.view === v)));
   const out = v === 'outline', pro = v === 'proses';
@@ -1246,7 +1310,6 @@ function setView(v, refit = true) {
   prosesEl.hidden = !pro;
   document.body.classList.toggle('is-outline', out);
   document.body.classList.toggle('is-proses', pro);
-  syncHash();
   if (out || pro) {
     closePanel();
     if (out) outlineEl.scrollTo(0, 0);
@@ -1426,7 +1489,7 @@ function parseFlows(src) {
     } else if (!f) continue;
     else if (/^x\s/.test(head) && last) last.alt = item(head.slice(2).trim());
     else if (/^>\s/.test(head) && last) (last.outs = last.outs || []).push(item(head.slice(2).trim()));
-    else { last = { ...item(head), actor, step: f.steps.length + 1 }; f.steps.push(last); }
+    else { last = { ...item(head), actor, key, step: f.steps.length + 1 }; f.steps.push(last); }
   }
   return out.filter(x => x.steps.length);
 }
@@ -1448,14 +1511,49 @@ function flowFor(n) {
 }
 function openFlow(f) {
   if (f) curFlow = f;
-  if (view === 'proses') { renderProses(true); syncHash(); prosesEl.scrollTo(0, 0); }
-  else setView('proses');
+  closeDetail(false);
+  if (view === 'proses') { renderProses(true); prosesEl.scrollTo(0, 0); syncHash(); }
+  else { setView('proses'); syncHash(true); }
 }
-function syncHash() {
-  const want = view === 'proses' && curFlow ? '#alur/' + curFlow.id : '';
+/* ---------- Alamat halaman & riwayat (tombol back browser/HP) ---------- */
+let routing = false;
+function routeFor() {
+  if (view === 'proses' && curFlow) return '#alur/' + curFlow.id + (detailStep ? '/' + detailStep : '');
+  if (view === 'outline') return '#outline';
+  if (view === defaultView) return '';
+  return view === 'logic' ? '#logika' : '#peta';
+}
+function syncHash(push = false, state = null) {
+  if (routing || !booted) return;
+  const want = routeFor();
   if ((location.hash || '') === want) return;
-  try { history.replaceState(null, '', want || location.pathname + location.search); } catch (_) {}
+  const url = want || location.pathname + location.search;
+  try {
+    if (push) history.pushState(state || { app: 1 }, '', url);
+    else history.replaceState(history.state, '', url);
+  } catch (_) {}
 }
+function applyRoute() {
+  const h = location.hash || '';
+  routing = true;
+  try {
+    const m = h.match(/^#alur(?:\/([\w-]+))?(?:\/(\d+))?$/);
+    if (m) {
+      const fl = flows.find(x => x.id === m[1]);
+      if (view !== 'proses') { if (fl) curFlow = fl; detailStep = 0; setView('proses'); }
+      else if (fl && fl !== curFlow) { closeDetail(false); curFlow = fl; renderProses(true); }
+      const k = +m[2] || 0;
+      if (k && curFlow && curFlow.steps[k - 1]) openDetail(k, false);
+      else closeDetail(false);
+    } else {
+      closeDetail(false);
+      setView(h === '#outline' ? 'outline' : h === '#logika' ? 'logic' : h === '#peta' ? 'map' : defaultView);
+    }
+  } finally { routing = false; }
+  syncHash();
+}
+window.addEventListener('popstate', applyRoute);
+window.addEventListener('hashchange', applyRoute);
 
 function cardHTML(s, kind) {
   const big = kind === 'main' || kind === 'outcome';
@@ -1466,7 +1564,8 @@ function cardHTML(s, kind) {
 function stepItemHTML(f, s, i) {
   return `<li class="f-item${isOutcome(f, s) ? ' outcome' : ''}" id="fi-${i}">` +
     `<span class="f-num">${s.step}</span>` +
-    `<div class="f-item-h">${icoHTML(s, 'ic-fitem')}<div><h3>${esc(s.title)}</h3>${s.actor ? `<span class="tag f-actor">${PERSON_ICON}${esc(s.actor)}</span>` : ''}</div></div>` +
+    `<div class="f-item-h">${icoHTML(s, 'ic-fitem')}<div><h3>${esc(s.title)}</h3>${s.actor ? `<span class="tag f-actor">${PERSON_ICON}${esc(s.actor)}</span>` : ''}</div>` +
+    `<button type="button" class="btn f-more" data-open="${i + 1}" aria-label="Detail langkah ${s.step}: ${esc(s.title)}">Detail ›</button></div>` +
     (s.note ? `<p>${esc(s.note)}</p>` : '') +
     (s.alt ? `<div class="f-alt">${icoHTML(s.alt, 'ic-falt')}<div><b>${esc(s.alt.title)}</b>${s.alt.note ? ' — ' + esc(s.alt.note) : ''}</div></div>` : '') +
     (s.outs ? `<div class="f-outs">${s.outs.map(o => `<div class="f-out">${icoHTML(o, 'ic-fout')}<div><b>${esc(o.title)}</b>${o.note ? `<p>${esc(o.note)}</p>` : ''}</div></div>`).join('')}</div>` : '') +
@@ -1521,12 +1620,13 @@ function drawFlow(animate = true) {
     '<marker id="fArrowAlt" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto"><path class="ah alt" d="M0,1 L9,5 L0,9 z"/></marker>' +
     '</defs></svg>';
   const svgEl = canvas.firstChild;
-  const mk = (s, kind, i) => {
+  const mk = (s, kind, i, j = -1) => {
     const b = document.createElement('button');
     b.type = 'button';
     b.className = `f-card ${kind} ${horiz ? 'h' : 'v'}`;
     b.innerHTML = cardHTML(s, kind);
     b.dataset.i = i;
+    if (j > -1) b.dataset.o = j;
     b.setAttribute('aria-label', (kind === 'alt' ? 'Jika gagal: ' : kind === 'fan' ? 'Hasil: ' : `Langkah ${s.step}: `) + s.title + (s.actor ? ' — ' + s.actor : ''));
     canvas.appendChild(b);
     return b;
@@ -1534,9 +1634,9 @@ function drawFlow(animate = true) {
   const cards = steps.map((s, i) => mk(s, isOutcome(f, s) ? 'outcome' : 'main', i));
   const sides = steps.map((s, i) => [
     ...(s.alt ? [{ s: s.alt, kind: 'alt' }] : []),
-    ...(s !== last && s.outs ? s.outs.map(o => ({ s: o, kind: 'fan' })) : []),
-  ].map(x => ({ ...x, el: mk(x.s, x.kind, i) })));
-  const fans = fanItems.map(o => mk(o, 'fan', n - 1));
+    ...(s !== last && s.outs ? s.outs.map((o, j) => ({ s: o, kind: 'fan', j })) : []),
+  ].map(x => ({ ...x, el: mk(x.s, x.kind, i, x.j) })));
+  const fans = fanItems.map((o, j) => mk(o, 'fan', n - 1, j));
   const pos = new Map();
   const setW = (el, w) => { el.style.width = w + 'px'; };
   let cwOut, chOut;
@@ -1652,6 +1752,7 @@ function drawFlow(animate = true) {
       setTimeout(() => { for (const el of order.keys()) el.style.transitionDelay = ''; }, (n + 3) * STAG + 400);
     }));
   }
+  if (detailStep) markCard(detailStep);
 }
 function flash(el) {
   el.classList.remove('flash');
@@ -1660,24 +1761,104 @@ function flash(el) {
 }
 prosesDoc.addEventListener('click', e => {
   const card = e.target.closest('.f-card');
-  if (card) {
-    const li = document.getElementById('fi-' + card.dataset.i);
-    if (li) { li.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' }); flash(li); }
-    flash(card);
-    return;
-  }
+  if (card) { openDetail(+card.dataset.i + 1, 'push', card.dataset.o != null ? +card.dataset.o : -1); return; }
+  const more = e.target.closest('[data-open]');
+  if (more) { openDetail(+more.dataset.open, 'push'); return; }
   const g = e.target.closest('[data-group]');
-  if (g) { curFlow = groupDefault(g.dataset.group); renderProses(true); syncHash(); return; }
+  if (g) { closeDetail(false); curFlow = groupDefault(g.dataset.group); renderProses(true); syncHash(); return; }
   const v = e.target.closest('[data-flow]');
-  if (v) { curFlow = flows.find(x => x.id === v.dataset.flow) || curFlow; renderProses(true); syncHash(); return; }
+  if (v) { closeDetail(false); curFlow = flows.find(x => x.id === v.dataset.flow) || curFlow; renderProses(true); syncHash(); return; }
   const m = e.target.closest('[data-map]');
   if (m) { goTo(all[+m.dataset.map]); return; }
   if (e.target.closest('[data-print]')) window.print();
 });
-window.addEventListener('hashchange', () => {
-  const hm = location.hash.match(/^#alur(?:\/([\w-]+))?/);
-  if (hm) openFlow(flows.find(x => x.id === hm[1]));
+/* ---------- Detail langkah + tombol Kembali ---------- */
+const fdet = $('#fdet'), fdSheet = $('#fdSheet');
+let detailStep = 0, detailReturn = null, detailHideTimer = 0;
+const BACK_ICON = '<svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg>';
+function markCard(k) {
+  prosesDoc.querySelectorAll('.f-card.sel').forEach(c => c.classList.remove('sel'));
+  if (k) prosesDoc.querySelectorAll(`.f-card:is(.main,.outcome)[data-i="${k - 1}"]`).forEach(c => c.classList.add('sel'));
+}
+function renderDetail(k, outIdx) {
+  const f = curFlow, s = f.steps[k - 1], n = f.steps.length, prev = f.steps[k - 2], next = f.steps[k];
+  const rel = s.key && byKey[s.key];
+  fdSheet.style.setProperty('--c', isOutcome(f, s) ? 'var(--ok)' : flowColor(f));
+  fdSheet.innerHTML =
+    `<div class="fd-top"><button type="button" class="fd-back" data-fd="back">${BACK_ICON}<span>Kembali</span></button>` +
+    `<span class="fd-where">${esc(flowTitle(f))} · langkah ${k} dari ${n}</span></div>` +
+    '<div class="fd-scroll">' +
+    `<div class="fd-hero">${s.icon ? `<span class="icw">${icoHTML(s, 'ic-fdet')}</span>` : ''}<div><div class="eyebrow">Langkah ${k}${isOutcome(f, s) ? ' · hasil akhir' : ''}</div>` +
+    `<h2 id="fdTitle">${esc(s.title)}</h2>${s.actor ? `<span class="tag">${PERSON_ICON}${esc(s.actor)}</span>` : ''}</div></div>` +
+    (s.note ? `<p class="fd-note">${esc(s.note)}</p>` : '') +
+    (s.alt ? `<h3 class="p-h">Jika gagal</h3><div class="f-alt">${icoHTML(s.alt, 'ic-falt')}<div><b>${esc(s.alt.title)}</b>${s.alt.note ? ' — ' + esc(s.alt.note) : ''}</div></div>` : '') +
+    (s.outs ? `<h3 class="p-h">Hasil <span>${s.outs.length}</span></h3><div class="f-outs">${s.outs.map((o, j) =>
+      `<div class="f-out" id="fdo-${j}">${icoHTML(o, 'ic-fout')}<div><b>${esc(o.title)}</b>${o.note ? `<p>${esc(o.note)}</p>` : ''}</div></div>`).join('')}</div>` : '') +
+    (rel ? `<button type="button" class="btn fd-rel" data-map="${rel.id}" style="--c:${rel.color}">${icoHTML(rel, 'ic-li')}<span>Lihat di peta pikiran: <b>${esc(rel.title)}</b> →</span></button>` : '') +
+    `<div class="fd-dots" role="group" aria-label="Pilih langkah">${f.steps.map((x, i) =>
+      `<button type="button" class="fd-dot${i + 1 === k ? ' cur' : i + 1 < k ? ' done' : ''}" data-fd-go="${i + 1}" title="${esc(x.title)}" aria-label="Langkah ${i + 1}: ${esc(x.title)}"${i + 1 === k ? ' aria-current="step"' : ''}>${i + 1}</button>`).join('<span class="fd-seg"></span>')}</div>` +
+    '</div>' +
+    '<div class="fd-nav">' +
+    `<button type="button" data-fd="prev"${prev ? '' : ' disabled'}><span class="arr" aria-hidden="true">‹</span><span><small>Sebelumnya</small>${prev ? esc(prev.title) : '—'}</span></button>` +
+    `<button type="button" data-fd="next" class="primary"><span><small>${next ? 'Berikutnya' : 'Langkah terakhir'}</small>${next ? esc(next.title) : 'Selesai'}</span><span class="arr" aria-hidden="true">${next ? '›' : '✓'}</span></button>` +
+    '</div>';
+  if (outIdx > -1) {
+    const o = document.getElementById('fdo-' + outIdx);
+    if (o) requestAnimationFrame(() => { o.scrollIntoView({ block: 'nearest' }); flash(o); });
+  }
+}
+function openDetail(k, how = 'push', outIdx = -1) {
+  if (!curFlow || !curFlow.steps[k - 1]) return;
+  const wasOpen = !!detailStep;
+  detailStep = k;
+  renderDetail(k, outIdx);
+  markCard(k);
+  if (!wasOpen) {
+    clearTimeout(detailHideTimer);
+    detailReturn = document.activeElement;
+    fdet.hidden = false;
+    document.body.classList.add('fdet-open');
+    requestAnimationFrame(() => requestAnimationFrame(() => fdet.classList.add('open')));
+  }
+  const back = fdSheet.querySelector('.fd-back');
+  if (back) back.focus({ preventScroll: true });
+  if (how === 'push') syncHash(true, { detail: 1 });
+  else if (how === 'replace') syncHash();
+}
+function closeDetail(how = 'replace') {
+  if (!detailStep) return;
+  detailStep = 0;
+  markCard(0);
+  fdet.classList.remove('open');
+  document.body.classList.remove('fdet-open');
+  clearTimeout(detailHideTimer);
+  detailHideTimer = setTimeout(() => { if (!detailStep) fdet.hidden = true; }, reduceMotion ? 0 : 300);
+  if (detailReturn && detailReturn.isConnected && view === 'proses') detailReturn.focus({ preventScroll: true });
+  detailReturn = null;
+  if (how === 'replace') syncHash();
+}
+/* Tombol "Kembali": pakai riwayat browser bila detail dibuka dari diagram, agar tombol back HP sejalan. */
+function goBack() {
+  if (history.state && history.state.detail) history.back();
+  else closeDetail('replace');
+}
+fdet.addEventListener('click', e => {
+  const b = e.target.closest('[data-fd],[data-fd-go],[data-map]');
+  if (!b) return;
+  if (b.dataset.map) { const node = all[+b.dataset.map]; closeDetail(false); goTo(node); }
+  else if (b.dataset.fdGo) openDetail(+b.dataset.fdGo, 'replace');
+  else if (b.dataset.fd === 'back') goBack();
+  else if (b.dataset.fd === 'prev') openDetail(detailStep - 1, 'replace');
+  else if (b.dataset.fd === 'next') { if (curFlow.steps[detailStep]) openDetail(detailStep + 1, 'replace'); else goBack(); }
 });
+function trapFocus(e) {
+  const els = [...fdSheet.querySelectorAll('button:not([disabled])')];
+  if (!els.length) return;
+  const first = els[0], lastEl = els[els.length - 1];
+  if (e.shiftKey && document.activeElement === first) { e.preventDefault(); lastEl.focus(); }
+  else if (!e.shiftKey && document.activeElement === lastEl) { e.preventDefault(); first.focus(); }
+  else if (!fdSheet.contains(document.activeElement)) { e.preventDefault(); first.focus(); }
+}
 
 /* ---------- Pencarian ---------- */
 const q = $('#q'), qCount = $('#qCount');
@@ -1820,6 +2001,13 @@ function nav(key) {
   if (t) { select(t); ensureNodeVisible(t); }
 }
 document.addEventListener('keydown', e => {
+  if (detailStep) {
+    if (e.key === 'Escape') { e.preventDefault(); goBack(); }
+    else if (e.key === 'Tab') trapFocus(e);
+    else if (e.key === 'ArrowLeft' && detailStep > 1) openDetail(detailStep - 1, 'replace');
+    else if (e.key === 'ArrowRight' && curFlow.steps[detailStep]) openDetail(detailStep + 1, 'replace');
+    return;
+  }
   if (e.target.matches('input, textarea') || e.ctrlKey || e.metaKey || e.altKey) return;
   if (view === 'outline' || view === 'proses') return;
   const k = e.key;
@@ -1834,7 +2022,7 @@ document.addEventListener('keydown', e => {
 });
 
 /* ---------- Kontrol lain ---------- */
-tabs.forEach(t => t.addEventListener('click', () => setView(t.dataset.view)));
+tabs.forEach(t => t.addEventListener('click', () => { setView(t.dataset.view); syncHash(true); }));
 levelBtns.forEach(b => b.addEventListener('click', () => { hideHint(); setLevel(+b.dataset.level); fit(true); }));
 $('#zoomIn').addEventListener('click', () => zoomBy(1.2));
 $('#zoomOut').addEventListener('click', () => zoomBy(1 / 1.2));
@@ -1912,8 +2100,7 @@ if (document.fonts && document.fonts.addEventListener) {
 fontsReady().then(() => {
   buildChips();
   buildOutline();
-  if (window.innerWidth < 700) {
-    // Di HP, Diagram Logika (bercabang ke kanan) lebih mudah dibaca dalam posisi tegak.
+  if (defaultView === 'logic') {
     mode = view = 'logic';
     tabs.forEach(t => t.setAttribute('aria-selected', String(t.dataset.view === 'logic')));
     $('#legendSide').hidden = true;
@@ -1923,8 +2110,7 @@ fontsReady().then(() => {
   fit(false);
   viewport.classList.add('ready');
   booted = true;
-  const hm = location.hash.match(/^#alur(?:\/([\w-]+))?/);
-  if (hm) openFlow(flows.find(x => x.id === hm[1]));
+  if (location.hash) applyRoute();
 });
 })();
 </script>
