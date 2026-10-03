@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /*
- * Membuat file ikon SVG untuk setiap emoji {…} yang dipakai di bagian DATA (peta pikiran)
- * dan FLOWS (alur proses) pada index.html.
+ * Membuat file ikon SVG untuk setiap emoji yang dipakai di bagian DATA (peta pikiran) dan
+ * FLOWS (alur proses) pada index.html, serta di data/peta.json (hasil "Publikasikan" dari mode edit).
+ * Juga menulis assets/icons/index.json: daftar ikon yang tersedia (dipakai mode edit).
  *
  * Pemakaian (butuh Node.js 18+ dan koneksi internet):
  *   node tools/build-icons.mjs
@@ -33,11 +34,19 @@ async function loadJSON(set, file) {
 const html = await readFile(join(ROOT, 'index.html'), 'utf8');
 const blocks = [...html.matchAll(/const (DATA|FLOWS) = `([\s\S]*?)`;/g)];
 if (!blocks.some(b => b[1] === 'DATA')) throw new Error('Bagian DATA tidak ditemukan di index.html — ikon lama tidak diubah.');
-const emojis = [...new Set(blocks.flatMap(b => [...b[2].matchAll(/\s\{([^}\s]+)\}/g)].map(m => m[1])))];
+const fromBlocks = blocks.flatMap(b => [...b[2].matchAll(/\s\{([^}\s]+)\}/g)].map(m => m[1]));
+// Ikon dari data/peta.json (peta yang disunting & dipublikasikan dari browser).
+const fromJson = [];
+try {
+  const doc = JSON.parse(await readFile(join(ROOT, 'data', 'peta.json'), 'utf8'));
+  (function walk(n) { if (n && typeof n.icon === 'string') fromJson.push(n.icon); (n && Array.isArray(n.children) ? n.children : []).forEach(walk); })(doc.root);
+} catch (_) { /* belum ada data/peta.json */ }
+const emojis = [...new Set([...fromBlocks, ...fromJson])];
 if (!emojis.length) throw new Error('Tidak ada emoji {…} di DATA/FLOWS — ikon lama tidak dihapus.');
 console.log(`${emojis.length} emoji dipakai di ${blocks.map(b => b[1]).join(' & ')}.`);
 
 let missingTotal = 0;
+const manifest = {};
 for (const [dir, set] of Object.entries(SETS)) {
   const [icons, chars] = await Promise.all([loadJSON(set, 'icons.json'), loadJSON(set, 'chars.json')]);
   const byKey = {};
@@ -63,7 +72,9 @@ for (const [dir, set] of Object.entries(SETS)) {
   }
   // Hapus ikon lama yang sudah tidak dipakai.
   for (const f of await readdir(outDir)) if (f.endsWith('.svg') && !wanted.has(f)) await unlink(join(outDir, f));
+  manifest[dir] = [...wanted].map(f => f.replace(/\.svg$/, '')).sort();
   console.log(`${dir}: ${wanted.size} ikon ditulis${missing.length ? `, tidak ditemukan: ${missing.join(' ')}` : ''}`);
   missingTotal += missing.length;
 }
+await writeFile(join(ROOT, 'assets', 'icons', 'index.json'), JSON.stringify(manifest) + '\n');
 if (missingTotal) console.log('Emoji yang tidak ditemukan akan tampil sebagai emoji bawaan perangkat.');
