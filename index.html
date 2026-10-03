@@ -18,6 +18,7 @@
   --bg:#f3f4f6; --surface:#fff; --surface-2:#f6f7f9; --text:#1d2330; --muted:#677084;
   --line:#e3e6eb; --line-2:#cfd4dc; --canvas:#fafafa; --dot:#dadde3;
   --root-bg:#1e2a4a; --root-text:#fff; --sel:#2f7cf6; --hl:#fff0b3;
+  --sel-fill:#1f64d8; --on-sel:#fff;
   --shadow:0 1px 2px rgba(16,24,40,.06),0 8px 24px rgba(16,24,40,.08);
   --font:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   --alt:#e03131; --ok:#2b8a3e;
@@ -28,6 +29,7 @@
     --bg:#111318; --surface:#1a1d24; --surface-2:#21252d; --text:#e8eaf0; --muted:#9ba3b2;
     --line:#2b3039; --line-2:#3a404c; --canvas:#14161b; --dot:#262b34;
     --root-bg:#e9edf7; --root-text:#131a2c; --sel:#6aa5ff; --hl:rgba(250,190,40,.28);
+    --sel-fill:#6aa5ff; --on-sel:#0b1220;
     --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
     --alt:#ff6b6b; --ok:#2b8a3e;
     color-scheme:dark;
@@ -441,7 +443,7 @@ summary.o-row::before{margin-top:5.5px}
 .edit-btn:hover{border-color:var(--sel)}
 .edit-btn svg{display:none}
 .edit-btn[data-state="locked"] .eb-lock,.edit-btn[data-state="ready"] .eb-pen,.edit-btn[data-state="editing"] .eb-done{display:block}
-.edit-btn[data-state="editing"]{background:var(--sel);border-color:var(--sel);color:#fff}
+.edit-btn[data-state="editing"]{background:var(--sel-fill);border-color:var(--sel-fill);color:var(--on-sel)}
 .eb-dot{display:none;position:absolute;top:-3px;right:-3px;width:10px;height:10px;border-radius:50%;background:#f59f00;box-shadow:0 0 0 2px var(--surface)}
 .edit-btn.dirty .eb-dot{display:block}
 .etb{position:absolute;z-index:6;top:12px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:2px;max-width:calc(100% - 24px);padding:5px;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow-x:auto;scrollbar-width:none}
@@ -450,24 +452,26 @@ summary.o-row::before{margin-top:5.5px}
 .etb>button{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 10px;border:0;border-radius:9px;background:transparent;font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;flex:none}
 .etb>button:hover:not(:disabled){background:var(--surface-2)}
 .etb>button:disabled{opacity:.35;cursor:default}
-.etb>button.etb-pub{background:var(--sel);color:#fff;margin-left:2px}
-.etb>button.etb-pub:hover:not(:disabled){background:var(--sel);filter:brightness(1.07)}
+.etb>button.etb-pub{background:var(--sel-fill);color:var(--on-sel);margin-left:2px}
+.etb>button.etb-pub:hover:not(:disabled){background:var(--sel-fill);filter:brightness(1.07)}
 .etb-sep{width:1px;height:22px;background:var(--line);margin:0 4px;flex:none}
 .etb-status{display:inline-flex;align-items:center;gap:6px;padding:0 8px;font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap;flex:none}
 .etb-status::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--line-2)}
 .etb-status.dirty::before{background:#f59f00}
 .etb-status.err{color:var(--alt)}
 .etb-status.err::before{background:var(--alt)}
-body.editing.panel-open .etb{left:calc(50% - 192px);max-width:calc(100% - 420px)}
+@media (min-width:900px){body.editing.panel-open .etb{left:calc(50% - 192px);max-width:calc(100% - 420px)}}
+@media (max-width:1439px){.etb-status{font-size:0;gap:0;padding:0 6px}}
+@media (max-width:1279px){.etb>button:not(.etb-pub) span{display:none}}
 body.editing .hint{display:none}
 body.editing .viewport{cursor:default}
 body.editing .node{cursor:pointer}
 .node.editing{cursor:text}
 .node.editing .t{cursor:text;user-select:text;-webkit-user-select:text;outline:none;min-width:3ch;white-space:pre-wrap}
 .node.sub.editing,.node.main.editing,.node.root.editing{box-shadow:0 0 0 2px var(--sel),0 6px 18px rgba(47,124,246,.25)}
-.addbtn{position:absolute;left:0;top:0;width:22px;height:22px;margin:-11px 0 0 -11px;padding:0;border:0;border-radius:50%;background:var(--sel);color:#fff;font-size:17px;font-weight:700;line-height:1;display:grid;place-items:center;box-shadow:0 2px 6px rgba(47,124,246,.4);z-index:2}
+.addbtn{position:absolute;left:0;top:0;width:22px;height:22px;margin:-11px 0 0 -11px;padding:0;border:0;border-radius:50%;background:var(--sel-fill);color:var(--on-sel);font-size:17px;font-weight:700;line-height:1;display:grid;place-items:center;box-shadow:0 2px 6px rgba(47,124,246,.4);z-index:2;transform-origin:50% 50%}
 .addbtn[hidden]{display:none}
-.addbtn:hover{transform:scale(1.12)}
+
 .dnd-line{position:absolute;left:0;top:0;height:4px;border-radius:2px;background:var(--sel);pointer-events:none;box-shadow:0 0 0 2px color-mix(in srgb,var(--sel) 25%,transparent)}
 .dnd-line[hidden]{display:none}
 .node.drop-in{outline:2.5px dashed var(--sel);outline-offset:5px}
@@ -476,7 +480,7 @@ body.moving .node:not(.dragging){cursor:copy}
 .dnd-ghost{position:fixed;z-index:30;left:0;top:0;pointer-events:none;display:inline-flex;align-items:center;gap:8px;max-width:260px;padding:7px 12px;border-radius:10px;background:var(--surface);border:1.5px solid var(--sel);box-shadow:var(--shadow);font-size:13.5px;font-weight:600;color:var(--text);opacity:.95}
 .dnd-ghost[hidden]{display:none}
 .dnd-ghost .ic{--s:22px}
-.cmenu{position:fixed;z-index:55;min-width:230px;padding:6px;background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 32px rgba(0,0,0,.18)}
+.cmenu{position:fixed;z-index:55;min-width:230px;max-height:calc(100vh - 16px);max-height:calc(100dvh - 16px);overflow-y:auto;overscroll-behavior:contain;padding:6px;background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 32px rgba(0,0,0,.18)}
 .cmenu[hidden]{display:none}
 .cmenu button{display:flex;align-items:center;gap:10px;width:100%;padding:8px 10px;border:0;border-radius:8px;background:none;font-size:13.5px;color:var(--text);text-align:left}
 .cmenu button:hover:not(:disabled),.cmenu button:focus-visible{background:var(--surface-2);outline:none}
@@ -521,6 +525,8 @@ body.moving .node:not(.dragging){cursor:copy}
 .m-body{padding:16px 20px;overflow:auto}
 .m-foot{display:flex;justify-content:flex-end;gap:8px;padding:12px 16px;border-top:1px solid var(--line);flex:none}
 .btn.primary:disabled{opacity:.5;cursor:default}
+.modal-card .btn.primary{background:var(--sel-fill);border-color:var(--sel-fill);color:var(--on-sel)}
+.modal-card .btn.primary.danger{background:var(--alt);border-color:var(--alt);color:#fff}
 /* PIN */
 .pin-card{padding:26px 24px 18px;text-align:center;align-items:stretch}
 .pin-badge{width:60px;height:60px;margin:0 auto 10px;display:grid;place-items:center;border-radius:18px;background:color-mix(in srgb,var(--sel) 14%,var(--surface));color:var(--sel)}
@@ -546,6 +552,7 @@ body.moving .node:not(.dragging){cursor:copy}
 .ip-search input:focus{outline:none;border-color:var(--sel);background:var(--surface)}
 .ip-cats{display:flex;gap:6px;padding:6px 16px 10px;overflow-x:auto;scrollbar-width:none;flex:none}
 .ip-cats::-webkit-scrollbar{display:none}
+@media (min-width:700px){.ip-cats{flex-wrap:wrap;overflow:visible}}
 .ip-cats button{flex:none;padding:6px 11px;border:1px solid var(--line);border-radius:999px;background:var(--surface);font-size:12.5px;font-weight:600;color:var(--muted);white-space:nowrap}
 .ip-cats button[aria-selected="true"]{border-color:var(--sel);background:color-mix(in srgb,var(--sel) 12%,var(--surface));color:var(--text)}
 .ip-grid{flex:1;overflow:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:6px;padding:4px 16px 16px;align-content:start}
@@ -594,6 +601,10 @@ kbd{display:inline-block;min-width:22px;padding:1px 6px;border:1px solid var(--l
   .modal{padding:10px}
   .ip-card{height:calc(100% - 4px)}
 }
+@media (max-width:380px){.tabs button{padding:6px 8px}.tabs svg{display:none}}
+@media (max-width:359px){.etb{padding:4px;gap:1px}.etb>button{padding:0 6px}.etb-sep{margin:0 1px}}
+@media (pointer:coarse){.cmenu button{min-height:42px}.ip-cats button{min-height:36px}.ef-actions .btn,.ef-icon .btn{min-height:40px}.etb>button{height:40px}}
+.pub-txt b{overflow-wrap:anywhere}
 @media print{.etb,.addbtn,.cmenu,.toast,.modal,.edit-btn,.dnd-ghost,.dnd-line{display:none!important}}
 
 /* ---------- Responsif ---------- */
@@ -857,6 +868,7 @@ kbd{display:inline-block;min-width:22px;padding:1px 6px;border:1px solid var(--l
     <div class="m-body"><table class="keys">
       <tr><td><kbd>Tab</kbd></td><td>Tambah subtopik</td></tr>
       <tr><td><kbd>Enter</kbd></td><td>Tambah topik sejajar</td></tr>
+      <tr><td><kbd>Shift</kbd>+<kbd>Enter</kbd></td><td>Tambah topik sejajar di atasnya</td></tr>
       <tr><td><kbd>F2</kbd> / <kbd>Spasi</kbd> / klik dua kali</td><td>Edit teks topik (atau langsung ketik)</td></tr>
       <tr><td><kbd>Delete</kbd></td><td>Hapus topik</td></tr>
       <tr><td><kbd>Ctrl</kbd>+<kbd>Z</kbd> / <kbd>Ctrl</kbd>+<kbd>Y</kbd></td><td>Urungkan / ulangi</td></tr>
@@ -1248,7 +1260,7 @@ function dslToDoc(src) {
 }
 /* Bersihkan & validasi dokumen dari luar (file impor, data situs). Melempar Error bila bentuknya salah. */
 const MAX_NODES = 2000, MAX_DEPTH = 12;
-const cleanText = (v, max) => String(v == null ? '' : v).replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, '').slice(0, max);
+const cleanText = (v, max) => String(v == null ? '' : v).replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, '').slice(0, max).replace(/[\ud800-\udbff]$/, '');
 const validIcon = v => typeof v === 'string' && /^[^\s<>"'&\\`]{1,24}$/u.test(v) && /[^\x00-\x7f]/.test(v);
 function sanitizeDoc(raw) {
   if (!raw || typeof raw !== 'object' || !raw.root || typeof raw.root !== 'object') throw new Error('Bukan file peta yang valid.');
@@ -1312,7 +1324,13 @@ function fitText(el) {
 
 /* Bangun (ulang) model + elemen dari dokumen. Elemen topik yang sama (id sama) dipakai ulang
    sehingga posisi, status buka/tutup, dan gambar ikon tidak berkedip saat disunting. */
+const placeAfter = (prev, el) => {
+  if (!prev) { if (el.parentNode !== world) world.appendChild(el); }
+  else if (prev.nextSibling !== el) prev.after(el);
+  return el;
+};
 function buildModel(doc) {
+  let prevEl = null;
   const old = new Map(all.map(n => [n.uid, n]));
   const nodes = [];
   const mk = (j, parent, depth) => {
@@ -1379,12 +1397,15 @@ function buildModel(doc) {
       n.path.setAttribute('class', 'lk' + (n.depth === 1 ? ' trunk' : n.depth >= 3 ? ' deep' : ''));
       n.path.style.setProperty('--c', n.color);
     } else if (n.path) { n.path.remove(); n.path = null; }
-    world.appendChild(n.el);
-    if (n.tg) world.appendChild(n.tg);
+    // Susun urutan DOM sesuai urutan topik, tapi hanya pindahkan elemen yang salah tempat: memindahkan
+    // elemen yang sedang ditekan membuat browser membatalkan klik (klik topik lain saat mengetik).
+    prevEl = placeAfter(prevEl, n.el);
+    if (n.tg) prevEl = placeAfter(prevEl, n.tg);
   }
   // Pertahankan daftar topik yang sedang tampil (dipetakan ke objek baru) agar relayout menganimasikan perubahannya.
   const byUid = new Map(all.map(n => [n.uid, n]));
   visible = visible.map(o => byUid.get(o.uid)).filter(Boolean);
+  if (panelNode) panelNode = byUid.get(panelNode.uid) || panelNode;
   return byUid;
 }
 
@@ -1398,7 +1419,7 @@ let camGoal = null;
 
 /* ---------- Tata letak ---------- */
 const visKids = n => (n === root || !n.collapsed) ? n.children : [];
-const dirOf = n => (mode === 'logic' || n === root) ? 1 : (n.main.side === 'left' ? -1 : 1);
+const dirOf = n => (mode === 'logic' || n === root || !n.main) ? 1 : (n.main.side === 'left' ? -1 : 1);
 const HG = p => p.depth === 0 ? (mode === 'logic' ? 70 : 90) : p.depth === 1 ? 38 : 30;
 const VG = p => p.depth === 0 ? 22 : p.depth === 1 ? 6 : 3;
 const gapBetween = (p, a, b) => VG(p) + ((visKids(a).length || visKids(b).length) ? (p.depth === 0 ? 8 : 10) : 0);
@@ -1568,6 +1589,7 @@ function applyCam() {
   while (g < 11) g *= 2;
   viewport.style.backgroundSize = `${g}px ${g}px`;
   viewport.style.backgroundPosition = `${cam.x}px ${cam.y}px`;
+  if (document.body.classList.contains('editing')) placeAddBtn();
 }
 function camTo(x, y, s, dur = DUR) {
   const a = { ...cam };
@@ -1580,9 +1602,10 @@ function camTo(x, y, s, dur = DUR) {
 function stopCam() { cancelAnimationFrame(raf.cam); camGoal = null; }
 function viewRect() {
   const r = { x: 0, y: 0, w: viewport.clientWidth, h: viewport.clientHeight };
-  if (editing && etb && !etb.hidden) {
+  const tb = document.body.classList.contains('editing') && document.getElementById('etb');
+  if (tb && !tb.hidden) {
     // Toolbar edit melayang di atas peta: jangan taruh topik di bawahnya.
-    const top = etb.getBoundingClientRect().bottom - viewport.getBoundingClientRect().top;
+    const top = tb.getBoundingClientRect().bottom - viewport.getBoundingClientRect().top;
     if (top > 0 && top < r.h / 2) { r.y = top; r.h -= top; }
   }
   if (panelOpen) {
@@ -1608,6 +1631,7 @@ function nudgeInto(b, x, y, s, r, m) {
   return [x, y];
 }
 function fit(animate = true) {
+  if (!visible.length) return;
   const b = bbox(visible), r = viewRect();
   const m = isWide() ? 48 : 18, top = isWide() ? 56 : 64, bottom = isWide() ? 64 : 92;
   const sw = (r.w - 2 * m) / b.w, sh = (r.h - top - bottom) / b.h;
@@ -1663,12 +1687,22 @@ function setLevel(k, animate = true) {
   for (const n of all) if (n.depth && n.children.length) n.collapsed = n.depth >= k;
   levelBtns.forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.level === k)));
   relayout({ animate });
+  keepSelVisible();
+}
+/* Mode edit: bila topik terpilih ikut tersembunyi (cabang dilipat), pindahkan pilihan ke induk yang terlihat,
+   supaya Delete/Ctrl+X tidak mengenai topik yang tidak kelihatan. */
+function keepSelVisible() {
+  if (!editing || !selected) return;
+  let v = selected;
+  for (let p = selected.parent; p; p = p.parent) if (p.collapsed) v = p;
+  if (v !== selected) select(v);
 }
 function toggle(n) {
   if (n === root || !n.children.length) return;
   n.collapsed = !n.collapsed;
   clearLevel();
   relayoutAnchored(n);
+  keepSelVisible();
   if (panelOpen && panelNode === n) renderPanel(n);
 }
 function expandAll(n) {
@@ -1978,8 +2012,8 @@ function applyRoute() {
   } finally { routing = false; }
   syncHash();
 }
-window.addEventListener('popstate', applyRoute);
-window.addEventListener('hashchange', applyRoute);
+window.addEventListener('popstate', () => { if (booted) applyRoute(); });
+window.addEventListener('hashchange', () => { if (booted) applyRoute(); });
 
 function cardHTML(s, kind) {
   const big = kind === 'main' || kind === 'outcome';
@@ -2016,7 +2050,7 @@ function renderProses(animate = true) {
     '</div>' +
     `<header class="f-head">${icoHTML(f, 'ic-fhead')}<div><div class="eyebrow">Alur proses${f.variant ? ' · ' + esc(f.variant) : ''}</div><h1>${esc(flowTitle(f))}</h1>${f.note ? `<p>${esc(f.note)}</p>` : ''}` +
     `<div class="f-meta"><span class="tag">${f.steps.length} langkah</span>${actors.map(a => `<span class="tag">${PERSON_ICON}${esc(a)}</span>`).join('')}` +
-    '<span class="f-actions">' + (mapNode ? `<button type="button" class="btn" data-map="${mapNode.id}">Lihat di peta pikiran →</button>` : '') +
+    '<span class="f-actions">' + (mapNode ? `<button type="button" class="btn" data-map="${esc(mapNode.uid)}">Lihat di peta pikiran →</button>` : '') +
     '<button type="button" class="btn" data-print>Cetak / PDF</button></span></div></div></header>' +
     '<div class="f-board"><div class="f-canvas" id="fCanvas"></div></div>' +
     '<div class="f-key">' +
@@ -2240,7 +2274,7 @@ prosesDoc.addEventListener('click', e => {
   const v = e.target.closest('[data-flow]');
   if (v) { closeDetail(false); curFlow = flows.find(x => x.id === v.dataset.flow) || curFlow; renderProses(true); syncHash(); return; }
   const m = e.target.closest('[data-map]');
-  if (m) { goTo(all[+m.dataset.map]); return; }
+  if (m) { const node = all.find(x => x.uid === m.dataset.map); if (node) goTo(node); return; }
   if (e.target.closest('[data-print]')) window.print();
 });
 /* ---------- Detail langkah + tombol Kembali ---------- */
@@ -2265,7 +2299,7 @@ function renderDetail(k, outIdx) {
     (s.alt ? `<h3 class="p-h">Jika gagal</h3><div class="f-alt">${icoHTML(s.alt, 'ic-falt')}<div><b>${esc(s.alt.title)}</b>${s.alt.note ? ' — ' + esc(s.alt.note) : ''}${altToHTML(f, s.alt)}</div></div>` : '') +
     (s.outs ? `<h3 class="p-h">Hasil <span>${s.outs.length}</span></h3><div class="f-outs">${s.outs.map((o, j) =>
       `<div class="f-out" id="fdo-${j}">${icoHTML(o, 'ic-fout')}<div><b>${esc(o.title)}</b>${o.note ? `<p>${esc(o.note)}</p>` : ''}</div></div>`).join('')}</div>` : '') +
-    (rel ? `<button type="button" class="btn fd-rel" data-map="${rel.id}" style="--c:${rel.color}">${icoHTML(rel, 'ic-li')}<span>Lihat di peta pikiran: <b>${esc(rel.title)}</b> →</span></button>` : '') +
+    (rel ? `<button type="button" class="btn fd-rel" data-map="${esc(rel.uid)}" style="--c:${rel.color}">${icoHTML(rel, 'ic-li')}<span>Lihat di peta pikiran: <b>${esc(rel.title)}</b> →</span></button>` : '') +
     `<div class="fd-dots" role="group" aria-label="Pilih langkah">${f.steps.map((x, i) =>
       `<button type="button" class="fd-dot${i + 1 === k ? ' cur' : i + 1 < k ? ' done' : ''}" data-fd-go="${i + 1}" title="${esc(x.title)}" aria-label="Langkah ${i + 1}: ${esc(x.title)}"${i + 1 === k ? ' aria-current="step"' : ''}>${i + 1}</button>`).join('<span class="fd-seg"></span>')}</div>` +
     '</div>' +
@@ -2318,7 +2352,7 @@ function goBack() {
 fdet.addEventListener('click', e => {
   const b = e.target.closest('[data-fd],[data-fd-go],[data-map]');
   if (!b) return;
-  if (b.dataset.map) { const node = all[+b.dataset.map]; closeDetail(false); goTo(node); }
+  if (b.dataset.map) { const node = all.find(x => x.uid === b.dataset.map); closeDetail(false); if (node) goTo(node); }
   else if (b.dataset.fdGo) openDetail(+b.dataset.fdGo, 'replace');
   else if (b.dataset.fd === 'back') goBack();
   else if (b.dataset.fd === 'prev') openDetail(detailStep - 1, 'replace');
@@ -2517,6 +2551,7 @@ document.addEventListener('keydown', e => {
     else if (e.key === 'ArrowRight' && curFlow.steps[detailStep]) openDetail(detailStep + 1, 'replace');
     return;
   }
+  if (!booted) return;
   if (handleEditKey(e)) return;
   if (e.target.matches('input, textarea, [contenteditable]') || e.ctrlKey || e.metaKey || e.altKey) return;
   if (view === 'outline' || view === 'proses') return;
@@ -2538,7 +2573,7 @@ tabs.forEach(t => t.addEventListener('click', () => {
   setView(t.dataset.view);
   syncHash(true);
 }));
-levelBtns.forEach(b => b.addEventListener('click', () => { hideHint(); setLevel(+b.dataset.level); fit(true); }));
+levelBtns.forEach(b => b.addEventListener('click', () => { if (!booted) return; hideHint(); setLevel(+b.dataset.level); fit(true); }));
 $('#zoomIn').addEventListener('click', () => zoomBy(1.2));
 $('#zoomOut').addEventListener('click', () => zoomBy(1 / 1.2));
 $('#zoomPct').addEventListener('click', () => zoomBy(1 / (camGoal || cam).s));
@@ -2601,10 +2636,11 @@ const ICONIFY = { fluent: 'fluent-emoji-flat', openmoji: 'openmoji' };
 const framed = (() => { try { return window.top !== window.self; } catch (_) { return true; } })();
 /* localStorage yang aman (mode privat / diblokir → cadangan di memori). */
 const store = {
+  // mem hanya dipakai untuk kunci yang gagal ditulis (penyimpanan penuh/diblokir) dan selalu didahulukan.
   mem: Object.create(null),
-  get(k) { try { const v = localStorage.getItem(k); if (v !== null) return v; } catch (_) {} return k in this.mem ? this.mem[k] : null; },
-  set(k, v) { this.mem[k] = String(v); try { localStorage.setItem(k, String(v)); return true; } catch (_) { return false; } },
-  del(k) { delete this.mem[k]; try { localStorage.removeItem(k); } catch (_) {} },
+  get(k) { if (k in this.mem) return this.mem[k]; try { return localStorage.getItem(k); } catch (_) { return null; } },
+  set(k, v) { try { localStorage.setItem(k, String(v)); delete this.mem[k]; return true; } catch (_) { this.mem[k] = String(v); return false; } },
+  del(k) { try { localStorage.removeItem(k); delete this.mem[k]; } catch (_) { this.mem[k] = null; } },
 };
 
 const editBtn = $('#editBtn'), etb = $('#etb'), etbStatus = $('#etbStatus'), addBtn = $('#addBtn');
@@ -2646,7 +2682,8 @@ function openModal(m, focusEl) {
   });
 }
 function closeModal(m) {
-  if (m.hidden) return;
+  // Selama publikasi berjalan dialognya tidak bisa ditutup (Esc, Batal, latar): hasilnya harus terlihat.
+  if (m.hidden || (m === pubModal && pubBusy)) return;
   m.hidden = true;
   modalStack = modalStack.filter(x => x !== m);
   if (m._ret && m._ret.isConnected && !topModal()) m._ret.focus({ preventScroll: true });
@@ -2682,7 +2719,7 @@ function ask({ title, body, yes = 'Ya', no = 'Batal', danger = false }) {
     const fin = v => { if (done) return; done = true; closeModal(askModal); resolve(v); };
     y.onclick = () => fin(true);
     n.onclick = () => fin(false);
-    askModal._onClose = () => fin(false);
+    askModal._onClose = () => fin(null);   // ditutup tanpa memilih (Esc / latar) ≠ menolak
     openModal(askModal, n);
   });
 }
@@ -2763,11 +2800,10 @@ async function submitPin() {
     pinFirst = false;
     closeModal(pinModal);
     await resumeDraft();
-    enterEdit();
-    toast('PIN benar. Mode edit aktif ✓');
+    enterEdit('PIN benar. Mode edit aktif ✓');
     return;
   }
-  if (fails >= PIN_MAX) { store.set('pp.pinLocked', '1'); store.del('pp.unlocked'); store.set('pp.gate', 'viewer'); }
+  if (fails >= PIN_MAX) { store.set('pp.pinLocked', '1'); store.del('pp.unlocked'); store.del('pp.ghToken'); store.set('pp.gate', 'viewer'); }
   renderPin();
   const card = pinModal.querySelector('.pin-card');
   card.classList.remove('shake');
@@ -2795,16 +2831,20 @@ pinBoxes.forEach((b, i) => {
   });
   b.addEventListener('paste', e => {
     const t = ((e.clipboardData && e.clipboardData.getData('text')) || '').replace(/\D/g, '');
-    if (t) { e.preventDefault(); fillPin(t, i); }
+    if (t) { e.preventDefault(); fillPin(t, t.length >= 6 ? 0 : Math.min(i, pinBoxes.findIndex(x => !x.value) < 0 ? i : pinBoxes.findIndex(x => !x.value))); }
   });
-  b.addEventListener('focus', () => b.select());
+  // Mengetuk kotak di tengah: lanjutkan dari kotak kosong pertama agar angka tidak hilang.
+  b.addEventListener('focus', () => { const f = pinBoxes.findIndex(x => !x.value); if (f >= 0 && f < i) { pinBoxes[f].focus(); return; } b.select(); });
 });
 pinForm.addEventListener('submit', e => { e.preventDefault(); submitPin(); });
 pinNo.addEventListener('click', chooseViewer);
 pinModal.querySelector('.modal-back').addEventListener('click', () => { if (!pinBusy) chooseViewer(); });
 
 /* ---------- Tombol Edit & status ---------- */
-const isDirty = () => !!currentDoc && JSON.stringify(currentDoc.root) !== publishedStr;
+// Perbandingan tidak bergantung urutan properti (hapus lalu isi lagi = tidak berubah).
+const canonStr = r => JSON.stringify(r, (k, v) => (v && typeof v === 'object' && !Array.isArray(v) && Array.isArray(v.children)
+  ? { id: v.id, title: v.title, note: v.note || '', phase: v.phase || 0, side: v.side, key: v.key, icon: v.icon, children: v.children } : v));
+const isDirty = () => !!currentDoc && canonStr(currentDoc.root) !== publishedStr;
 function updateEditBtn() {
   editBtn.hidden = framed || pinLocked();
   const state = editing ? 'editing' : unlocked() ? 'ready' : 'locked';
@@ -2833,7 +2873,7 @@ editBtn.addEventListener('click', () => {
 });
 
 /* ---------- Masuk / keluar mode edit ---------- */
-function enterEdit() {
+function enterEdit(msg = '') {
   if (!unlocked()) { openPin(false); return; }
   if (editing) return;
   editing = true;
@@ -2844,9 +2884,16 @@ function enterEdit() {
   etb.hidden = false;
   hideHint();
   loadEditorAssets();
+  adoptStoredDraft(true);
   const s = selected || root;
   select(s);
+  const hadPanel = panelOpen;
   if (isWide()) openPanel(s);
+  if (isWide() && !hadPanel) fit(true);
+  if (coarsePointer.matches && !store.get('pp.tipTouch')) {
+    store.set('pp.tipTouch', '1');
+    toast((msg ? msg + ' ' : '') + 'Ketuk topik untuk memilih · ketuk lagi untuk format · tekan lama untuk menu', { ms: 7000 });
+  } else if (msg) toast(msg);
   updateEditBtn();
   updateUndo();
   updateStatus();
@@ -2864,25 +2911,47 @@ function exitEdit() {
   if (panelOpen && panelNode) renderPanel(panelNode);
   saveDraft();
   updateEditBtn();
-  if (isDirty()) toast('Draf tersimpan di browser ini. Klik "Publikasikan" agar semua orang bisa melihatnya.', { ms: 5500 });
+  if (draftSaveFailed) toast(SAVE_FAIL_MSG, { ms: 9000, action: 'Ekspor', onAction: exportFile });
+  else if (isDirty()) toast('Draf tersimpan di browser ini. Klik "Publikasikan" agar semua orang bisa melihatnya.', { ms: 5500 });
 }
 function lockEditor() {
   exitEdit();
   store.del('pp.unlocked');
+  store.del('pp.ghToken');
   store.set('pp.gate', 'viewer');
   // Tampilkan kembali versi situs; draf tetap tersimpan untuk dibuka lagi dengan PIN.
   currentDoc = cloneDoc(publishedDoc);
+  syncedStr = canonStr(currentDoc.root);
   hist.undo = [];
   hist.redo = [];
   applyDoc({ anim: false, reveal: false });
   updateEditBtn();
-  toast('Mode edit dikunci. Masukkan PIN lagi untuk mengedit.');
+  toast('Mode edit dikunci dan token GitHub dilupakan. Masukkan PIN lagi untuk mengedit.');
 }
 
 /* ---------- Draf (otomatis tersimpan di browser ini) ---------- */
+/* SVG ikon hanya boleh berisi gambar statis: diperiksa dengan pola teks DAN dengan mengurai strukturnya
+   (menangkap trik awalan namespace seperti <x:script>, <style>, animasi yang mengubah tautan, dst.). */
+const SVG_TAGS = new Set(['svg', 'g', 'defs', 'path', 'circle', 'ellipse', 'rect', 'line', 'polyline', 'polygon', 'lineargradient', 'radialgradient', 'stop', 'clippath', 'mask', 'use', 'symbol', 'title', 'desc', 'filter', 'fegaussianblur', 'feoffset', 'feblend', 'fecolormatrix', 'fecomposite', 'feflood', 'femerge', 'femergenode', 'pattern']);
+function svgTreeOk(s) {
+  let d;
+  try { d = new DOMParser().parseFromString(s, 'image/svg+xml'); } catch (_) { return false; }
+  const r = d.documentElement;
+  if (!r || d.getElementsByTagNameNS('*', 'parsererror').length || r.namespaceURI !== SVGNS || r.localName !== 'svg') return false;
+  for (const el of [r, ...r.getElementsByTagName('*')]) {
+    if (el.namespaceURI !== SVGNS || !SVG_TAGS.has(el.localName.toLowerCase())) return false;
+    for (const a of el.attributes) {
+      const n = a.localName.toLowerCase(), v = a.value.trim();
+      if (n.startsWith('on') || n === 'style' && /url\(|expression|@import|javascript:/i.test(v)) return false;
+      if (n === 'href' && !v.startsWith('#')) return false;
+      if (/url\(\s*['"]?(?!#)/i.test(v) || /javascript:|data:/i.test(v)) return false;
+    }
+  }
+  return true;
+}
 const safeSvg = s => typeof s === 'string' && s.length < 200000 && /^<svg[\s>]/.test(s) &&
-  !/<script|<foreignObject|<iframe|<object|<embed|<!ENTITY|<!DOCTYPE|\son[a-z]+\s*=|javascript:|data:text\/html/i.test(s) &&
-  !/(?:xlink:)?href\s*=\s*["'](?!#)/i.test(s);
+  !/<script|<foreignObject|<iframe|<object|<embed|<style|<!|<\?|\son[a-z]+\s*=|javascript:|data:text\/html/i.test(s) &&
+  !/(?:xlink:)?href\s*=\s*["'](?!#)/i.test(s) && svgTreeOk(s);
 function sanitizeIcons(raw) {
   const out = {};
   if (!raw || typeof raw !== 'object') return out;
@@ -2902,21 +2971,76 @@ function usedDraftIcons(doc = currentDoc) {
   for (const k of usedIconKeys(doc)) if (draftIcons[k]) out[k] = draftIcons[k];
   return out;
 }
+const SAVE_FAIL_MSG = 'Draf GAGAL disimpan: penyimpanan browser penuh. Ekspor ke file agar tidak hilang.';
+let syncedStr = '', draftConflict = false;
 function saveDraftSoon() { clearTimeout(draftTimer); draftTimer = setTimeout(saveDraft, 350); }
 function saveDraft() {
   clearTimeout(draftTimer);
-  if (!currentDoc || !publishedDoc || !unlocked()) return;
-  if (!isDirty()) { store.del('pp.draft'); draftSaveFailed = false; updateStatus(); return; }
+  if (!currentDoc || !publishedDoc || !unlocked() || draftConflict) return;
+  const now = canonStr(currentDoc.root);
+  if (!isDirty()) {
+    // Sama dengan versi situs: hapus draf hanya bila tab ini sendiri yang mengubahnya
+    // (jangan hapus draf milik tab lain / draf yang belum terbaca).
+    if (now !== syncedStr || hist.undo.length || hist.redo.length) store.del('pp.draft');
+    draftBaseRev = publishedDoc.rev || 0;
+    draftSaveFailed = false;
+    syncedStr = now;
+    updateStatus();
+    return;
+  }
   draftSaveFailed = !store.set('pp.draft', JSON.stringify({ v: 1, baseRev: draftBaseRev, savedAt: Date.now(), doc: currentDoc, icons: usedDraftIcons() }));
+  if (!draftSaveFailed) syncedStr = now;
   updateStatus();
 }
 function readDraft() {
+  const raw = store.get('pp.draft');
   try {
-    const d = JSON.parse(store.get('pp.draft') || 'null');
+    const d = JSON.parse(raw || 'null');
     if (!d || !d.doc) return null;
     return { doc: sanitizeDoc(d.doc), icons: sanitizeIcons(d.icons), baseRev: Math.max(0, Math.floor(+d.baseRev) || 0), savedAt: +d.savedAt || 0 };
-  } catch (_) { return null; }
+  } catch (_) {
+    // Draf rusak/terlalu besar: simpan salinannya agar tidak hilang tertimpa.
+    if (raw && !store.get('pp.draftBad')) store.set('pp.draftBad', raw);
+    return null;
+  }
 }
+/* Draf ditulis tab lain (peta dibuka di dua tab): ikuti otomatis bila tab ini belum mengubah apa pun,
+   bila keduanya berubah tanyakan mana yang dipakai. */
+function adoptStoredDraft(silent) {
+  const d = readDraft();
+  if (!d || !currentDoc || canonStr(d.doc.root) === canonStr(currentDoc.root)) return false;
+  if (inline || canonStr(currentDoc.root) !== syncedStr) return false;
+  takeDraft(d);
+  if (!silent) toast('Peta diperbarui dari tab lain');
+  return true;
+}
+function takeDraft(d) {
+  finishInline(false);
+  hist.undo.push(JSON.stringify(currentDoc));
+  hist.redo = [];
+  Object.assign(draftIcons, d.icons);
+  currentDoc = d.doc;
+  draftBaseRev = d.baseRev;
+  syncedStr = canonStr(currentDoc.root);
+  applyDoc({ anim: false, reveal: false });
+}
+window.addEventListener('storage', e => {
+  if (e.key !== 'pp.draft' || !e.newValue || !editing || !currentDoc || !publishedDoc || !unlocked() || pubBusy) return;
+  if (adoptStoredDraft(false) || draftConflict || topModal()) return;
+  const d = readDraft();
+  if (!d || canonStr(d.doc.root) === canonStr(currentDoc.root)) return;
+  draftConflict = true;
+  ask({
+    title: 'Peta juga diubah di tab lain',
+    body: 'Peta ini terbuka di lebih dari satu tab dan keduanya punya perubahan berbeda. Pilih draf yang dipakai; yang lain dibuang.',
+    yes: 'Pakai draf tab lain', no: 'Pakai draf tab ini',
+  }).then(v => {
+    draftConflict = false;
+    const now = readDraft();
+    if (v && now) takeDraft(now);
+    else if (v === false) saveDraft();
+  });
+});
 function readLastPub() {
   try {
     const d = JSON.parse(store.get('pp.lastPub') || 'null');
@@ -2927,24 +3051,27 @@ function readLastPub() {
 const fmtTime = t => (t ? new Date(t).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' }) : 'sebelumnya');
 /* Setelah PIN benar: muat draf lama bila ada (tanya dulu bila versi situs lebih baru). */
 async function resumeDraft(d = readDraft()) {
-  if (!d || JSON.stringify(d.doc.root) === JSON.stringify(currentDoc.root)) return;
+  if (!d || canonStr(d.doc.root) === canonStr(currentDoc.root)) return;
   let use = true;
   if (d.baseRev < (publishedDoc.rev || 0)) {
-    use = await ask({
+    // Hanya "Pakai versi situs" yang membuang draf; menutup dialog = tetap memuat draf (masih bisa dibuang nanti).
+    use = (await ask({
       title: 'Ada draf lama di browser ini',
       body: `Draf disimpan ${fmtTime(d.savedAt)}, tetapi versi situs sudah diperbarui sesudahnya. Lanjutkan draf (akan menimpa versi situs saat dipublikasikan) atau mulai dari versi situs terbaru?`,
       yes: 'Lanjutkan draf', no: 'Pakai versi situs',
-    });
+    })) !== false;
   }
   if (use) {
     Object.assign(draftIcons, d.icons);
     currentDoc = d.doc;
     draftBaseRev = d.baseRev;
+    syncedStr = canonStr(currentDoc.root);
     applyDoc({ anim: false, reveal: false });
     toast(`Draf ${fmtTime(d.savedAt)} dimuat`);
   } else {
     store.del('pp.draft');
     draftBaseRev = publishedDoc.rev || 0;
+    syncedStr = canonStr(currentDoc.root);
   }
 }
 
@@ -2959,10 +3086,11 @@ function applyDoc(opts = {}) {
   matches = [];
   mi = -1;
   clearLevel();
+  // Objek topik lama sudah diganti: jangan biarkan draw() (lewat relayout) memakai `selected` yang basi.
+  selected = null;
   relayout({ animate: opts.anim !== false });
   buildOutline();
   buildChips();
-  selected = null;
   select(s, { keepPanel: opts.keepPanel });
   if (q.value.trim().length >= 2) runSearch();
   if (opts.reveal !== false) ensureNodeVisible(s);
@@ -2977,6 +3105,8 @@ function mutate(fn, opts = {}) {
   const before = JSON.stringify(currentDoc);
   if (fn(currentDoc) === false) { currentDoc = JSON.parse(before); return false; }
   if (JSON.stringify(currentDoc) === before) return false;
+  // Batas yang sama dengan saat memuat draf/publikasi (jumlah topik & kedalaman), supaya draf tidak pernah tak terbaca.
+  try { sanitizeDoc(currentDoc); } catch (err) { currentDoc = JSON.parse(before); toast(err.message || 'Perubahan ditolak.'); return false; }
   if (!opts.coalesce || opts.coalesce !== coalesceKey) {
     hist.undo.push(before);
     if (hist.undo.length > 200) hist.undo.shift();
@@ -3018,6 +3148,10 @@ function findJ(id, node, parent = null, index = -1) {
 }
 const insideJ = (j, id) => j.id === id || j.children.some(c => insideJ(c, id));
 const reId = j => ({ ...j, id: newUid(), children: j.children.map(reId) });
+/* @key (penghubung ke Alur Proses & tombol Langkah) harus unik: salinan tidak ikut membawanya. */
+const docKeys = () => { const k = new Set(); (function w(x) { if (x.key) k.add(x.key); x.children.forEach(w); })(currentDoc.root); return k; };
+const dropKeys = (j, used) => { if (j.key && used.has(j.key)) delete j.key; j.children.forEach(c => dropKeys(c, used)); return j; };
+const isRootN = n => !n.parent;
 const newTopic = title => ({ id: newUid(), title, note: '', phase: 0, children: [] });
 const balancedSide = rootJ => (rootJ.children.filter(c => c.side === 'left').length < rootJ.children.filter(c => c.side !== 'left').length ? 'left' : null);
 function addChild(n = selected, seed) {
@@ -3031,24 +3165,27 @@ function addChild(n = selected, seed) {
   }, { select: t.id, expand: [n.uid] });
   if (ok) editSoon(t.id, seed);
 }
-function addSibling(n = selected) {
+function addSibling(n = selected, before = false) {
   if (!editing || !n) return;
-  if (n === root) { addChild(n); return; }
+  if (isRootN(n)) { addChild(n); return; }
   const t = newTopic(n.depth === 1 ? 'Topik utama baru' : 'Topik baru');
   if (n.depth === 1 && n.side === 'left') t.side = 'left';
   const ok = mutate(d => {
     const f = findJ(n.uid, d.root);
     if (!f || !f.parent) return false;
-    f.parent.children.splice(f.index + 1, 0, t);
+    f.parent.children.splice(f.index + (before ? 0 : 1), 0, t);
   }, { select: t.id });
   if (ok) editSoon(t.id);
 }
 function deleteNode(n = selected) {
   if (!editing || !n) return;
-  if (n === root) { toast('Topik pusat tidak bisa dihapus.'); return; }
+  if (isRootN(n)) { toast('Topik pusat tidak bisa dihapus.'); return; }
   const f = findJ(n.uid, currentDoc.root);
-  if (!f) return;
-  const next = f.parent.children[f.index + 1] || f.parent.children[f.index - 1] || f.parent;
+  if (!f || !f.parent) return;
+  // Pilih topik di sebelahnya pada sisi yang sama (seperti XMind), bukan melompat ke sisi seberang.
+  const sib = f.parent === currentDoc.root ? f.parent.children.filter(c => (c.side === 'left') === (f.node.side === 'left')) : f.parent.children;
+  const k = sib.indexOf(f.node);
+  const next = sib[k + 1] || sib[k - 1] || f.parent;
   let cnt = 0;
   (function w(j) { cnt++; j.children.forEach(w); })(f.node);
   const title = n.title;
@@ -3056,7 +3193,7 @@ function deleteNode(n = selected) {
     toast(cnt > 1 ? `"${short(title)}" dan ${cnt - 1} subtopiknya dihapus` : `"${short(title)}" dihapus`, { action: 'Urungkan', onAction: undo });
 }
 function moveBy(n = selected, delta) {
-  if (!editing || !n || n === root) return;
+  if (!editing || !n || isRootN(n)) return;
   const ok = mutate(d => {
     const f = findJ(n.uid, d.root);
     const sib = f.parent.children;
@@ -3102,14 +3239,14 @@ function setField(uid, field, value, opts = {}) {
   }, { select: uid, ...opts });
 }
 function copyNode(n = selected) {
-  if (!n || n === root) return;
+  if (!n || isRootN(n)) return;
   const f = findJ(n.uid, currentDoc.root);
   if (!f) return;
   clipboard = JSON.stringify(f.node);
   toast(`"${short(n.title)}" disalin`);
 }
 function cutNode(n = selected) {
-  if (!editing || !n || n === root) return;
+  if (!editing || !n || isRootN(n)) return;
   copyNode(n);
   deleteNode(n);
 }
@@ -3117,7 +3254,7 @@ function pasteNode(n = selected) {
   if (!editing || !n) return;
   if (!clipboard) { toast('Belum ada topik yang disalin.'); return; }
   let j;
-  try { j = reId(sanitizeDoc({ root: JSON.parse(clipboard) }).root); } catch (_) { return; }
+  try { j = dropKeys(reId(sanitizeDoc({ root: JSON.parse(clipboard) }).root), docKeys()); } catch (err) { toast(err.message || 'Gagal menempel.'); return; }
   delete j.side;
   mutate(d => {
     const f = findJ(n.uid, d.root);
@@ -3127,14 +3264,14 @@ function pasteNode(n = selected) {
   }, { select: j.id, expand: [n.uid] });
 }
 function duplicateNode(n = selected) {
-  if (!editing || !n || n === root) return;
+  if (!editing || !n || isRootN(n)) return;
   const f = findJ(n.uid, currentDoc.root);
-  if (!f) return;
-  const j = reId(JSON.parse(JSON.stringify(f.node)));
+  if (!f || !f.parent) return;
+  const j = dropKeys(reId(JSON.parse(JSON.stringify(f.node))), docKeys());
   mutate(d => { const g = findJ(n.uid, d.root); g.parent.children.splice(g.index + 1, 0, j); }, { select: j.id });
 }
 function startMove(n = selected) {
-  if (!editing || !n || n === root) return;
+  if (!editing || !n || isRootN(n)) return;
   cancelMove();
   moveMode = { uid: n.uid };
   document.body.classList.add('moving');
@@ -3175,6 +3312,7 @@ function startInlineEdit(n = selected, seed) {
   t.addEventListener('input', inlineInput);
   t.addEventListener('blur', inlineBlur);
   t.addEventListener('paste', inlinePaste);
+  t.addEventListener('beforeinput', inlineBeforeInput);
   t.focus({ preventScroll: true });
   const r = document.createRange();
   r.selectNodeContents(t);
@@ -3188,7 +3326,15 @@ function startInlineEdit(n = selected, seed) {
 }
 function inlineInput() {
   if (!inline) return;
-  if (inline.t.textContent.length > 200) inline.t.textContent = inline.t.textContent.slice(0, 200);
+  if (inline.t.textContent.length > 200) {
+    // Potong di batas 200 huruf tanpa memindahkan kursor ke awal (dan tanpa membelah emoji).
+    inline.t.textContent = inline.t.textContent.slice(0, 200).replace(/[\ud800-\udbff]$/, '');
+    const r = document.createRange(), sel = getSelection();
+    r.selectNodeContents(inline.t);
+    r.collapse(false);
+    sel.removeAllRanges();
+    sel.addRange(r);
+  }
   inline.n.w = 0;
   relayout({ animate: false });
 }
@@ -3207,10 +3353,14 @@ function inlinePaste(e) {
 }
 function inlineKey(e) {
   e.stopPropagation();
-  if (e.isComposing) return;
+  if (e.isComposing || e.keyCode === 229) return;   // Enter untuk memilih kata IME (Safari mengirim keyCode 229)
   if (e.key === 'Enter') { e.preventDefault(); finishInline(true); }
   else if (e.key === 'Escape') { e.preventDefault(); finishInline(false); }
   else if (e.key === 'Tab') { e.preventDefault(); finishInline(true); addChild(selected); }
+}
+/* Enter dari keyboard HP yang tidak mengirim keydown biasa tetap menyimpan judul (bukan membuat baris baru). */
+function inlineBeforeInput(e) {
+  if (e.inputType === 'insertParagraph' || e.inputType === 'insertLineBreak') { e.preventDefault(); finishInline(true); }
 }
 function inlineBlur() { setTimeout(() => { if (inline && document.activeElement !== inline.t) finishInline(true); }, 0); }
 function finishInline(commit) {
@@ -3221,13 +3371,15 @@ function finishInline(commit) {
   t.removeEventListener('input', inlineInput);
   t.removeEventListener('blur', inlineBlur);
   t.removeEventListener('paste', inlinePaste);
+  t.removeEventListener('beforeinput', inlineBeforeInput);
   t.removeAttribute('contenteditable');
   t.removeAttribute('role');
   t.removeAttribute('aria-label');
   n.el.classList.remove('editing');
   const v = cleanText(t.textContent, 200).replace(/\s+/g, ' ').trim();
   if (document.activeElement === t) viewport.focus({ preventScroll: true });
-  if (commit && v && v !== orig) { setField(uid, 'title', v, { reveal: false }); return; }
+  // Pertahankan pilihan saat ini: bila pengguna mengeklik topik lain untuk mengakhiri edit, topik itulah yang terpilih.
+  if (commit && v && v !== orig) { setField(uid, 'title', v, { reveal: false, select: (selected || n).uid }); return; }
   n.html = null;
   applyDoc({ anim: false, reveal: false });
 }
@@ -3236,17 +3388,20 @@ function finishInline(commit) {
 function addTarget() {
   if (!editing || inline || moveMode || drag) return null;
   const h = hoverNode && hoverNode.el && hoverNode.el.isConnected && hoverNode.el.style.display !== 'none' && all[hoverNode.id] === hoverNode ? hoverNode : null;
-  return h || selected;
+  return h || (selected && all[selected.id] === selected ? selected : null);
 }
+const coarsePointer = matchMedia('(pointer:coarse)');
 function placeAddBtn() {
   const n = addTarget();
   if (!n || n.x == null || !n.el || n.el.style.display === 'none') { addBtn.hidden = true; return; }
+  // Saat peta diperkecil, tombol + tetap cukup besar untuk diketuk (min. 22px, 30px di layar sentuh).
+  const z = Math.max(1, (coarsePointer.matches ? 30 : 22) / 22 / cam.s), grow = 11 * (z - 1);
   let x, y;
-  if (n === root) { x = n.x + n.w + 18; y = n.y + n.h / 2; }
-  else { const a = anchorOut(n), d = dirOf(n); x = a.x + d * (n.tg ? 36 : 16); y = a.y; }
+  if (n === root) { x = n.x + n.w + 18 + grow; y = n.y + n.h / 2; }
+  else { const a = anchorOut(n), d = dirOf(n); x = a.x + d * ((n.tg ? 36 : 16) + grow); y = a.y; }
   addBtn.hidden = false;
   addBtn.dataset.id = n.id;
-  addBtn.style.transform = `translate(${x}px,${y}px)`;
+  addBtn.style.transform = `translate(${x}px,${y}px) scale(${z})`;
 }
 viewport.addEventListener('pointerover', e => {
   if (!editing || e.pointerType === 'touch') return;
@@ -3388,7 +3543,11 @@ etb.addEventListener('click', e => {
   if (b.dataset.ed === 'more') {
     const r = b.getBoundingClientRect();
     openMenu(MORE_ITEMS, r.right - 260, r.bottom + 6, null);
-  } else runAction(b.dataset.ed, null);
+  } else {
+    // Fokus kembali ke peta: pintasan ala XMind (Enter, Tab, Delete…) langsung jalan lagi dan Enter tidak mengulang tombol.
+    viewport.focus({ preventScroll: true });
+    runAction(b.dataset.ed, null);
+  }
 });
 
 /* ---------- Panel format (isi topik) ---------- */
@@ -3413,7 +3572,9 @@ function renderEditPanel(n) {
     (isRoot ? '' : '<button type="button" class="btn" data-ef="sibling">+ Topik sejajar</button><button type="button" class="btn" data-ef="up">↑ Naik</button><button type="button" class="btn" data-ef="down">↓ Turun</button><button type="button" class="btn" data-ef="move">Pindahkan…</button><button type="button" class="btn danger" data-ef="delete">Hapus</button>') +
     '</div>' +
     `<details class="ef-adv"><summary>Lanjutan</summary><label class="ef-l" for="efKey">Penanda (@)</label><input class="ef-in" id="efKey" value="${esc(n.key || '')}" maxlength="32" autocomplete="off" spellcheck="false"><p class="ef-hint">Dipakai tombol "Langkah" di atas dan tautan dari Alur Proses. Ubah hanya bila perlu.</p></details>` +
-    '<p class="ef-tip">Tips: klik dua kali topik untuk mengetik langsung · <kbd>Tab</kbd> subtopik · <kbd>Enter</kbd> topik sejajar · seret topik untuk memindahkan.</p></div>';
+    (coarsePointer.matches
+      ? '<p class="ef-tip">Tips: ketuk topik lagi untuk membuka format · tekan lama topik untuk menu (edit teks, hapus, pindah, salin) · tombol <b>+</b> untuk subtopik.</p></div>'
+      : '<p class="ef-tip">Tips: klik dua kali topik untuk mengetik langsung · <kbd>Tab</kbd> subtopik · <kbd>Enter</kbd> topik sejajar · seret topik untuk memindahkan.</p></div>');
   if (!same) panelBody.scrollTop = 0;
 }
 panelBody.addEventListener('input', e => {
@@ -3428,7 +3589,7 @@ panelBody.addEventListener('input', e => {
 });
 panelBody.addEventListener('change', e => {
   if (!editing || !panelNode) return;
-  if (e.target.id === 'efTitle' && !e.target.value.trim()) e.target.value = panelNode.title;
+  if (e.target.id === 'efTitle' && !e.target.value.trim()) { const f = findJ(panelNode.uid, currentDoc.root); e.target.value = f ? f.node.title : panelNode.title; }
   if (e.target.id === 'efKey') {
     const v = e.target.value.trim();
     if (v && !/^\w{1,32}$/.test(v)) { toast('Penanda hanya boleh huruf, angka, dan garis bawah.'); e.target.value = panelNode.key || ''; return; }
@@ -3451,17 +3612,17 @@ panel.addEventListener('click', e => {
 
 /* ---------- Pemilih ikon ---------- */
 const ICON_CATALOG = [
-  ['Pondok & ibadah', '🕌 masjid pondok pesantren|📿 tasbih dzikir wirid|🤲 doa ibadah|🙏 berdoa terima kasih|📖 quran kitab tahfidz baca|🌙 malam qiyamul lail|🕋 kabah haji umrah|☪️ islam|🕯️ lilin|🧕 santriwati hijab|👳 kyai ustadz pengasuh|🧔 ustadz bapak|🌟 bintang prestasi|✨ baru kilau|🤝 kerja sama panitia'],
-  ['Sekolah & belajar', '🏫 sekolah madrasah kelas|🎒 tas siswa mi|📚 buku kitab pelajaran|📘 buku biru raport|📗 buku hijau|📙 buku oranye|📕 buku merah|📓 buku catatan jurnal|📒 buku induk|✏️ pensil tulis|🖊️ pena tanda tangan|📝 catatan formulir daftar|✍️ menulis tes ujian|🎓 lulus wisuda alumni|🧑‍🎓 siswa santri mahasiswa|🧑‍🏫 guru ustadz dosen|🧮 hitung rekap|📐 penggaris matematika|🔬 sains ipa|🧪 praktikum|🌍 dunia geografi|🗺️ peta|💯 nilai sempurna|🏆 piala juara prestasi|🥇 medali juara|🎖️ penghargaan'],
+  ['Pondok & ibadah', '🕌 masjid pondok pesantren sholat shalat salat musholla mushola|📿 tasbih dzikir wirid|🤲 doa ibadah|🙏 berdoa terima kasih|📖 quran kitab tahfidz baca ngaji mengaji hafalan setoran alquran|🌙 malam qiyamul lail puasa ramadhan|🕋 kabah haji umrah|☪️ islam|🕯️ lilin|🧕 santriwati hijab ustadzah|👳 kyai ustadz pengasuh kiai|🧔 ustadz bapak|🌟 bintang prestasi|✨ baru kilau|🤝 kerja sama panitia'],
+  ['Sekolah & belajar', '🏫 sekolah madrasah kelas|🎒 tas siswa mi|📚 buku kitab pelajaran perpustakaan|📘 buku biru raport|📗 buku hijau|📙 buku oranye|📕 buku merah|📓 buku catatan jurnal|📒 buku induk|✏️ pensil tulis|🖊️ pena tanda tangan|📝 catatan formulir daftar pendaftaran|✍️ menulis tes ujian|🎓 lulus wisuda alumni|🧑‍🎓 siswa santri mahasiswa|🧑‍🏫 guru ustadz dosen|🧮 hitung rekap|📐 penggaris matematika|🔬 sains ipa|🧪 praktikum|🌍 dunia geografi|🗺️ peta|💯 nilai sempurna|🏆 piala juara prestasi|🥇 medali juara|🎖️ penghargaan'],
   ['Orang', '👤 orang data diri|👥 kelompok pengguna|🧑 orang|👨 laki-laki putra|👩 perempuan putri|👦 anak laki-laki|👧 anak perempuan|🧑‍💼 kepala pimpinan|🧑‍💻 admin operator|🧑‍⚕️ dokter kesehatan|🧑‍🍳 dapur juru masak|🧑‍🔧 teknisi|👮 keamanan satpam|🙋 bertanya|👍 setuju|👏 tepuk tangan|🏡 keluarga wali rumah'],
   ['Waktu & jadwal', '📅 kalender jadwal|📆 kalender tahun ajaran|🗓️ agenda kegiatan|⏰ jam alarm terlambat|⌚ jam tangan hadir|⏱️ stopwatch waktu|⏳ jam pasir menunggu|🕒 jam|☀️ harian siang|🌔 bulanan|🌅 pagi subuh|🌃 malam'],
-  ['Dokumen & data', '📄 dokumen berkas|📃 surat lembar|📑 dokumen bertab|📋 daftar absensi|🗂️ map arsip administrasi|🗃️ kotak arsip data master|🗄️ lemari arsip|📁 folder|📂 folder terbuka|📊 grafik laporan nilai|📈 naik statistik rekap|📉 turun|🧾 kuitansi tagihan|📌 penting pengumuman|📎 lampiran upload|🔖 penanda|🏷️ label harga|🪪 kartu identitas nis|📜 piagam sertifikat|🖨️ cetak printer'],
+  ['Dokumen & data', '📄 dokumen berkas|📃 surat lembar|📑 dokumen bertab|📋 daftar absensi|🗂️ map arsip administrasi|🗃️ kotak arsip data master|🗄️ lemari arsip|📁 folder|📂 folder terbuka|📊 grafik laporan nilai|📈 naik statistik rekap|📉 turun|🧾 kuitansi tagihan|📌 penting pengumuman|📎 lampiran upload|🔖 penanda|🏷️ label harga|🪪 kartu identitas nis|📜 piagam sertifikat ijazah akta|🖨️ cetak printer'],
   ['Komunikasi', '📢 pengumuman toa|📣 megafon|🔔 notifikasi lonceng|💬 pesan chat|📩 pesan masuk surat|📧 email|📨 kirim surat|📱 hp aplikasi|📲 whatsapp kirim pesan|☎️ telepon|🗣️ bicara wawancara|📡 antena rfid sinyal|📤 ekspor kirim|📥 impor terima'],
-  ['Keuangan', '💰 uang keuangan|💵 uang tunai bayar|💳 kartu pembayaran|🪙 koin tabungan|🏦 bank transfer|🎁 hadiah donasi|💸 pengeluaran'],
-  ['Tempat & fasilitas', '🏠 rumah pulang|🏘️ asrama gedung|🏢 kantor gedung|🏛️ kampus perguruan tinggi|🏥 klinik rumah sakit|🛏️ kamar tidur asrama|🛌 tidur kamar|🚪 pintu izin keluar|🪑 kursi kelas|🍽️ makan dapur|🚿 mandi|🧺 cucian laundry|🧹 kebersihan piket|🚌 bus transportasi|🚗 mobil antar jemput|🏟️ lapangan'],
+  ['Keuangan', '💰 uang keuangan zakat infaq sedekah syahriah spp|💵 uang tunai bayar|💳 kartu pembayaran|🪙 koin tabungan|🏦 bank transfer|🎁 hadiah donasi|💸 pengeluaran'],
+  ['Tempat & fasilitas', '🏠 rumah pulang|🏘️ asrama gedung|🏢 kantor gedung|🏛️ kampus perguruan tinggi|🏥 klinik rumah sakit uks obat|🛏️ kamar tidur asrama|🛌 tidur kamar|🚪 pintu izin keluar gerbang pindah|🪑 kursi kelas|🍽️ makan dapur|🚿 mandi wudhu|🧺 cucian laundry|🧹 kebersihan piket|🚌 bus transportasi|🚗 mobil antar jemput|🏟️ lapangan'],
   ['Kegiatan', '⚽ sepak bola ekstrakurikuler|🏸 badminton olahraga|🏀 basket|🏃 lari olahraga|🏊 renang|⛺ pramuka kemah|🎤 pidato muhadharah|🥁 drum|🪘 hadrah rebana|🎨 seni lukis|🎵 musik sholawat|🎭 drama|🌱 tanam fase 1|🌿 tumbuh fase 2|🌳 pohon fase 3|🍎 buah gizi|🍚 nasi makan'],
   ['Teknologi & keamanan', '💻 laptop komputer web|🖥️ komputer dashboard|🌐 web internet|☁️ cloud server|🔐 kunci hak akses|🔑 kunci akun|🔒 terkunci aman|🛡️ keamanan backup|⚙️ pengaturan|🔧 perbaikan|🧩 modul|🚀 peluncuran pengembangan|💡 ide|🔍 cari|📷 kamera scan qr|👆 sidik jari sentuh'],
-  ['Tanda & status', '✅ selesai hadir benar|❌ salah alpa batal|⚠️ peringatan pelanggaran|❗ penting|❓ pertanyaan|⭐ bintang favorit|🔥 penting panas|🎯 target tujuan|🚦 status lampu|🏁 selesai finish|🔄 ulang mutasi|🔁 ulangi|⬆️ naik|➡️ lanjut|🎉 selamat lulus|❤️ suka|🟢 hijau|🟡 kuning|🔴 merah'],
+  ['Tanda & status', '✅ selesai hadir benar|❌ salah alpa batal|⚠️ peringatan pelanggaran hukuman takzir sanksi|❗ penting|❓ pertanyaan|⭐ bintang favorit|🔥 penting panas|🎯 target tujuan|🚦 status lampu|🏁 selesai finish|🔄 ulang mutasi|🔁 ulangi|⬆️ naik|➡️ lanjut|🎉 selamat lulus|❤️ suka|🟢 hijau|🟡 kuning|🔴 merah'],
 ].map(([name, list]) => [name, list.split('|').map(s => { const i = s.indexOf(' '); return { e: s.slice(0, i), kw: s.slice(i + 1) }; })]);
 let ipCat = 0, ipTarget = null;
 const keyToEmoji = k => {
@@ -3498,7 +3659,8 @@ function ipResults() {
   const seen = new Set(), out = [];
   for (const [, items] of ICON_CATALOG) for (const it of items) {
     const k = emojiKey(it.e);
-    if (!seen.has(k) && norm(it.kw).includes(term)) { seen.add(k); out.push(it); }
+    const kw = norm(it.kw);
+    if (!seen.has(k) && (kw.includes(term) || (term.length >= 5 && kw.split(' ').some(w => w.length >= 4 && term.includes(w))))) { seen.add(k); out.push(it); }
   }
   const names = charsMaps && charsMaps[iconSet];
   if (names && term.length >= 2) {
@@ -3516,7 +3678,7 @@ function renderIpGrid() {
   const cur = ipTarget && all.find(n => n.uid === ipTarget);
   const curKey = cur && cur.iconKey;
   if (!items.length) {
-    ipGrid.innerHTML = `<p class="ip-empty">Tidak ada ikon untuk "${esc(ipQ.value.trim())}". Coba kata lain (mis. <i>buku</i>, <i>uang</i>, <i>school</i>) atau tempel emoji di kolom "Emoji lain".</p>`;
+    ipGrid.innerHTML = `<p class="ip-empty">Tidak ada ikon untuk "${esc(ipQ.value.trim())}". Coba kata lain (mis. <i>buku</i>, <i>uang</i>, <i>jadwal</i>) atau tempel emoji di kolom "Emoji lain".</p>`;
     return;
   }
   const need = [];
@@ -3558,6 +3720,24 @@ ipCats.addEventListener('click', e => {
   ipGrid.scrollTop = 0;
 });
 ipGrid.addEventListener('click', e => { const b = e.target.closest('.ip-item'); if (b) pickIcon(b.dataset.e); });
+/* Keyboard: Enter di kotak cari memilih hasil pertama, ↓ masuk ke daftar, panah bergerak di antara ikon. */
+ipQ.addEventListener('keydown', e => {
+  const f = ipGrid.querySelector('.ip-item');
+  if (!f || e.isComposing || e.keyCode === 229) return;
+  if (e.key === 'Enter') { e.preventDefault(); pickIcon(f.dataset.e); }
+  else if (e.key === 'ArrowDown') { e.preventDefault(); f.focus(); }
+});
+ipGrid.addEventListener('keydown', e => {
+  const items = [...ipGrid.querySelectorAll('.ip-item')], i = items.indexOf(document.activeElement);
+  if (i < 0 || !['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'].includes(e.key)) return;
+  e.preventDefault();
+  const top0 = items[0].offsetTop, cols = Math.max(1, items.findIndex(x => x.offsetTop !== top0) < 0 ? items.length : items.findIndex(x => x.offsetTop !== top0));
+  const j = e.key === 'ArrowLeft' ? i - 1 : e.key === 'ArrowRight' ? i + 1 : e.key === 'ArrowUp' ? i - cols : e.key === 'ArrowDown' ? i + cols : e.key === 'Home' ? 0 : items.length - 1;
+  if (j < 0 && e.key === 'ArrowUp') { ipQ.focus(); return; }
+  const t = items[Math.max(0, Math.min(items.length - 1, j))];
+  t.focus();
+  t.scrollIntoView({ block: 'nearest' });
+});
 $('#ipNone').addEventListener('click', () => pickIcon(null));
 ipEmoji.addEventListener('input', () => { const v = ipEmoji.value.trim(); ipNote.textContent = v && !validIcon(v) ? 'Itu bukan emoji. Tempel satu emoji, mis. 🕌' : v ? 'Tekan Enter untuk memakai emoji ini' : ''; });
 ipEmoji.addEventListener('keydown', e => {
@@ -3571,7 +3751,10 @@ async function pickIcon(e) {
   closeModal(iconModal);
   if (!uid || (e && !validIcon(e))) return;
   setField(uid, 'icon', e || null, { reveal: false });
-  if (e) await ensureIconFiles(emojiKey(e));
+  if (!e) return;
+  const k = emojiKey(e);
+  await ensureIconFiles(k);
+  if (!ICON_SETS.some(set => previewSrc(k, set))) toast('Gambar ikon belum bisa diunduh (sedang offline?), jadi tampil sebagai emoji bawaan. Pilih lagi saat online.', { ms: 6500 });
 }
 /* Ikon baru (belum ada di situs): ambil gambar kedua gaya untuk draf; ikut terunggah saat dipublikasikan. */
 async function ensureIconFiles(k) {
@@ -3583,7 +3766,8 @@ async function ensureIconFiles(k) {
     if (!svg) svg = (await fetchIconBodies(set, [k]))[k];
     if (svg) { (draftIcons[k] = draftIcons[k] || {})[set] = svg; changed = true; }
   }
-  if (changed && editing) { applyDoc({ anim: false, reveal: false }); saveDraftSoon(); }
+  // Saat judul sedang diketik, jangan bangun ulang peta (teks yang diketik bisa hilang); ikon tampil begitu edit selesai.
+  if (changed && editing) { if (!inline) applyDoc({ anim: false, reveal: false }); saveDraftSoon(); }
 }
 async function fetchJSON(url, ms = 8000) {
   const ctl = new AbortController();
@@ -3661,13 +3845,14 @@ function diffStats(a, b) {
   }
   for (const id of A.keys()) if (!B.has(id)) removed++;
   let icons = 0;
-  for (const k of usedIconKeys(b)) if (draftIcons[k]) icons++;
+  for (const k of usedIconKeys(b)) if (draftIcons[k] && !(manifest && ICON_SETS.every(s => !draftIcons[k][s] || manifest[s].has(k)))) icons++;
   return { added, removed, changed, moved, icons };
 }
 const tokenOk = t => /^(github_pat_[A-Za-z0-9_]{20,255}|gh[pousr]_[A-Za-z0-9]{20,255})$/.test(t);
 let pubForce = false, pubBusy = false, pubDone = false;
 function openPublish() {
   if (!editing) return;
+  if (pubLoadFailed) { toast(LOAD_FAIL_MSG.replace('Muat ulang halaman untuk mencoba lagi.', 'Muat ulang halaman sebelum mempublikasikan.'), { ms: 7000 }); return; }
   finishInline(true);
   saveDraft();
   if (!isDirty()) { toast('Belum ada perubahan untuk dipublikasikan.'); return; }
@@ -3729,19 +3914,31 @@ async function publishToGitHub(token, { force, step }) {
   doc.updatedAt = new Date().toISOString();
   const files = [{ path: 'data/peta.json', content: JSON.stringify(doc, null, 1) + '\n' }];
   const newKeys = [];
-  for (const k of usedIconKeys(doc)) {
-    const d = draftIcons[k];
-    if (!d) continue;
-    let added = false;
-    for (const set of ICON_SETS) if (safeSvg(d[set])) { files.push({ path: `assets/icons/${set}/${k}.svg`, content: d[set] + '\n' }); added = true; }
-    if (added) newKeys.push(k);
-  }
-  if (newKeys.length) {
+  const cand = [...usedIconKeys(doc)].filter(k => draftIcons[k]);
+  if (cand.length) {
+    // Daftar ikon dibaca dari repositori (bukan salinan situs yang bisa tertinggal); ikon yang sudah ada tidak pernah ditimpa.
+    step('Memeriksa daftar ikon…');
     let man = null;
-    try { man = await fetchJSON('assets/icons/index.json'); } catch (_) {}
-    const m = { fluent: new Set((man && man.fluent) || []), openmoji: new Set((man && man.openmoji) || []) };
-    for (const k of newKeys) for (const set of ICON_SETS) if (draftIcons[k][set]) m[set].add(k);
-    files.push({ path: 'assets/icons/index.json', content: JSON.stringify({ fluent: [...m.fluent].sort(), openmoji: [...m.openmoji].sort() }) + '\n' });
+    try {
+      const c = await gh(token, `${R}/contents/assets/icons/index.json?ref=${encodeURIComponent(branch)}`);
+      man = JSON.parse(b64utf8(c.content));
+    } catch (e) {
+      if (e.status !== 404) throw new Error('Gagal membaca daftar ikon di repositori. Coba lagi sebentar lagi.');
+    }
+    const m = {};
+    for (const set of ICON_SETS) m[set] = new Set(man && Array.isArray(man[set]) ? man[set].filter(x => typeof x === 'string') : []);
+    for (const k of cand) {
+      let added = false;
+      for (const set of ICON_SETS) {
+        const svg = draftIcons[k][set];
+        if (m[set].has(k) || !safeSvg(svg)) continue;
+        files.push({ path: `assets/icons/${set}/${k}.svg`, content: svg + '\n' });
+        m[set].add(k);
+        added = true;
+      }
+      if (added) newKeys.push(k);
+    }
+    if (newKeys.length) files.push({ path: 'assets/icons/index.json', content: JSON.stringify(Object.fromEntries(ICON_SETS.map(set => [set, [...m[set]].sort()]))) + '\n' });
   }
   const st = diffStats(publishedDoc, doc);
   const message = `Perbarui peta pikiran dari mode edit (+${st.added} ~${st.changed + st.moved} -${st.removed})`;
@@ -3775,6 +3972,7 @@ $('#pubGo').addEventListener('click', async () => {
   if ($('#pubRemember').checked) store.set('pp.ghToken', token); else store.del('pp.ghToken');
   pubBusy = true;
   go.disabled = true;
+  pubModal.querySelectorAll('button[data-close]').forEach(b => { b.disabled = true; });
   try {
     const res = await publishToGitHub(token, { force: pubForce, step: t => { log.innerHTML = `<span>${esc(t)}</span>`; } });
     afterPublish(res);
@@ -3790,11 +3988,12 @@ $('#pubGo').addEventListener('click', async () => {
   } finally {
     pubBusy = false;
     go.disabled = false;
+    pubModal.querySelectorAll('button[data-close]').forEach(b => { b.disabled = false; });
   }
 });
 function afterPublish(res) {
   publishedDoc = cloneDoc(res.doc);
-  publishedStr = JSON.stringify(publishedDoc.root);
+  publishedStr = canonStr(publishedDoc.root);
   currentDoc = cloneDoc(res.doc);
   draftBaseRev = res.doc.rev;
   if (manifest) for (const k of res.newKeys) for (const set of ICON_SETS) if (draftIcons[k] && draftIcons[k][set]) manifest[set].add(k);
@@ -3828,8 +4027,12 @@ importFile.addEventListener('change', async () => {
   } catch (err) { toast('Gagal membaca file: ' + (err && err.message ? err.message : 'format tidak dikenali')); return; }
   const ok = await ask({ title: 'Ganti isi peta?', body: `Seluruh peta akan diganti dengan isi file "${file.name}" (${flatDoc(doc).size} topik). Langkah ini bisa diurungkan.`, yes: 'Ganti', danger: true });
   if (!ok) return;
-  Object.assign(draftIcons, icons);
-  mutate(d => { d.root = doc.root; }, { select: doc.root.id });
+  // Ikon dari file hanya dipakai untuk emoji yang belum punya gambar di situs: file tidak bisa mengganti ikon yang sudah ada.
+  await loadEditorAssets();
+  const pubKeys = usedIconKeys(publishedDoc);
+  for (const [k, v] of Object.entries(icons))
+    if (!draftIcons[k] && !pubKeys.has(k) && manifest && !ICON_SETS.some(set => manifest[set].has(k))) draftIcons[k] = v;
+  if (!mutate(d => { d.root = doc.root; }, { select: doc.root.id })) return;
   toast('Peta dari file dimuat. Periksa lalu publikasikan bila sudah sesuai.');
 });
 async function discardDraft() {
@@ -3854,7 +4057,7 @@ function handleEditKey(e) {
     const kl = k.toLowerCase();
     if (kl === 'z' && !e.shiftKey && !typing) { e.preventDefault(); undo(); return true; }
     if (((kl === 'z' && e.shiftKey) || kl === 'y') && !typing) { e.preventDefault(); redo(); return true; }
-    if (kl === 's') { e.preventDefault(); saveDraft(); toast(isDirty() ? 'Draf tersimpan di browser ini' : 'Tidak ada perubahan'); return true; }
+    if (kl === 's') { e.preventDefault(); saveDraft(); toast(draftSaveFailed ? SAVE_FAIL_MSG : isDirty() ? 'Draf tersimpan di browser ini' : 'Tidak ada perubahan'); return true; }
     if (typing || !onCanvas || !selected) return false;
     const act = { c: 'copy', x: 'cut', v: 'paste', d: 'dup' }[kl];
     if (act) { e.preventDefault(); runAction(act, selected); return true; }
@@ -3864,7 +4067,7 @@ function handleEditKey(e) {
   if (moveMode && k === 'Escape') { e.preventDefault(); cancelMove(); return true; }
   if (e.altKey && (k === 'ArrowUp' || k === 'ArrowDown')) { e.preventDefault(); moveBy(selected, k === 'ArrowUp' ? -1 : 1); return true; }
   if (e.altKey) return false;
-  if (k === 'Enter') { e.preventDefault(); addSibling(); return true; }
+  if (k === 'Enter') { e.preventDefault(); addSibling(selected, e.shiftKey); return true; }   // Shift+Enter: sisipkan di atas (XMind)
   if (k === 'Tab' && !e.shiftKey) { e.preventDefault(); addChild(); return true; }
   if (k === 'Delete' || k === 'Backspace') { e.preventDefault(); deleteNode(); return true; }
   if (k === 'F2' || k === ' ') { e.preventDefault(); startInlineEdit(selected); return true; }
@@ -3890,9 +4093,35 @@ viewport.addEventListener('contextmenu', e => {
 window.addEventListener('pagehide', () => { finishInline(true); saveDraft(); });
 
 /* ---------- Data situs & gerbang PIN saat mulai ---------- */
-async function loadPublishedDoc() {
-  if (location.protocol === 'file:') return null;
-  try { return sanitizeDoc(await fetchJSON('data/peta.json?v=' + Date.now(), 4000)); } catch (_) { return null; }
+/* Versi situs (data/peta.json). 404 = belum pernah dipublikasikan → pakai DATA bawaan.
+   Bila lambat (>4 dtk) halaman tetap tampil dengan DATA, lalu diganti begitu file tiba;
+   selama versi situs belum pasti, publikasi ditahan agar tidak menimpa isi situs. */
+let pubLoadFailed = false, pubLate = null;
+function loadPublishedDoc() {
+  if (location.protocol === 'file:') return Promise.resolve(null);
+  return new Promise(resolve => {
+    let done = false;
+    const p = fetchJSON('data/peta.json?v=' + Date.now(), 20000)
+      .then(j => sanitizeDoc(j), e => { if (e && e.message === 'HTTP 404') return null; throw e; });
+    p.then(doc => { if (!done) { done = true; resolve(doc); } }, () => { if (!done) { done = true; pubLoadFailed = true; resolve(null); } });
+    setTimeout(() => { if (done) return; done = true; pubLoadFailed = true; pubLate = p; resolve(null); }, 4000);
+  });
+}
+const LOAD_FAIL_MSG = 'Versi terbaru peta gagal dimuat, jadi yang tampil versi bawaan. Muat ulang halaman untuk mencoba lagi.';
+function watchLateDoc() {
+  if (!pubLate) { if (pubLoadFailed) toast(LOAD_FAIL_MSG, { ms: 8000 }); return; }
+  pubLate.then(async doc => {
+    pubLate = null;
+    if (hist.undo.length || hist.redo.length || inline) {
+      toast('Versi terbaru situs baru selesai dimuat. Muat ulang halaman sebelum mempublikasikan.', { ms: 8000 });
+      return;
+    }
+    pubLoadFailed = false;
+    const stale = prepareDocs(doc);
+    syncedStr = canonStr(currentDoc.root);
+    applyDoc({ anim: false, reveal: false });
+    if (stale && unlocked()) await resumeDraft(stale);
+  }, () => { pubLate = null; toast(LOAD_FAIL_MSG, { ms: 8000 }); });
 }
 /* Pilih dokumen awal: versi situs; untuk editor yang sudah membuka PIN, lanjutkan drafnya. */
 function prepareDocs(pub) {
@@ -3903,7 +4132,7 @@ function prepareDocs(pub) {
     Object.assign(draftIcons, lp.icons);
     pendingPub = true;
   } else if (lp) store.del('pp.lastPub');
-  publishedStr = JSON.stringify(publishedDoc.root);
+  publishedStr = canonStr(publishedDoc.root);
   draftBaseRev = publishedDoc.rev || 0;
   currentDoc = cloneDoc(publishedDoc);
   if (!unlocked()) return null;
@@ -3978,9 +4207,11 @@ Promise.all([fontsReady(), loadPublishedDoc()]).then(async ([, pub]) => {
   fit(false);
   viewport.classList.add('ready');
   booted = true;
+  syncedStr = canonStr(currentDoc.root);
   if (location.hash) applyRoute();
   else if (pendingView) { setView(pendingView); syncHash(true); }
-  initGate(staleDraft);
+  await initGate(staleDraft);
+  watchLateDoc();
 });
 })();
 </script>

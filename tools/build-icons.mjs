@@ -40,10 +40,13 @@ const fromJson = [];
 try {
   const doc = JSON.parse(await readFile(join(ROOT, 'data', 'peta.json'), 'utf8'));
   (function walk(n) { if (n && typeof n.icon === 'string') fromJson.push(n.icon); (n && Array.isArray(n.children) ? n.children : []).forEach(walk); })(doc.root);
-} catch (_) { /* belum ada data/peta.json */ }
+} catch (e) {
+  // File belum ada = wajar (belum pernah dipublikasikan). File rusak = berhenti, jangan hapus ikon apa pun.
+  if (e.code !== 'ENOENT') throw new Error(`data/peta.json tidak valid (${e.message}) — ikon lama tidak diubah.`);
+}
 const emojis = [...new Set([...fromBlocks, ...fromJson])];
 if (!emojis.length) throw new Error('Tidak ada emoji {…} di DATA/FLOWS — ikon lama tidak dihapus.');
-console.log(`${emojis.length} emoji dipakai di ${blocks.map(b => b[1]).join(' & ')}.`);
+console.log(`${emojis.length} emoji dipakai di ${blocks.map(b => b[1]).join(' & ')}${fromJson.length ? ' & data/peta.json' : ''}.`);
 
 let missingTotal = 0;
 const manifest = {};
