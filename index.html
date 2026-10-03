@@ -53,10 +53,11 @@ button{font:inherit;color:inherit;cursor:pointer}
 .search input::-webkit-search-cancel-button{display:none}
 .search input:focus{border-color:var(--sel);background:var(--surface);box-shadow:0 0 0 3px color-mix(in srgb,var(--sel) 20%,transparent)}
 .search .count{position:absolute;right:10px;font-size:11px;color:var(--muted);pointer-events:none}
-body.is-outline .search{visibility:hidden}
+body:is(.is-outline,.is-proses) .search{visibility:hidden}
+body.is-proses .flow{display:none}
 
 /* ---------- Alur (stepper) ---------- */
-.flow{display:flex;align-items:center;gap:6px;padding:8px 16px;background:var(--surface);border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none;position:relative;z-index:9;flex:none}
+.flow{scroll-padding-inline:16px;display:flex;align-items:center;gap:6px;padding:8px 16px;background:var(--surface);border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none;position:relative;z-index:9;flex:none}
 .flow::-webkit-scrollbar{display:none}
 .flow-label{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-right:4px;white-space:nowrap}
 .chip{display:inline-flex;align-items:center;gap:7px;white-space:nowrap;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px 5px 9px;font-size:12.5px;font-weight:600;color:var(--text);flex:none;transition:background .15s,border-color .15s}
@@ -82,7 +83,7 @@ body.is-outline .search{visibility:hidden}
 .node{position:absolute;left:0;top:0;width:max-content;cursor:pointer;transform-origin:0 0}
 .node .t{min-width:0}
 .node.root{max-width:260px;padding:14px 24px 18px;background:var(--root-bg);color:var(--root-text);border-radius:18px;text-align:center;box-shadow:0 10px 30px rgba(30,42,74,.22)}
-.node.root .eyebrow{display:block;font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;opacity:.65;margin-bottom:6px}
+.node.root .eyebrow{display:block;font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:inherit;opacity:.6;margin-bottom:6px}
 .node.root .t{display:block;font-size:21px;font-weight:800;line-height:1.22;letter-spacing:-.01em}
 .node.main{max-width:260px;display:flex;align-items:center;gap:10px;padding:8px 14px 8px 9px;background:var(--c);color:#fff;border-radius:13px;font-size:15.5px;font-weight:700;line-height:1.3;box-shadow:0 2px 0 rgba(0,0,0,.07),0 8px 16px -8px color-mix(in srgb,var(--c) 75%,transparent)}
 .node.main .step{background:#fff;color:var(--c)}
@@ -105,8 +106,9 @@ body.is-outline .search{visibility:hidden}
 .ic-emo{display:inline-grid;place-items:center;font-size:calc(var(--s,22px) * .8);line-height:1;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
 .icw{position:relative;flex:none;display:inline-flex}
 .icw .step{position:absolute;top:-6px;left:-7px;width:19px;height:19px;font-size:10.5px;box-shadow:0 0 0 2px var(--ring,var(--surface))}
-.node.main .icw{--ring:var(--c)}
-.node.main .icw::before{content:"";position:absolute;inset:-4px;border-radius:12px;background:rgba(255,255,255,.16)}
+.node.main .icw{--ring:#fff}
+.node.main .icw .step{background:var(--c);color:#fff}
+.node.main .icw::before{content:"";position:absolute;inset:-4px;border-radius:12px;background:color-mix(in srgb,var(--c) 8%,#fff);box-shadow:0 1px 2px rgba(0,0,0,.12)}
 .node.main .icw .ic{position:relative}
 .ic-root{--s:58px;margin:0 auto 8px}
 .ic-main{--s:44px}
@@ -125,9 +127,12 @@ body.is-outline .search{visibility:hidden}
 .credit a{color:inherit}
 /* OpenMoji punya ruang kosong bawaan di sekeliling gambar → perbesar sedikit. */
 body[data-icons="openmoji"] img.ic{transform:scale(1.2)}
+body[data-icons="openmoji"] .node.root img.ic{filter:drop-shadow(0 0 .8px #fff) drop-shadow(0 0 .8px #fff)}
 @media (prefers-color-scheme:dark){
   /* Garis hitam OpenMoji diberi tepi terang agar tetap terlihat di latar gelap. */
-  body[data-icons="openmoji"] :is(.node.sub,.p-list,.o-row,.chip,.o-sec-h,.p-title) img.ic{filter:drop-shadow(0 0 .7px #fff) drop-shadow(0 0 .7px #fff)}
+  body[data-icons="openmoji"] :is(.node.sub,.p-list,.o-row,.chip,.o-sec-h,.p-title,.o-hero) img.ic{filter:drop-shadow(0 0 .7px #fff) drop-shadow(0 0 .7px #fff)}
+  /* Bagian hitam/biru tua pada ikon Fluent diberi tepi terang tipis di latar gelap. */
+  body[data-icons="fluent"] :is(.node.sub,.p-list,.o-row,.chip,.o-sec-h,.p-title,.o-hero) img.ic{filter:drop-shadow(0 0 .8px rgba(255,255,255,.75))}
 }
 .tg{position:absolute;left:0;top:0;width:18px;height:18px;margin:-9px 0 0 -9px;padding:0;border-radius:50%;border:1.5px solid var(--c);background:var(--surface);color:var(--c);font-size:10.5px;font-weight:800;line-height:1;display:grid;place-items:center;opacity:0;transition:opacity .15s}
 .tg.col{opacity:1;background:var(--c);color:#fff}
@@ -153,6 +158,9 @@ body[data-icons="openmoji"] img.ic{transform:scale(1.2)}
 .legend.collapsed .legend-btn svg{transform:rotate(180deg)}
 .legend-body{display:grid;gap:7px;padding:0 12px 12px}
 .legend.collapsed .legend-body{display:none}
+.legend:not(.collapsed){z-index:5}
+@media (max-width:699px){.legend:not(.collapsed){right:12px;max-width:none}}
+@media (pointer:coarse){.seg.mini button{height:34px;padding:0 14px}}
 .lg{display:flex;align-items:center;gap:9px;color:var(--text)}
 .lg[hidden]{display:none}
 .lg .ni{opacity:.7;width:16px;height:16px}
@@ -165,7 +173,7 @@ body[data-icons="openmoji"] img.ic{transform:scale(1.2)}
 .seg button:hover{background:var(--surface-2);color:var(--text)}
 .seg button[aria-pressed="true"]{background:var(--text);color:var(--surface)}
 #zoomPct{min-width:54px;font-variant-numeric:tabular-nums}
-body.is-outline .controls,body.is-outline .legend,body.is-outline .hint{display:none}
+body:is(.is-outline,.is-proses) :is(.controls,.legend,.hint){display:none}
 
 /* ---------- Panel detail ---------- */
 .panel{position:absolute;z-index:6;top:12px;right:12px;bottom:12px;width:min(360px,calc(100% - 24px));display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden;transform:translateX(calc(100% + 24px));visibility:hidden;transition:transform .28s cubic-bezier(.2,.8,.2,1),visibility 0s linear .28s}
@@ -180,7 +188,7 @@ body.is-outline .controls,body.is-outline .legend,body.is-outline .hint{display:
 .crumbs button{border:0;background:none;padding:2px 0;font-size:12px;color:var(--muted);text-align:left}
 .crumbs button:hover{color:var(--text);text-decoration:underline}
 .p-title{display:flex;align-items:flex-start;gap:10px;margin:2px 0 10px;font-size:20px;font-weight:800;line-height:1.3;letter-spacing:-.01em}
-.p-title .step{margin-top:3px}
+.p-title > .step{margin-top:3px}
 .p-title .icw{margin-top:-2px}
 .p-title:has(.icw){align-items:center}
 .p-meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
@@ -192,7 +200,7 @@ body.is-outline .controls,body.is-outline .legend,body.is-outline .hint{display:
 .p-list{list-style:none;margin:0;padding:0;display:grid;gap:5px}
 .p-list button{width:100%;display:flex;align-items:flex-start;gap:9px;padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:var(--surface);font-size:13.5px;line-height:1.4;text-align:left}
 .p-list button:hover{border-color:var(--c);background:color-mix(in srgb,var(--c) 6%,var(--surface))}
-.p-list .bul{width:8px;height:8px;margin:6px 4px 0;border-radius:50%;background:var(--c);flex:none}
+.p-list .bul{width:8px;height:8px;margin:0 4px;border-radius:50%;background:var(--c);flex:none}
 .p-list button{align-items:center}
 .p-list .it{flex:1;min-width:0}
 .p-list em{flex:none;padding:1px 7px;border-radius:999px;background:var(--surface-2);font-size:11px;font-style:normal;font-weight:700;color:var(--muted)}
@@ -233,17 +241,118 @@ body.panel-open .hint{max-width:calc(100% - 400px)}
 .o-row .ph{margin-top:2px}
 div.o-row::before{content:"";width:6px;height:6px;margin:8px 5px 0 4px;border-radius:50%;background:var(--c);flex:none}
 div.o-row.has-ic::before{display:none}
-.o-row .ic{margin-top:0}
-.o-row{align-items:center}
 summary.o-row{cursor:pointer;list-style:none;font-weight:600}
 summary.o-row::-webkit-details-marker{display:none}
 summary.o-row::before{content:"";width:7px;height:7px;margin:6px 4px 0 3px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(-45deg);transition:transform .15s;flex:none}
 details[open]>summary.o-row::before{transform:rotate(45deg)}
 .o-count{margin-left:auto;padding:1px 8px;border-radius:999px;background:var(--surface-2);font-size:11px;font-weight:600;color:var(--muted);flex:none}
+.o-row .ic{margin-top:.5px}
+.o-row .ph{margin-top:2.5px}
+div.o-row::before{margin-top:7.5px}
+summary.o-row::before{margin-top:5.5px}
+.o-count{margin-top:2px}
+/* Penanda fase menempel pada kata terakhir judul. */
+.nw{white-space:nowrap}
+.nw .ph,.o-row .nw .ph{vertical-align:-2px;margin:0 0 0 3px}
+.node.main .nw .ph{margin-left:6px}
 .o-foot{margin-top:30px;text-align:center;font-size:12.5px;color:var(--muted)}
 
+/* ---------- Alur proses ---------- */
+.proses{position:absolute;inset:0;z-index:7;overflow:auto;background:var(--bg);padding:22px 16px 72px;--alt:#e03131;--ok:#2b8a3e}
+.proses[hidden]{display:none}
+.pdoc{max-width:1240px;margin:0 auto}
+.f-sel{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin-bottom:14px}
+.f-groups{display:flex;flex-wrap:wrap;gap:8px}
+.f-group{display:inline-flex;align-items:center;gap:9px;padding:8px 15px 8px 10px;border:1px solid var(--line);border-radius:12px;background:var(--surface);font-size:14px;font-weight:700;color:var(--text);box-shadow:0 1px 2px rgba(16,24,40,.05)}
+.f-group .ic{--s:24px}
+.f-group:hover{border-color:var(--c)}
+.f-group[aria-pressed="true"]{border-color:var(--c);background:color-mix(in srgb,var(--c) 12%,var(--surface));box-shadow:inset 0 0 0 1px var(--c)}
+.f-vars button{min-width:44px}
+.f-head{display:flex;align-items:flex-start;gap:16px;margin-bottom:14px;padding:20px 22px;background:var(--surface);border:1px solid var(--line);border-top:5px solid var(--c);border-radius:18px;box-shadow:var(--shadow)}
+.f-head .ic{--s:56px}
+.f-head h1{margin:4px 0 6px;font-size:clamp(22px,3vw,30px);line-height:1.15;letter-spacing:-.02em}
+.f-head p{margin:0;max-width:78ch;font-size:15px;line-height:1.65}
+.f-meta{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:12px}
+.f-meta .tag{padding:3px 10px}
+.f-meta .tag svg{flex:none;color:var(--muted)}
+.f-meta .btn{padding:5px 11px;font-size:12.5px}
+.f-board{position:relative;padding:26px 20px 22px;background-color:var(--canvas);background-image:radial-gradient(var(--dot) 1.1px,transparent 1.3px);background-size:22px 22px;border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.f-canvas{position:relative;margin:0 auto}
+.f-links{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
+.f-ln{fill:none;stroke:var(--c);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.f-ln.fan{stroke-width:2}
+.f-ln.alt{stroke:var(--alt);stroke-width:2;stroke-dasharray:6 5}
+.f-links .ah{fill:var(--c)}
+.f-links .ah.alt{fill:var(--alt)}
+.f-card{position:absolute;left:0;top:0;display:flex;gap:10px;margin:0;padding:12px 14px;border:0;border-radius:14px;background:var(--c);color:#fff;font:inherit;text-align:left;cursor:pointer;box-shadow:0 2px 0 rgba(0,0,0,.07),0 10px 18px -10px color-mix(in srgb,var(--c) 80%,transparent);transition:transform .18s ease,box-shadow .18s ease,opacity .35s ease}
+.f-card:hover{transform:translateY(-2px);box-shadow:0 2px 0 rgba(0,0,0,.07),0 14px 22px -10px color-mix(in srgb,var(--c) 85%,transparent)}
+.f-card.h{flex-direction:column;align-items:flex-start}
+.f-card.v{flex-direction:row;align-items:center}
+.f-card.outcome{background:var(--ok);--c:var(--ok)}
+.f-card .icw{flex:none}
+.f-card .icw::before{content:"";position:absolute;inset:-4px;border-radius:12px;background:color-mix(in srgb,var(--c) 8%,#fff);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.f-card .icw .ic{position:relative}
+.ic-fcard{--s:42px}
+.f-card.v .ic-fcard{--s:36px}
+.f-num{position:absolute;top:-10px;left:-10px;width:24px;height:24px;display:grid;place-items:center;border-radius:50%;background:#fff;color:var(--c);font-size:12px;font-weight:800;box-shadow:0 0 0 2px var(--c),0 2px 6px rgba(0,0,0,.15)}
+.f-tx{display:flex;flex-direction:column;gap:3px;min-width:0}
+.f-t{font-size:15px;font-weight:800;line-height:1.25}
+.f-a{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;line-height:1.3;opacity:.92}
+.f-a svg{flex:none}
+.f-card.fan,.f-card.alt{align-items:center;flex-direction:row;padding:9px 12px;border-radius:12px;background:var(--surface);color:var(--text)}
+.f-card.fan{border:1.5px solid var(--c);box-shadow:0 1px 2px rgba(16,24,40,.08)}
+.f-card.alt{border:1.5px dashed var(--alt);box-shadow:none}
+.f-card.fan .f-t{font-size:14px}
+.f-card.alt .f-t{font-size:13px;font-weight:700;color:var(--alt)}
+.ic-fsmall{--s:28px}
+.f-card.alt .ic-fsmall{--s:22px}
+.f-card.flash,.f-item.flash{animation:fflash 1.2s ease}
+@keyframes fflash{0%,40%{box-shadow:0 0 0 4px color-mix(in srgb,var(--c) 45%,transparent)}100%{box-shadow:0 0 0 0 transparent}}
+.f-canvas .pre{opacity:0}
+.f-canvas .f-card.pre{transform:translateY(10px)}
+.f-ln{transition:opacity .4s ease}
+.f-key{display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px;margin:12px 4px 0;font-size:12.5px;color:var(--muted)}
+.f-key span{display:inline-flex;align-items:center;gap:7px}
+.f-h2{margin:30px 0 14px;font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.f-list{position:relative;margin:0;padding:0;list-style:none}
+.f-list::before{content:"";position:absolute;left:15px;top:22px;bottom:22px;width:2px;background:color-mix(in srgb,var(--c) 30%,transparent)}
+.f-item{position:relative;margin:0 0 12px 46px;padding:16px 18px;background:var(--surface);border:1px solid var(--line);border-radius:14px;scroll-margin:24px}
+.f-item>.f-num{left:-46px;top:16px;width:32px;height:32px;font-size:13.5px;background:var(--c);color:#fff;box-shadow:0 0 0 4px var(--bg)}
+.f-item.outcome>.f-num{background:var(--ok)}
+.f-item-h{display:flex;align-items:center;gap:12px}
+.f-item-h .ic{--s:36px}
+.f-item h3{margin:0 0 4px;font-size:17px;letter-spacing:-.01em}
+.f-item p{margin:10px 0 0;font-size:14.5px;line-height:1.65}
+.f-actor{font-size:12px}
+.f-alt{display:flex;align-items:flex-start;gap:10px;margin-top:12px;padding:10px 12px;border:1.5px dashed var(--alt);border-radius:10px;font-size:13.5px;line-height:1.55}
+.f-alt .ic{--s:22px;margin-top:1px}
+.f-alt b{color:var(--alt)}
+.f-outs{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin-top:12px}
+.f-out{display:flex;align-items:flex-start;gap:10px;padding:12px;border:1.5px solid color-mix(in srgb,var(--c) 45%,var(--line));border-radius:12px;background:color-mix(in srgb,var(--c) 5%,var(--surface))}
+.f-out .ic{--s:28px}
+.f-out p{margin:4px 0 0;font-size:13.5px;line-height:1.55;color:var(--muted)}
+.f-foot{margin-top:26px;text-align:center;font-size:12.5px;color:var(--muted)}
+@media (prefers-color-scheme:dark){
+  .proses{--alt:#ff6b6b;--ok:#2f9e44}
+  .f-ln{stroke:color-mix(in srgb,var(--c) 72%,#fff)}
+  .f-links .ah{fill:color-mix(in srgb,var(--c) 72%,#fff)}
+  body[data-icons="fluent"] :is(.f-group,.f-head,.f-item-h,.f-alt,.f-out,.f-card.fan,.f-card.alt) img.ic{filter:drop-shadow(0 0 .8px rgba(255,255,255,.75))}
+  body[data-icons="openmoji"] :is(.f-group,.f-head,.f-item-h,.f-alt,.f-out,.f-card.fan,.f-card.alt) img.ic{filter:drop-shadow(0 0 .7px #fff) drop-shadow(0 0 .7px #fff)}
+}
+@media (max-width:699px){
+  .proses{padding:14px 12px 56px}
+  .f-head{flex-direction:column;padding:16px;gap:8px}
+  .f-head .ic{--s:44px}
+  .f-meta{gap:5px;margin-top:10px}
+  .f-meta .tag{padding:2px 8px;font-size:11.5px}
+  .f-board{padding:22px 12px 16px}
+  .f-item{margin-left:40px;padding:14px}
+  .f-item>.f-num{left:-40px;width:28px;height:28px}
+  .f-list::before{left:13px}
+}
+
 /* ---------- Responsif ---------- */
-@media (max-width:1023px){.tabs .l{display:none}.tabs .s{display:inline}}
+@media (max-width:1199px){.tabs .l{display:none}.tabs .s{display:inline}}
 @media (max-width:899px){
   .panel{top:auto;left:0;right:0;bottom:0;width:auto;max-height:56%;border-radius:18px 18px 0 0;border-bottom:0;transform:translateY(calc(100% + 12px))}
   body.panel-open .controls{right:12px}
@@ -262,7 +371,7 @@ details[open]>summary.o-row::before{transform:rotate(45deg)}
   .node.main{max-width:235px;font-size:14px;padding:7px 12px 7px 8px}
   .ic-main{--s:36px}
   .ic-root{--s:48px}
-  .flow{padding:7px 12px}
+  .flow{padding:7px 12px;scroll-padding-inline:12px}
   .o-hero{padding:20px}
   .o-sec{padding:16px 14px 12px}
 }
@@ -272,6 +381,11 @@ details[open]>summary.o-row::before{transform:rotate(45deg)}
   .stage{overflow:visible}
   .outline{display:block!important;position:static;overflow:visible;padding:0;background:#fff}
   .o-sec,.o-hero{box-shadow:none;break-inside:avoid-page}
+  body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body.is-proses .outline{display:none!important}
+  body.is-proses .proses{display:block!important;position:static;overflow:visible;padding:0;background:#fff}
+  .f-sel,.f-meta .btn{display:none!important}
+  .f-item,.f-board,.f-head{break-inside:avoid-page;box-shadow:none}
 }
 </style>
 </head>
@@ -301,6 +415,10 @@ details[open]>summary.o-row::before{transform:rotate(45deg)}
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><rect x="1.5" y="6.5" width="4" height="3" rx="1"/><path d="M5.5 8H8M8 3.5v9M8 3.5h6M8 8h6M8 12.5h6"/></svg>
       <span class="l">Diagram Logika</span><span class="s">Logika</span>
     </button>
+    <button type="button" role="tab" data-view="proses" aria-selected="false">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="5.5" width="4" height="5" rx="1"/><rect x="11" y="2" width="4" height="4" rx="1"/><rect x="11" y="10" width="4" height="4" rx="1"/><path d="M5 8h2.5M7.5 4v8M7.5 4H11M7.5 12H11"/></svg>
+      <span class="l">Alur Proses</span><span class="s">Alur</span>
+    </button>
     <button type="button" role="tab" data-view="outline" aria-selected="false">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M2.5 3.5h11M5.5 8h8M5.5 12.5h8M2.5 8h.01M2.5 12.5h.01"/></svg>
       <span class="l">Outline</span><span class="s">Outline</span>
@@ -313,7 +431,7 @@ details[open]>summary.o-row::before{transform:rotate(45deg)}
   </label>
 </header>
 
-<nav class="flow" id="flow" aria-label="Alur utama"><span class="flow-label">Alur</span></nav>
+<nav class="flow" id="flow" aria-label="Langkah utama di peta"><span class="flow-label">Langkah</span></nav>
 
 <div class="stage">
   <div class="viewport" id="viewport" tabindex="0" aria-label="Peta pikiran. Klik topik untuk membuka cabang. Gunakan tombol panah untuk berpindah topik.">
@@ -381,6 +499,7 @@ details[open]>summary.o-row::before{transform:rotate(45deg)}
   </aside>
 
   <div class="outline" id="outline" hidden><div class="doc" id="outlineDoc"></div></div>
+  <div class="proses" id="proses" hidden><div class="pdoc" id="prosesDoc"></div></div>
 </div>
 
 <noscript><p style="padding:24px">Halaman ini membutuhkan JavaScript untuk menampilkan peta pikiran.</p></noscript>
@@ -429,7 +548,7 @@ Aplikasi Pondok Pesantren {🕌} :: Analisa awal aplikasi terpadu untuk pondok p
       Rekap nilai & keputusan panitia {🗳️}
     Pengumuman hasil {📢} [1]
       Diterima / cadangan / tidak diterima {📃}
-      Notifikasi WhatsApp ke wali {💬}
+      Notifikasi WhatsApp ke wali {📩}
     Daftar ulang {🏁} [1] @daftarulang :: Setelah daftar ulang selesai, status calon santri berubah menjadi santri aktif dan datanya otomatis diteruskan ke jenjang tujuan.
       Pelunasan biaya masuk {💵}
       Penerbitan NIS & kartu santri ber-QR {🪪}
@@ -454,7 +573,7 @@ Aplikasi Pondok Pesantren {🕌} :: Analisa awal aplikasi terpadu untuk pondok p
       Tingkat Ula · Wustho · Ulya
       Penempatan berdasarkan tes kitab
     Asrama {🛏️} [1]
-      Pembagian kamar putra / putri {🚻}
+      Pembagian kamar putra / putri {🛌}
       Musyrif / pembina kamar {🔑}
     Mutasi: pindah kelas, pindah jenjang, keluar {🔄} [2]
   Absensi {📋} @absensi :: Di pondok, kehadiran dicatat di banyak titik — bukan hanya di kelas: sekolah, diniyah, sholat berjamaah, kegiatan, sampai cek asrama malam. Semua status masuk ke satu rekap yang nanti otomatis tampil di raport dan bisa dilihat wali.
@@ -502,13 +621,13 @@ Aplikasi Pondok Pesantren {🕌} :: Analisa awal aplikasi terpadu untuk pondok p
       Ekstrakurikuler {⚽} [2]
         Muhadharah (latihan pidato) {🎤}
         Pramuka {⛺}
-        Hadrah & sholawat {🥁}
+        Hadrah & sholawat {🪘}
         Olahraga {🏸}
         Bahasa Arab & Inggris {🗣️}
       Kedisiplinan {⚖️} [2] :: Pelanggaran dicatat dengan poin. Jika poin mencapai batas tertentu, sistem memberi tanda agar pengurus dan wali segera menindaklanjuti.
         Catatan pelanggaran & poin {⚠️}
         Ta'zir (sanksi yang mendidik) {🧹}
-        Bimbingan konseling {🫂}
+        Bimbingan konseling {🧭}
       Prestasi & lomba {🏆} [3]
       Kesehatan / klinik pondok {🩺} [3]
     Kegiatan guru & ustadz {🧑‍🏫} :: Guru dan ustadz memakai aplikasi untuk pekerjaan sehari-hari: melihat jadwal, mengisi jurnal, absensi kelas, dan nilai. Data ini sekaligus menjadi bahan evaluasi kinerja.
@@ -537,7 +656,7 @@ Aplikasi Pondok Pesantren {🕌} :: Analisa awal aplikasi terpadu untuk pondok p
       Akhlak, adab & kedisiplinan
       Kebersihan & kemandirian
       Catatan musyrif
-    KHS & transkrip (Perguruan Tinggi) {📜} [3]
+    KHS & transkrip (Perguruan Tinggi) {📙} [3]
     Cetak & publikasi {🖨️} [1]
       Cetak PDF dengan QR validasi
       Tampil di akun wali santri [2]
@@ -545,7 +664,7 @@ Aplikasi Pondok Pesantren {🕌} :: Analisa awal aplikasi terpadu untuk pondok p
       Naik kelas / tinggal kelas {⬆️}
       Lulus → data alumni {🎓}
       Lanjut ke jenjang berikutnya {➡️} :: Santri yang lulus MI bisa langsung didaftarkan ke MTs (dan seterusnya) di pondok yang sama tanpa mengisi ulang data — cukup "pendaftaran internal". Alur kembali ke cabang Pendaftaran.
-  Data Master {🗄️} #kiri [1] :: Data induk yang dipakai bersama oleh semua modul. Dibuat sekali, dipakai di mana-mana — inilah yang pertama kali harus dibangun.
+  Data Master {🗃️} #kiri [1] :: Data induk yang dipakai bersama oleh semua modul. Dibuat sekali, dipakai di mana-mana — inilah yang pertama kali harus dibangun.
     Tahun ajaran & semester {📆}
     Buku induk santri {📒}
     Guru, ustadz & pegawai {🧑‍🏫}
@@ -554,7 +673,7 @@ Aplikasi Pondok Pesantren {🕌} :: Analisa awal aplikasi terpadu untuk pondok p
     Mata pelajaran & kitab {📚}
     Jadwal pelajaran {📅}
     Gedung, asrama & kamar {🏘️}
-  Pengguna & Hak Akses {👥} #kiri [1] :: Setiap peran hanya melihat menu yang relevan. Contoh: guru MTs tidak bisa mengubah nilai MA, dan wali santri hanya melihat data anaknya sendiri.
+  Pengguna & Hak Akses {🔐} #kiri [1] :: Setiap peran hanya melihat menu yang relevan. Contoh: guru MTs tidak bisa mengubah nilai MA, dan wali santri hanya melihat data anaknya sendiri.
     Pengasuh / Kyai — dashboard ringkas {👳}
     Admin / operator pondok {🧑‍💻}
     Panitia PSB {🤝}
@@ -566,14 +685,14 @@ Aplikasi Pondok Pesantren {🕌} :: Analisa awal aplikasi terpadu untuk pondok p
     Santri / mahasiswa {🧑‍🎓}
   Keuangan {💰} #kiri [3] :: Tidak disebut di kebutuhan awal, tetapi hampir semua pondok membutuhkannya. Disarankan masuk fase 3 — atau dimajukan jika penagihan syahriyah adalah masalah yang paling mendesak.
     Syahriyah / SPP bulanan {🧾}
-    Tagihan per jenjang {📑}
+    Tagihan per jenjang {🏷️}
     Pembayaran & kuitansi {💵}
     Tabungan / uang saku santri {🪙}
-    Laporan keuangan {🗒️}
+    Laporan keuangan {📈}
   Laporan & Notifikasi {🔔} #kiri [2]
     Dashboard pengasuh & kepala madrasah {🖥️}
     Rekap per jenjang, kelas & kamar {📈}
-    Notifikasi WhatsApp ke wali {💬}
+    Notifikasi WhatsApp ke wali {📩}
     Pengumuman pondok {📌}
     Ekspor data EMIS Kemenag {📤} :: Data siswa dan guru madrasah dilaporkan ke EMIS Kemenag. Sediakan ekspor Excel sesuai format EMIS agar operator tidak perlu input dua kali.
   Platform & Teknologi {💻} #kiri :: Rekomendasi teknis awal; bisa disesuaikan dengan kemampuan tim dan anggaran pondok.
@@ -592,15 +711,15 @@ Aplikasi Pondok Pesantren {🕌} :: Analisa awal aplikasi terpadu untuk pondok p
     Fase 2 — Kehidupan pondok {🌿} [2]
       Tahfidz, ibadah & ekstrakurikuler
       Perizinan & kedisiplinan
-      Raport pesantren {📗}
+      Raport pesantren
       Kartu QR & notifikasi WhatsApp
       Portal wali & kenaikan kelas
     Fase 3 — Pengembangan {🌳} [3]
       Perguruan tinggi (KRS / KHS)
-      Keuangan {💰}
+      Keuangan
       Kesehatan & prestasi
       Absensi biometrik
-      Evaluasi kinerja guru {⭐}
+      Evaluasi kinerja guru
 `;
 
 /* Tombol "Alur" di bagian atas: [penanda, label, keterangan kecil] */
@@ -616,6 +735,65 @@ const FLOW = [
   ['lulus', 'Naik Kelas / Lulus'],
 ];
 
+/* =====================================================================
+   DATA ALUR PROSES (tab "Alur Proses")
+   ---------------------------------------------------------------------
+   - "# Grup · Varian {ikon} @penanda * :: keterangan" memulai satu alur.
+       Alur dengan Grup sama (mis. Pendaftaran) tampil sebagai pilihan
+       jenjang. @penanda = topik terkait di peta pikiran. * = alur yang
+       dibuka pertama kali.
+   - "Judul {ikon} | Pelaku :: penjelasan" = satu langkah (berurutan).
+   - "  x Judul {ikon} :: …" = cabang jika gagal / pengecualian (garis putus-putus).
+   - "  > Judul {ikon} :: …" = hasil / keluaran langkah itu (garis bercabang).
+   ===================================================================== */
+const FLOWS = `
+# Pendaftaran · MI {🎒} @psb :: Alur penerimaan santri baru jenjang MI, dari mengisi formulir sampai resmi menjadi siswa kelas 1.
+Pendaftaran {📝} | Wali santri :: Wali mengisi formulir online (atau dibantu panitia di kantor) dan memilih jenjang MI. Data utama: identitas anak, data orang tua/wali, dan nomor WhatsApp.
+Administrasi {🗂️} | Panitia PSB :: Panitia memeriksa berkas (KK, akta kelahiran, foto) dan bukti pembayaran biaya pendaftaran. Berkas yang kurang diberitahukan ke wali lewat notifikasi.
+Tes {✍️} | Penguji :: Observasi kesiapan sekolah, pengenalan huruf hijaiyah, dan wawancara orang tua. Nilai diinput penguji langsung dari HP.
+Pengumuman lolos {📢} | Panitia PSB :: Hasil seleksi diumumkan di aplikasi dan dikirim ke WhatsApp wali.
+  x Tidak lolos {📃} :: Masuk daftar cadangan atau menerima pemberitahuan resmi.
+Daftar ulang {🏁} | Wali santri & bendahara :: Pelunasan biaya masuk, pengambilan seragam, serta penerbitan NIS dan kartu santri.
+Siswa MI {🎒} | Wali kelas :: Data otomatis masuk ke kelas 1 (rombel & wali kelas) dan siap mengikuti absensi serta KBM.
+
+# Pendaftaran · MTs {🏫} @psb * :: Alur penerimaan santri baru jenjang MTs, dari mengisi formulir sampai resmi menjadi siswa kelas 7.
+Pendaftaran {📝} | Calon santri & wali :: Mengisi formulir online dan memilih jenjang MTs. Data utama: identitas & NISN, asal sekolah (SD/MI), data orang tua/wali, dan nomor WhatsApp.
+Administrasi {🗂️} | Panitia PSB :: Verifikasi berkas (KK, akta kelahiran, ijazah/SKL SD/MI, rapor, foto) dan bukti pembayaran biaya pendaftaran.
+Tes {✍️} | Penguji :: Tes baca Al-Qur'an, tes akademik dasar, dan wawancara santri & wali. Nilai diinput penguji langsung dari HP sehingga bisa direkap otomatis.
+Pengumuman lolos {📢} | Panitia PSB :: Hasil seleksi diumumkan di aplikasi dan dikirim ke WhatsApp wali.
+  x Tidak lolos {📃} :: Masuk daftar cadangan atau menerima pemberitahuan resmi.
+Daftar ulang {🏁} | Wali santri & bendahara :: Pelunasan biaya masuk, pembagian kamar asrama, pengambilan seragam, serta penerbitan NIS dan kartu santri ber-RFID.
+Siswa MTs {🧑‍🎓} | Wali kelas & musyrif :: Resmi menjadi siswa kelas 7: masuk rombel, kamar asrama, dan kelas diniyah — siap mengikuti absensi dan KBM.
+
+# Pendaftaran · MA {🎓} @psb :: Alur penerimaan santri baru jenjang MA, dari mengisi formulir sampai resmi menjadi siswa kelas 10.
+Pendaftaran {📝} | Calon santri & wali :: Mengisi formulir online, memilih jenjang MA dan peminatan (IPA / IPS / Keagamaan). Data utama: identitas & NISN, asal sekolah (SMP/MTs), data orang tua/wali.
+Administrasi {🗂️} | Panitia PSB :: Verifikasi berkas (KK, akta kelahiran, ijazah/SKL SMP/MTs, rapor, foto) dan bukti pembayaran biaya pendaftaran.
+Tes {✍️} | Penguji :: Tes baca Al-Qur'an dan kitab dasar, tes akademik sesuai peminatan, serta wawancara santri & wali.
+Pengumuman lolos {📢} | Panitia PSB :: Hasil seleksi beserta peminatan yang diterima diumumkan di aplikasi dan dikirim ke WhatsApp wali.
+  x Tidak lolos {📃} :: Masuk daftar cadangan atau menerima pemberitahuan resmi.
+Daftar ulang {🏁} | Wali santri & bendahara :: Pelunasan biaya masuk, pembagian kamar asrama, pengambilan seragam, serta penerbitan NIS dan kartu santri ber-RFID.
+Siswa MA {🎓} | Wali kelas & musyrif :: Resmi menjadi siswa kelas 10 sesuai peminatan: masuk rombel, kamar asrama, dan kelas diniyah.
+
+# Pendaftaran · PT {🏛️} @psb :: Alur penerimaan mahasiswa baru (Ma'had Aly / STAI), dari mengisi formulir sampai terdaftar di semester 1.
+Pendaftaran {📝} | Calon mahasiswa :: Mengisi formulir online dan memilih program studi. Data utama: identitas (NIK), asal sekolah (SMA/MA), dan kontak.
+Administrasi {🗂️} | Panitia PMB :: Verifikasi berkas (KTP, KK, ijazah & transkrip SMA/MA, foto) dan bukti pembayaran biaya pendaftaran.
+Tes {✍️} | Penguji :: Tes baca kitab / Al-Qur'an, tes potensi akademik, dan wawancara.
+Pengumuman lolos {📢} | Panitia PMB :: Hasil seleksi beserta program studi yang diterima diumumkan di aplikasi.
+  x Tidak lolos {📃} :: Menerima pemberitahuan resmi; dapat mendaftar lagi di gelombang berikutnya.
+Daftar ulang {🏁} | Mahasiswa & bagian keuangan :: Pembayaran biaya kuliah, penerbitan NIM dan kartu mahasiswa, serta pengisian KRS semester 1.
+Mahasiswa {🎓} | Dosen pembimbing akademik :: Resmi terdaftar sebagai mahasiswa semester 1 dan siap mengikuti perkuliahan.
+
+# Absensi {📡} @absensi :: Alur absensi otomatis dengan antena RFID: santri cukup lewat, guru memvalidasi, lalu laporan terbentuk sendiri.
+Siswa melewati antena {📡} | Santri :: Kartu santri ber-chip RFID terbaca otomatis saat santri melewati antena di gerbang atau pintu kelas. Jam kedatangan tercatat tanpa antre.
+  x Kartu tidak terbaca {✏️} :: Lupa membawa kartu atau kartu rusak — guru menginput kehadirannya secara manual saat validasi.
+Guru validasi {🧑‍🏫} | Guru / wali kelas :: Guru membuka daftar hadir kelas di HP, mencocokkan dengan santri yang ada, lalu menandai izin, sakit, atau alpa sebelum data dikunci.
+Laporan {📊} | Sistem (otomatis) :: Data yang sudah divalidasi langsung direkap otomatis dan bisa dilihat kepala madrasah, pengasuh, dan wali santri.
+  > Laporan harian {☀️} :: Daftar hadir per kelas hari ini; wali menerima notifikasi bila anaknya alpa.
+  > Laporan mingguan {🗓️} :: Rekap kehadiran per minggu untuk evaluasi wali kelas dan musyrif.
+  > Laporan bulanan {🌕} :: Persentase kehadiran per santri dan per kelas untuk rapat bulanan.
+  > Laporan semester {📘} :: Total hadir, izin, sakit, dan alpa yang otomatis masuk ke raport.
+`;
+
 const PALETTE = ['#D9480F', '#2B8A3E', '#1971C2', '#7048E8', '#0B7285', '#495057', '#9C36B5', '#087F5B', '#3B5BDB', '#C2255C', '#C92A2A'];
 const PHASE = { 1: 'Fase 1 · MVP', 2: 'Fase 2 · Kehidupan pondok', 3: 'Fase 3 · Pengembangan lanjutan' };
 const DUR = 320, MIN_S = 0.2, MAX_S = 2.5;
@@ -627,6 +805,13 @@ const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 const isWide = () => matchMedia('(min-width: 900px)').matches;
 const NOTE_ICON = '<svg class="ni" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 2.5h6l3 3v8h-9z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M5.5 8h5M5.5 10.5h5M5.5 5.5h2.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>';
 const phHTML = p => `<span class="ph ph${p}" title="${PHASE[p]}">${p}</span>`;
+/* Judul + penanda fase yang menempel pada kata terakhir (tidak terpisah ke pinggir saat teks terlipat). */
+const titleHTML = n => {
+  const t = esc(n.title);
+  if (!n.phase) return t;
+  const i = t.lastIndexOf(' ');
+  return `${t.slice(0, i + 1)}<span class="nw">${t.slice(i + 1)}${phHTML(n.phase)}</span>`;
+};
 
 /* Ikon: file SVG di assets/icons/<gaya>/<kode-emoji>.svg */
 const ICON_SETS = ['fluent', 'openmoji'];
@@ -693,9 +878,26 @@ const SVGNS = 'http://www.w3.org/2000/svg';
 function nodeHTML(n) {
   if (n.depth === 0) return icoHTML(n, 'ic-root') + `<span class="eyebrow">Analisa Sistem</span><span class="t">${esc(n.title)}</span>`;
   return leadHTML(n, n.depth === 1 ? 'ic-main' : n.depth === 2 ? 'ic-sub' : 'ic-deep') +
-    `<span class="t">${esc(n.title)}</span>` +
-    (n.phase ? phHTML(n.phase) : '') +
+    `<span class="t">${titleHTML(n)}</span>` +
     (n.note ? NOTE_ICON : '');
+}
+/* Lebar teks = baris terpanjang, agar ikon catatan tidak terdorong jauh ke kanan saat judul terlipat. */
+function fitText(el) {
+  const t = el.querySelector('.t');
+  if (!t || el.classList.contains('root')) return;
+  t.style.width = '';
+  const range = document.createRange();
+  range.selectNodeContents(t);
+  const rects = [...range.getClientRects()].filter(r => r.width).sort((a, b) => a.top - b.top);
+  const lines = [];
+  for (const r of rects) {
+    const mid = (r.top + r.bottom) / 2, line = lines.find(l => mid >= l.top && mid <= l.bottom);
+    if (line) { line.left = Math.min(line.left, r.left); line.right = Math.max(line.right, r.right); }
+    else lines.push({ top: r.top, bottom: r.bottom, left: r.left, right: r.right });
+  }
+  if (lines.length < 2) return;
+  const scale = t.getBoundingClientRect().width / (t.offsetWidth || 1) || 1;
+  t.style.width = Math.ceil(Math.max(...lines.map(l => l.right - l.left)) / scale + 1) + 'px';
 }
 
 for (const n of all) {
@@ -801,6 +1003,7 @@ function relayout({ animate = true } = {}) {
     if (n.tg) n.tg.style.display = '';
     if (n.path) n.path.style.display = '';
   }
+  for (const n of fresh) if (!n.w) fitText(n.el);
   for (const n of fresh) if (!n.w) { n.w = n.el.offsetWidth; n.h = n.el.offsetHeight; }
   layoutTargets();
   const anim = animate && !reduceMotion;
@@ -1026,7 +1229,7 @@ function onNodeClick(n) {
 }
 function goTo(n, { expand = true } = {}) {
   hideHint();
-  if (view === 'outline') setView(mode, false);
+  if (view === 'outline' || view === 'proses') setView(mode, false);
   for (let p = n.parent; p; p = p.parent) p.collapsed = false;
   if (expand && n.children.length && n !== root) n.collapsed = false;
   clearLevel();
@@ -1038,10 +1241,18 @@ function goTo(n, { expand = true } = {}) {
 function setView(v, refit = true) {
   view = v;
   tabs.forEach(t => t.setAttribute('aria-selected', String(t.dataset.view === v)));
-  const out = v === 'outline';
+  const out = v === 'outline', pro = v === 'proses';
   outlineEl.hidden = !out;
+  prosesEl.hidden = !pro;
   document.body.classList.toggle('is-outline', out);
-  if (out) { closePanel(); outlineEl.focus && outlineEl.scrollTo(0, 0); return; }
+  document.body.classList.toggle('is-proses', pro);
+  syncHash();
+  if (out || pro) {
+    closePanel();
+    if (out) outlineEl.scrollTo(0, 0);
+    else { prosesEl.scrollTo(0, 0); renderProses(true); }
+    return;
+  }
   $('#legendSide').hidden = v !== 'map';
   if (mode !== v) {
     mode = v;
@@ -1066,11 +1277,16 @@ function rootExtra() {
   const right = root.children.filter(m => m.side === 'right'), left = root.children.filter(m => m.side === 'left');
   return `<h3 class="p-h">Alur utama <span>${right.length}</span></h3><ul class="p-list">${right.map(itemHTML).join('')}</ul>` +
     `<h3 class="p-h">Modul pendukung <span>${left.length}</span></h3><ul class="p-list">${left.map(itemHTML).join('')}</ul>` +
+    `<h3 class="p-h">Alur proses <span>${flowGroups.length}</span></h3><ul class="p-list">${flowGroups.map(g => {
+      const d = groupDefault(g), node = d.key && byKey[d.key];
+      return `<li><button type="button" data-act="flow" data-flow="${d.id}" style="--c:${flowColor(d)}">${node && node.icon ? icoHTML(node, 'ic-li') : '<span class="bul"></span>'}<span class="it">Alur ${esc(g)}</span><em>${flows.filter(x => x.group === g).length > 1 ? flows.filter(x => x.group === g).map(x => esc(x.variant)).join(' · ') : d.steps.length + ' langkah'}</em></button></li>`;
+    }).join('')}</ul>` +
     `<h3 class="p-h">Cara membaca</h3><ul class="p-tips">` +
     `<li><b>Peta Pikiran:</b> cabang kanan = alur utama (berurutan 1 → ${right.length}), cabang kiri = modul pendukung.</li>` +
     `<li>Klik topik untuk membuka cabangnya dan membaca penjelasannya di panel ini.</li>` +
     `<li>Angka dalam lingkaran di ujung topik = jumlah sub-topik yang masih tertutup.</li>` +
     `<li>${phHTML(1)} ${phHTML(2)} ${phHTML(3)} = saran fase pembangunan fitur.</li>` +
+    `<li>Tab <b>Alur Proses</b> berisi diagram langkah demi langkah (pendaftaran per jenjang, absensi).</li>` +
     `<li>Pilih <b>Outline</b> di atas untuk membaca seluruh analisa sebagai dokumen (bisa dicetak / PDF).</li></ul>`;
 }
 function renderPanel(n) {
@@ -1092,6 +1308,8 @@ function renderPanel(n) {
     h += `<div class="p-actions"><button type="button" class="btn primary" data-act="toggle">${n.collapsed ? 'Buka cabang di peta' : 'Tutup cabang di peta'}</button>` +
       (n.children.some(c => c.children.length) ? '<button type="button" class="btn" data-act="expandAll">Buka semua isinya</button>' : '') + '</div>';
   }
+  const fl = n !== root && flowFor(n);
+  if (fl) h += `<div class="p-actions"><button type="button" class="btn" data-act="flow" data-flow="${fl.id}">Lihat alur proses ${esc(fl.group)} →</button></div>`;
   panelBody.innerHTML = h;
   if (!same) panelBody.scrollTop = 0;
 }
@@ -1114,6 +1332,7 @@ panel.addEventListener('click', e => {
   const act = e.target.closest('[data-act]');
   if (act && panelNode) {
     if (act.dataset.act === 'toggle') toggle(panelNode);
+    else if (act.dataset.act === 'flow') openFlow(flows.find(x => x.id === act.dataset.flow));
     else expandAll(panelNode);
   }
 });
@@ -1150,7 +1369,7 @@ function updateChips(n) {
 /* ---------- Outline ---------- */
 function buildOutline() {
   const li = n => {
-    const head = icoHTML(n, 'ic-o') + `<span>${esc(n.title)}</span>` + (n.phase ? phHTML(n.phase) : '');
+    const head = icoHTML(n, 'ic-o') + `<span>${titleHTML(n)}</span>`;
     const note = n.note ? `<p class="o-note">${esc(n.note)}</p>` : '';
     if (!n.children.length) return `<li><div class="o-row${n.icon ? ' has-ic' : ''}">${head}</div>${note}</li>`;
     return `<li><details open><summary class="o-row">${head}<span class="o-count">${n.children.length}</span></summary>${note}<ul>${n.children.map(li).join('')}</ul></details></li>`;
@@ -1177,6 +1396,287 @@ outlineEl.addEventListener('click', e => {
   if (!o) return;
   if (o.dataset.o === 'print') window.print();
   else outlineEl.querySelectorAll('details').forEach(d => { d.open = o.dataset.o === 'open'; });
+});
+
+/* ---------- Alur proses ---------- */
+const prosesEl = $('#proses'), prosesDoc = $('#prosesDoc');
+const slug = t => t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+function parseFlows(src) {
+  const out = [];
+  let f = null, last = null;
+  for (const raw of src.split('\n')) {
+    const line = raw.trim();
+    if (!line || line.startsWith('//')) continue;
+    const [headRaw, ...rest] = line.split('::');
+    const note = rest.join('::').trim();
+    let head = ' ' + headRaw + ' ', icon = null, key = null, actor = '';
+    head = head.replace(/\s\{([^}\s]+)\}/, (_, e) => { icon = e; return ' '; });
+    head = head.replace(/\s@(\w+)/, (_, k) => { key = k; return ' '; });
+    const bar = head.indexOf('|');
+    if (bar > -1) { actor = head.slice(bar + 1).trim(); head = head.slice(0, bar); }
+    head = head.trim();
+    const item = title => ({ title, note, icon, iconKey: icon && emojiKey(icon) });
+    if (head.startsWith('#')) {
+      let h = head.slice(1).trim(), isDefault = false;
+      if (/(^|\s)\*$/.test(h)) { isDefault = true; h = h.replace(/\s*\*$/, ''); }
+      const [group, variant = ''] = h.split('·').map(x => x.trim());
+      f = { ...item(h), group, variant, key, isDefault, steps: [], id: slug(group + (variant ? '-' + variant : '')) };
+      out.push(f);
+      last = null;
+    } else if (!f) continue;
+    else if (/^x\s/.test(head) && last) last.alt = item(head.slice(2).trim());
+    else if (/^>\s/.test(head) && last) (last.outs = last.outs || []).push(item(head.slice(2).trim()));
+    else { last = { ...item(head), actor, step: f.steps.length + 1 }; f.steps.push(last); }
+  }
+  return out.filter(x => x.steps.length);
+}
+const flows = parseFlows(FLOWS);
+const flowGroups = [...new Set(flows.map(f => f.group))];
+const lastVariant = {};
+let curFlow = flows.find(f => f.isDefault) || flows[0];
+const PERSON_ICON = '<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="8" cy="5.2" r="2.8"/><path d="M2.6 14c.6-3 2.8-4.6 5.4-4.6s4.8 1.6 5.4 4.6"/></svg>';
+const flowColor = f => (f.key && byKey[f.key] ? byKey[f.key].color : PALETTE[2]);
+const flowTitle = f => 'Alur ' + f.group + (f.variant ? ' ' + f.variant : '');
+const groupDefault = g => flows.find(f => f.id === lastVariant[g]) || flows.find(f => f.group === g && f.isDefault) || flows.find(f => f.group === g);
+const isOutcome = (f, s) => s === f.steps[f.steps.length - 1] && !(s.outs && s.outs.length);
+function flowFor(n) {
+  for (let k = n; k; k = k.parent) {
+    const fl = k.key && flows.find(f => f.key === k.key);
+    if (fl) return groupDefault(fl.group);
+  }
+  return null;
+}
+function openFlow(f) {
+  if (f) curFlow = f;
+  if (view === 'proses') { renderProses(true); syncHash(); prosesEl.scrollTo(0, 0); }
+  else setView('proses');
+}
+function syncHash() {
+  const want = view === 'proses' && curFlow ? '#alur/' + curFlow.id : '';
+  if ((location.hash || '') === want) return;
+  try { history.replaceState(null, '', want || location.pathname + location.search); } catch (_) {}
+}
+
+function cardHTML(s, kind) {
+  const big = kind === 'main' || kind === 'outcome';
+  const icon = !s.icon ? '' : big ? `<span class="icw">${icoHTML(s, 'ic-fcard')}</span>` : icoHTML(s, 'ic-fsmall');
+  return (big ? `<span class="f-num">${s.step}</span>` : '') + icon +
+    `<span class="f-tx"><span class="f-t">${esc(s.title)}</span>${s.actor ? `<span class="f-a">${PERSON_ICON}${esc(s.actor)}</span>` : ''}</span>`;
+}
+function stepItemHTML(f, s, i) {
+  return `<li class="f-item${isOutcome(f, s) ? ' outcome' : ''}" id="fi-${i}">` +
+    `<span class="f-num">${s.step}</span>` +
+    `<div class="f-item-h">${icoHTML(s, 'ic-fitem')}<div><h3>${esc(s.title)}</h3>${s.actor ? `<span class="tag f-actor">${PERSON_ICON}${esc(s.actor)}</span>` : ''}</div></div>` +
+    (s.note ? `<p>${esc(s.note)}</p>` : '') +
+    (s.alt ? `<div class="f-alt">${icoHTML(s.alt, 'ic-falt')}<div><b>${esc(s.alt.title)}</b>${s.alt.note ? ' — ' + esc(s.alt.note) : ''}</div></div>` : '') +
+    (s.outs ? `<div class="f-outs">${s.outs.map(o => `<div class="f-out">${icoHTML(o, 'ic-fout')}<div><b>${esc(o.title)}</b>${o.note ? `<p>${esc(o.note)}</p>` : ''}</div></div>`).join('')}</div>` : '') +
+    '</li>';
+}
+function renderProses(animate = true) {
+  if (!curFlow) { prosesDoc.innerHTML = '<p>Belum ada alur. Tambahkan pada bagian FLOWS di index.html.</p>'; return; }
+  const f = curFlow, variants = flows.filter(x => x.group === f.group);
+  lastVariant[f.group] = f.id;
+  prosesDoc.style.setProperty('--c', flowColor(f));
+  const mapNode = f.key && byKey[f.key];
+  const actors = [...new Set(f.steps.map(s => s.actor).filter(Boolean))];
+  const hasAlt = f.steps.some(s => s.alt), hasOuts = f.steps.some(s => s.outs);
+  prosesDoc.innerHTML =
+    '<div class="f-sel"><div class="f-groups" role="group" aria-label="Pilih alur">' +
+    flowGroups.map(g => {
+      const d = groupDefault(g), n = d.key && byKey[d.key];
+      return `<button type="button" class="f-group" data-group="${esc(g)}" aria-pressed="${g === f.group}" style="--c:${flowColor(d)}">${icoHTML(n && n.icon ? n : d, 'ic-fgroup')}${esc(g)}</button>`;
+    }).join('') + '</div>' +
+    (variants.length > 1 ? `<div class="seg card f-vars" role="group" aria-label="Pilih jenjang"><span class="lbl">Jenjang</span>${variants.map(v => `<button type="button" data-flow="${v.id}" aria-pressed="${v === f}">${esc(v.variant)}</button>`).join('')}</div>` : '') +
+    '</div>' +
+    `<header class="f-head">${icoHTML(f, 'ic-fhead')}<div><div class="eyebrow">Alur proses${f.variant ? ' · ' + esc(f.variant) : ''}</div><h1>${esc(flowTitle(f))}</h1>${f.note ? `<p>${esc(f.note)}</p>` : ''}` +
+    `<div class="f-meta"><span class="tag">${f.steps.length} langkah</span>${actors.map(a => `<span class="tag">${PERSON_ICON}${esc(a)}</span>`).join('')}` +
+    (mapNode ? `<button type="button" class="btn" data-map="${mapNode.id}">Lihat di peta pikiran →</button>` : '') +
+    '<button type="button" class="btn" data-print>Cetak / PDF</button></div></div></header>' +
+    '<div class="f-board"><div class="f-canvas" id="fCanvas"></div></div>' +
+    '<div class="f-key">' +
+    '<span><svg width="34" height="10" aria-hidden="true"><path d="M1 5H26" style="stroke:var(--c);stroke-width:2.5;stroke-linecap:round"/><path d="M25 1l8 4-8 4z" style="fill:var(--c)"/></svg>Urutan langkah</span>' +
+    (hasAlt ? '<span><svg width="34" height="10" aria-hidden="true"><path d="M1 5H26" style="stroke:var(--alt);stroke-width:2;stroke-dasharray:5 4"/><path d="M25 1l8 4-8 4z" style="fill:var(--alt)"/></svg>Jika gagal / pengecualian</span>' : '') +
+    (hasOuts ? '<span><svg width="34" height="16" aria-hidden="true"><path d="M1 8C12 8 12 2 26 2M1 8C12 8 12 14 26 14" style="fill:none;stroke:var(--c);stroke-width:2"/></svg>Hasil / keluaran</span>' : '') +
+    '<span>Klik kartu untuk melihat rinciannya</span></div>' +
+    `<h2 class="f-h2">Rincian langkah</h2><ol class="f-list">${f.steps.map((s, i) => stepItemHTML(f, s, i)).join('')}</ol>` +
+    '<p class="f-foot">Alur dapat diubah atau ditambah pada bagian FLOWS di file index.html.</p>';
+  drawFlow(animate);
+}
+
+let flowBoardW = 0;
+function drawFlow(animate = true) {
+  const f = curFlow, canvas = $('#fCanvas');
+  if (!f || !canvas) return;
+  const board = canvas.parentElement, cs = getComputedStyle(board);
+  const cw = board.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+  flowBoardW = board.clientWidth;
+  const anim = animate && !reduceMotion;
+  const steps = f.steps, n = steps.length, last = steps[n - 1], fanItems = last.outs || [];
+  const G = 50, FANW = 230, FANGAP = 12;
+  let W = Math.floor((cw - (n - 1) * G - (fanItems.length ? G + FANW : 0)) / n);
+  const horiz = W >= 134;
+  W = Math.min(W, 200);
+  canvas.innerHTML = '<svg class="f-links" aria-hidden="true"><defs>' +
+    '<marker id="fArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto"><path class="ah" d="M0,1 L9,5 L0,9 z"/></marker>' +
+    '<marker id="fArrowAlt" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto"><path class="ah alt" d="M0,1 L9,5 L0,9 z"/></marker>' +
+    '</defs></svg>';
+  const svgEl = canvas.firstChild;
+  const mk = (s, kind, i) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = `f-card ${kind} ${horiz ? 'h' : 'v'}`;
+    b.innerHTML = cardHTML(s, kind);
+    b.dataset.i = i;
+    b.setAttribute('aria-label', (kind === 'alt' ? 'Jika gagal: ' : kind === 'fan' ? 'Hasil: ' : `Langkah ${s.step}: `) + s.title + (s.actor ? ' — ' + s.actor : ''));
+    canvas.appendChild(b);
+    return b;
+  };
+  const cards = steps.map((s, i) => mk(s, isOutcome(f, s) ? 'outcome' : 'main', i));
+  const sides = steps.map((s, i) => [
+    ...(s.alt ? [{ s: s.alt, kind: 'alt' }] : []),
+    ...(s !== last && s.outs ? s.outs.map(o => ({ s: o, kind: 'fan' })) : []),
+  ].map(x => ({ ...x, el: mk(x.s, x.kind, i) })));
+  const fans = fanItems.map(o => mk(o, 'fan', n - 1));
+  const pos = new Map();
+  const setW = (el, w) => { el.style.width = w + 'px'; };
+  let cwOut, chOut;
+  if (horiz) {
+    cards.forEach(c => setW(c, W));
+    fans.forEach(c => setW(c, FANW));
+    sides.flat().forEach(x => setW(x.el, W - 16));
+    const mainH = Math.max(...cards.map(c => c.offsetHeight));
+    cards.forEach(c => { c.style.height = mainH + 'px'; });
+    const fanHs = fans.map(c => c.offsetHeight);
+    const fanTotal = fanHs.reduce((a, b) => a + b, 0) + Math.max(0, fans.length - 1) * FANGAP;
+    const band = Math.max(mainH, fanTotal), top = 14, yMid = top + band / 2;
+    cards.forEach((c, i) => pos.set(c, { x: i * (W + G), y: yMid - mainH / 2, w: W, h: mainH }));
+    let fy = yMid - fanTotal / 2;
+    fans.forEach((c, j) => { pos.set(c, { x: n * (W + G), y: fy, w: FANW, h: fanHs[j] }); fy += fanHs[j] + FANGAP; });
+    let bottom = top + band;
+    sides.forEach((list, i) => {
+      let y = yMid + mainH / 2 + 40;
+      list.forEach(x => {
+        const h = x.el.offsetHeight;
+        pos.set(x.el, { x: i * (W + G) + 8, y, w: W - 16, h });
+        bottom = Math.max(bottom, y + h);
+        y += h + 30;
+      });
+    });
+    cwOut = n * W + (n - 1) * G + (fans.length ? G + FANW : 0);
+    chOut = bottom + 12;
+  } else {
+    const Wv = Math.min(cw, 480), sideW = Math.floor(Wv / 2 - 14);
+    cards.forEach(c => setW(c, Wv));
+    sides.flat().forEach(x => setW(x.el, sideW));
+    fans.forEach(c => setW(c, Wv - 46));
+    let y = 14;
+    cards.forEach((c, i) => {
+      const h = c.offsetHeight;
+      pos.set(c, { x: 0, y, w: Wv, h });
+      y += h;
+      if (sides[i].length) {
+        let sy = y + 18;
+        sides[i].forEach(x => {
+          const sh = x.el.offsetHeight;
+          pos.set(x.el, { x: Wv - sideW, y: sy, w: sideW, h: sh });
+          sy += sh + 12;
+        });
+        y = Math.max(y + 46, sy + 8);
+      } else if (i < n - 1) y += 46;
+    });
+    if (fans.length) {
+      y += 20;
+      fans.forEach(c => { const h = c.offsetHeight; pos.set(c, { x: 46, y, w: Wv - 46, h }); y += h + 10; });
+      y -= 10;
+    }
+    cwOut = Wv;
+    chOut = y + 12;
+  }
+  canvas.style.width = cwOut + 'px';
+  canvas.style.height = chOut + 'px';
+  svgEl.setAttribute('width', cwOut);
+  svgEl.setAttribute('height', chOut);
+  const STAG = 110, order = new Map();
+  for (const [el, p] of pos) { el.style.left = p.x + 'px'; el.style.top = p.y + 'px'; }
+  cards.forEach((c, i) => order.set(c, i));
+  sides.forEach((list, i) => list.forEach((x, j) => order.set(x.el, i + 0.6 + j * 0.3)));
+  fans.forEach((c, j) => order.set(c, n - 0.2 + j * 0.45));
+
+  const P = el => pos.get(el), paths = [];
+  const line = (d, cls, delay) => paths.push({ d, cls, delay });
+  if (horiz) {
+    for (let i = 0; i < n - 1; i++) {
+      const a = P(cards[i]), b = P(cards[i + 1]), y = a.y + a.h / 2;
+      line(`M${a.x + a.w + 5},${y}H${b.x - 4}`, 'main', i + 0.5);
+    }
+    fans.forEach((c, j) => {
+      const a = P(cards[n - 1]), b = P(c);
+      const x1 = a.x + a.w + 5, y1 = a.y + a.h / 2, x2 = b.x - 4, y2 = b.y + b.h / 2, mx = (x1 + x2) / 2;
+      line(`M${x1},${y1}C${mx},${y1} ${mx},${y2} ${x2},${y2}`, 'fan', order.get(c) - 0.3);
+    });
+    sides.forEach((list, i) => {
+      let prev = P(cards[i]);
+      list.forEach(x => {
+        const b = P(x.el), cx = b.x + b.w / 2;
+        line(`M${cx},${prev.y + prev.h + 5}V${b.y - 4}`, x.kind === 'alt' ? 'alt' : 'fan', order.get(x.el) - 0.3);
+        prev = b;
+      });
+    });
+  } else {
+    for (let i = 0; i < n - 1; i++) {
+      const a = P(cards[i]), b = P(cards[i + 1]), x = a.x + a.w / 2;
+      line(`M${x},${a.y + a.h + 5}V${b.y - 4}`, 'main', i + 0.5);
+    }
+    sides.forEach((list, i) => {
+      let prevBottom = P(cards[i]).y + P(cards[i]).h;
+      list.forEach(x => {
+        const b = P(x.el), cx = b.x + b.w / 2;
+        line(`M${cx},${prevBottom + 5}V${b.y - 4}`, x.kind === 'alt' ? 'alt' : 'fan', order.get(x.el) - 0.3);
+        prevBottom = b.y + b.h;
+      });
+    });
+    if (fans.length) {
+      const a = P(cards[n - 1]), tx = a.x + 22;
+      fans.forEach(c => {
+        const b = P(c), my = b.y + b.h / 2;
+        line(`M${tx},${a.y + a.h + 5}V${my - 10}Q${tx},${my} ${tx + 10},${my}H${b.x - 4}`, 'fan', order.get(c) - 0.3);
+      });
+    }
+  }
+  svgEl.insertAdjacentHTML('beforeend', paths.map(p =>
+    `<path class="f-ln ${p.cls}${anim ? ' pre' : ''}" d="${p.d}" marker-end="url(#${p.cls === 'alt' ? 'fArrowAlt' : 'fArrow'})"${anim ? ` style="transition-delay:${Math.round(p.delay * STAG)}ms"` : ''}/>`).join(''));
+  if (anim) {
+    for (const [el, k] of order) { el.classList.add('pre'); el.style.transitionDelay = Math.round(k * STAG) + 'ms'; }
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      canvas.querySelectorAll('.pre').forEach(el => el.classList.remove('pre'));
+      setTimeout(() => { for (const el of order.keys()) el.style.transitionDelay = ''; }, (n + 3) * STAG + 400);
+    }));
+  }
+}
+function flash(el) {
+  el.classList.remove('flash');
+  void el.offsetWidth;
+  el.classList.add('flash');
+}
+prosesDoc.addEventListener('click', e => {
+  const card = e.target.closest('.f-card');
+  if (card) {
+    const li = document.getElementById('fi-' + card.dataset.i);
+    if (li) { li.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' }); flash(li); }
+    flash(card);
+    return;
+  }
+  const g = e.target.closest('[data-group]');
+  if (g) { curFlow = groupDefault(g.dataset.group); renderProses(true); syncHash(); return; }
+  const v = e.target.closest('[data-flow]');
+  if (v) { curFlow = flows.find(x => x.id === v.dataset.flow) || curFlow; renderProses(true); syncHash(); return; }
+  const m = e.target.closest('[data-map]');
+  if (m) { goTo(all[+m.dataset.map]); return; }
+  if (e.target.closest('[data-print]')) window.print();
+});
+window.addEventListener('hashchange', () => {
+  const hm = location.hash.match(/^#alur(?:\/([\w-]+))?/);
+  if (hm) openFlow(flows.find(x => x.id === hm[1]));
 });
 
 /* ---------- Pencarian ---------- */
@@ -1321,7 +1821,7 @@ function nav(key) {
 }
 document.addEventListener('keydown', e => {
   if (e.target.matches('input, textarea') || e.ctrlKey || e.metaKey || e.altKey) return;
-  if (view === 'outline') return;
+  if (view === 'outline' || view === 'proses') return;
   const k = e.key;
   if (k === '+' || k === '=') zoomBy(1.2);
   else if (k === '-' || k === '_') zoomBy(1 / 1.2);
@@ -1349,6 +1849,15 @@ function setIconSet(v) {
   iconSet = v;
   document.body.dataset.icons = v;
   try { localStorage.setItem('iconSet', v); } catch (_) {}
+  document.querySelectorAll('.ic-emo[data-k]').forEach(sp => {
+    const img = document.createElement('img');
+    img.className = sp.className.replace(' ic-emo', '');
+    img.alt = '';
+    img.draggable = false;
+    img.dataset.k = sp.dataset.k;
+    img.dataset.e = sp.dataset.e;
+    sp.replaceWith(img);
+  });
   document.querySelectorAll('img.ic').forEach(img => { img.src = `assets/icons/${v}/${img.dataset.k}.svg`; });
   iconBtns.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.icons === v)));
 }
@@ -1362,6 +1871,8 @@ document.addEventListener('error', e => {
   const span = document.createElement('span');
   span.className = img.className + ' ic-emo';
   span.textContent = img.dataset.e;
+  span.dataset.k = img.dataset.k;
+  span.dataset.e = img.dataset.e;
   span.setAttribute('aria-hidden', 'true');
   img.replaceWith(span);
 }, true);
@@ -1378,6 +1889,7 @@ function fontsReady() {
 function remeasure() {
   cancelAnimationFrame(raf.layout);
   for (const n of all) n.w = 0;
+  for (const n of visible) fitText(n.el);
   for (const n of visible) { n.w = n.el.offsetWidth; n.h = n.el.offsetHeight; }
   layoutTargets();
   for (const n of visible) { n.x = n.X; n.y = n.Y; }
@@ -1386,7 +1898,12 @@ function remeasure() {
 let resizeTimer = 0;
 window.addEventListener('resize', () => {
   clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(() => { if (booted) remeasure(); }, 150);
+  resizeTimer = setTimeout(() => {
+    if (!booted) return;
+    remeasure();
+    const board = prosesEl.querySelector('.f-board');
+    if (view === 'proses' && board && board.clientWidth !== flowBoardW) drawFlow(false);
+  }, 150);
 });
 if (document.fonts && document.fonts.addEventListener) {
   document.fonts.addEventListener('loadingdone', () => { if (booted) remeasure(); });
@@ -1406,6 +1923,8 @@ fontsReady().then(() => {
   fit(false);
   viewport.classList.add('ready');
   booted = true;
+  const hm = location.hash.match(/^#alur(?:\/([\w-]+))?/);
+  if (hm) openFlow(flows.find(x => x.id === hm[1]));
 });
 })();
 </script>

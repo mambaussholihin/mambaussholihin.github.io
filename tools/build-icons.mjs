@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /*
- * Membuat file ikon SVG untuk setiap emoji {…} yang dipakai di bagian DATA pada index.html.
+ * Membuat file ikon SVG untuk setiap emoji {…} yang dipakai di bagian DATA (peta pikiran)
+ * dan FLOWS (alur proses) pada index.html.
  *
  * Pemakaian (butuh Node.js 18+ dan koneksi internet):
  *   node tools/build-icons.mjs
@@ -30,16 +31,19 @@ async function loadJSON(set, file) {
 }
 
 const html = await readFile(join(ROOT, 'index.html'), 'utf8');
-const data = html.slice(html.indexOf('const DATA = `'), html.indexOf('`;', html.indexOf('const DATA = `')));
-const emojis = [...new Set([...data.matchAll(/\s\{([^}\s]+)\}/g)].map(m => m[1]))];
-console.log(`${emojis.length} emoji dipakai di DATA.`);
+const blocks = [...html.matchAll(/const (DATA|FLOWS) = `([\s\S]*?)`;/g)];
+if (!blocks.some(b => b[1] === 'DATA')) throw new Error('Bagian DATA tidak ditemukan di index.html — ikon lama tidak diubah.');
+const emojis = [...new Set(blocks.flatMap(b => [...b[2].matchAll(/\s\{([^}\s]+)\}/g)].map(m => m[1])))];
+if (!emojis.length) throw new Error('Tidak ada emoji {…} di DATA/FLOWS — ikon lama tidak dihapus.');
+console.log(`${emojis.length} emoji dipakai di ${blocks.map(b => b[1]).join(' & ')}.`);
 
 let missingTotal = 0;
 for (const [dir, set] of Object.entries(SETS)) {
   const [icons, chars] = await Promise.all([loadJSON(set, 'icons.json'), loadJSON(set, 'chars.json')]);
   const byKey = {};
   for (const [cp, name] of Object.entries(chars)) {
-    const k = cp.split('-').filter(x => x !== 'fe0f').join('-');
+    // chars.json menulis kode dengan minimal 4 digit (mis. 0023 untuk #) → samakan dengan emojiKey.
+    const k = cp.split('-').filter(x => x !== 'fe0f').map(x => parseInt(x, 16).toString(16)).join('-');
     if (!(k in byKey)) byKey[k] = name;
   }
   const outDir = join(ROOT, 'assets', 'icons', dir);
